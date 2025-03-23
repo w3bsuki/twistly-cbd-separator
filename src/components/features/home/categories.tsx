@@ -15,7 +15,7 @@ const categoryCards = [
   {
     title: "Health & Wellness",
     description: "Premium CBD oils and supplements",
-    src: "/images/tincture.png",
+    src: "/images/tincture2.png",
     href: "/health",
     bgColor: "bg-gradient-to-br from-green-50 to-emerald-50",
     iconColor: "bg-gradient-to-br from-green-600 to-emerald-500",
@@ -38,7 +38,7 @@ const categoryCards = [
   {
     title: "Sport & Recovery",
     description: "High-performance CBD solutions",
-    src: "/images/tincture.png",
+    src: "/images/tincture2.png",
     href: "/sport",
     bgColor: "bg-gradient-to-br from-red-50 to-rose-50",
     iconColor: "bg-gradient-to-br from-red-600 to-red-500",
@@ -61,7 +61,7 @@ const categoryCards = [
   {
     title: "Beauty & Skincare",
     description: "CBD-infused beauty products",
-    src: "/images/tincture.png",
+    src: "/images/tincture2.png",
     href: "/beauty",
     bgColor: "bg-gradient-to-br from-amber-50 to-yellow-50",
     iconColor: "bg-gradient-to-br from-amber-500 to-yellow-500",
@@ -84,7 +84,7 @@ const categoryCards = [
   {
     title: "Hybrid Solutions",
     description: "Innovative CBD blends",
-    src: "/images/tincture.png",
+    src: "/images/tincture2.png",
     href: "/hybrid",
     bgColor: "bg-gradient-to-br from-stone-50 to-amber-50",
     iconColor: "bg-gradient-to-br from-stone-600 to-amber-700",

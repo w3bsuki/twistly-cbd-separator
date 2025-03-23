@@ -67,130 +67,198 @@ const blogArticles = [
 ]
 
 export function BlogSection() {
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 300, 
+        damping: 25,
+        duration: 0.5 
+      }
+    }
+  };
+  
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-white to-green-50">
+    <section className="py-12 md:py-16 bg-gradient-to-b from-white to-green-50">
       {/* Background Pattern */}
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px] opacity-20 pointer-events-none" />
       
       <div className="container mx-auto max-w-6xl px-4 relative">
-        <div className="flex flex-col items-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center"
-          >
-            <Badge className="bg-green-600 text-white hover:bg-green-700 px-4 py-1 rounded-full text-sm mb-4">
-              <BookOpen className="mr-1 h-4 w-4" />
-              Featured Articles
-            </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-600 to-green-700 mb-4">
-              Learn About CBD Benefits
-            </h2>
-            <p className="text-green-700 text-lg max-w-3xl text-center">
-              Discover the latest research and insights about how CBD can enhance your wellness journey
-            </p>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center mb-8"
+        >
+          <Badge className="bg-green-600 text-white hover:bg-green-700 px-3 py-0.5 rounded-full text-xs mb-3">
+            <BookOpen className="mr-1 h-3 w-3" />
+            Featured Articles
+          </Badge>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-600 to-green-700 mb-2">
+            Learn About CBD Benefits
+          </h2>
+          <p className="text-green-700 text-sm md:text-base max-w-3xl text-center">
+            Discover the latest research and insights about how CBD can enhance your wellness journey
+          </p>
+        </motion.div>
 
         {/* Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {blogArticles.map((article, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              variants={itemVariants}
+              whileHover={{ 
+                y: -8,
+                transition: { duration: 0.2 }
+              }}
             >
-              <Card className="group overflow-hidden border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full flex flex-col">
-                <div className="relative p-1">
-                  <div className="relative h-56 w-full overflow-hidden rounded-t-lg">
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <div className="absolute top-3 left-3">
-                      <Badge className={`${article.categoryColor} text-white`}>
+              <Card className="group overflow-hidden border border-green-100 hover:border-green-300 shadow-sm transition-all duration-300 h-full flex flex-col">
+                <div className="relative">
+                  <div className="relative h-44 w-full overflow-hidden">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      className="h-full w-full"
+                    >
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </motion.div>
+                    <motion.div 
+                      className="absolute top-2 left-2 z-10"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <Badge className={`${article.categoryColor} text-white text-xs px-2 py-0.5`}>
                         {article.category}
                       </Badge>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
                 
-                <CardContent className="flex-grow p-5">
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                <CardContent className="flex-grow p-3">
+                  <div className="flex items-center gap-3 text-xs text-gray-500 mb-2">
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
+                      <Calendar className="h-3 w-3" />
                       <span>{article.date}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
+                      <Clock className="h-3 w-3" />
                       <span>{article.readTime}</span>
                     </div>
                   </div>
                   
-                  <h3 className="font-bold text-xl mb-3 group-hover:text-green-700 transition-colors line-clamp-2">
+                  <motion.h3 
+                    className="font-bold text-base mb-2 group-hover:text-green-700 transition-colors line-clamp-2"
+                    whileHover={{ x: 2 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
                     {article.title}
-                  </h3>
+                  </motion.h3>
                   
-                  <p className="text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-xs text-gray-600 mb-3 line-clamp-2">
                     {article.excerpt}
                   </p>
                   
                   <div className="flex items-center gap-2 mt-auto">
-                    <div className="rounded-full w-8 h-8 bg-green-100 flex items-center justify-center">
-                      {article.icon}
+                    <div className="rounded-full w-6 h-6 bg-green-100 flex items-center justify-center">
+                      <div className="scale-75">{article.icon}</div>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{article.author}</p>
-                      <p className="text-xs text-gray-500">{article.authorRole}</p>
+                      <p className="text-xs font-medium text-gray-900">{article.author}</p>
+                      <p className="text-[10px] text-gray-500">{article.authorRole}</p>
                     </div>
                   </div>
                 </CardContent>
                 
-                <CardFooter className="border-t border-gray-100 p-4">
+                <CardFooter className="border-t border-gray-100 p-3">
                   <div className="w-full flex justify-between items-center">
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5">
                       {article.tags.slice(0, 2).map((tag, i) => (
-                        <Badge key={i} variant="outline" className="bg-gray-50">
+                        <Badge key={i} variant="outline" className="bg-gray-50 text-[10px] px-1.5 py-0">
                           {tag}
                         </Badge>
                       ))}
                     </div>
-                    <Link 
-                      href={article.href} 
-                      className="text-green-700 font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all"
+                    <motion.div
+                      whileHover={{ x: 3 }}
+                      transition={{ type: "spring", stiffness: 400 }}
                     >
-                      Read More <ArrowRight className="h-4 w-4" />
-                    </Link>
+                      <Link 
+                        href={article.href} 
+                        className="text-green-700 font-medium text-xs flex items-center gap-1 group-hover:gap-1.5 transition-all"
+                      >
+                        Read More <ArrowRight className="h-3 w-3" />
+                      </Link>
+                    </motion.div>
                   </div>
                 </CardFooter>
               </Card>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
         
         {/* Explore Button */}
-        <div className="flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+        <motion.div
+          className="flex justify-center"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+        >
+          <Button 
+            asChild 
+            size="sm" 
+            className="bg-green-700 hover:bg-green-800 text-white text-sm rounded-full px-6 py-1.5 shadow-sm relative overflow-hidden group"
           >
-            <Button asChild size="lg" className="bg-green-700 hover:bg-green-800 text-white rounded-full px-8 py-6 shadow-md">
-              <Link href="/blog">
+            <Link href="/blog">
+              <motion.span 
+                className="absolute inset-0 w-0 bg-green-900 transition-all duration-300 group-hover:w-full"
+                initial={{ width: "0%" }}
+                whileHover={{ width: "100%" }}
+                transition={{ duration: 0.3 }}
+              />
+              <span className="relative z-10 flex items-center">
                 Explore All Articles
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-            </Button>
-          </motion.div>
-        </div>
+                <motion.div 
+                  className="ml-1.5 inline-flex"
+                  whileHover={{ x: 3 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </motion.div>
+              </span>
+            </Link>
+          </Button>
+        </motion.div>
       </div>
     </section>
   )
