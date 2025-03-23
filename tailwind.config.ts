@@ -7,7 +7,8 @@ const config = {
   ],
   darkMode: ["class"],
   plugins: [
-    require("tailwindcss-animate")
+    require("tailwindcss-animate"),
+    require('@tailwindcss/aspect-ratio'),
   ],
   theme: {
   	container: {
@@ -18,6 +19,10 @@ const config = {
   		},
   	},
   	extend: {
+      aspectRatio: {
+        '4/3': '4 / 3',
+        '3/2': '3 / 2',
+      },
   		backgroundImage: {
   			"dot-black": "radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
   			"dot-white": "radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px)",

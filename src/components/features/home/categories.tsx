@@ -3,9 +3,9 @@
 import React from 'react'
 import Link from "next/link"
 import Image from "next/image"
-import { Badge } from "@/components/common/ui/badge"
-import { Card } from "@/components/common/ui/card"
-import { Button } from "@/components/common/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { ArrowRight, ChevronRight, Leaf, Heart, Activity, Sparkles, Check } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"

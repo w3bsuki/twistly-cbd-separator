@@ -4,18 +4,18 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Filter, SlidersHorizontal, Search, ChevronDown, X } from 'lucide-react'
 import { products, Product } from '@/lib/products'
-import { ProductCard } from '@/components/common/ui/product-card'
-import { Button } from '@/components/common/ui/button'
-import { Input } from '@/components/common/ui/input'
-import { Badge } from '@/components/common/ui/badge'
-import { Separator } from '@/components/common/ui/separator'
+import { ProductCard } from '@/components/features/products/product-card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
 import { 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/common/ui/select'
+} from '@/components/ui/select'
 import {
   Sheet,
   SheetContent,
@@ -23,14 +23,14 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/common/ui/sheet'
+} from '@/components/ui/sheet'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/common/ui/accordion'
-import { Checkbox } from '@/components/common/ui/checkbox'
+} from '@/components/ui/accordion'
+import { Checkbox } from '@/components/ui/checkbox'
 
 type SortOption = 'featured' | 'price-low' | 'price-high' | 'newest' | 'best-selling'
 
