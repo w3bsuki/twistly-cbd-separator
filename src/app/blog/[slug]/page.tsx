@@ -161,13 +161,20 @@ const getPostData = (slug: string) => {
 
 // In Next.js 13+, this would be used for generating static paths
 export async function generateStaticParams() {
-  return Object.keys(posts).map((slug) => ({
-    slug,
+  return Object.keys(posts).map(slug => ({
+    slug
   }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostData(params.slug);
+type BlogPostPageProps = {
+  params: { 
+    slug: string
+  }
+}
+
+export default function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = params;
+  const post = getPostData(slug);
   
   if (!post) {
     return (

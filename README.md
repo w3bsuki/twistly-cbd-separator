@@ -60,3 +60,31 @@ To learn more about the technologies used in this project:
 ## Deployment
 
 The application can be deployed on any platform that supports Next.js applications.
+
+## Deploying to Vercel
+
+This project is configured for deployment on Vercel. Follow these steps to deploy:
+
+1. Push your code to a GitHub repository
+2. Connect your repository to Vercel:
+   - Go to [https://vercel.com/new](https://vercel.com/new)
+   - Import your GitHub repository
+   - Vercel will automatically detect the Next.js framework
+   - Configure any environment variables if needed
+   - Click "Deploy"
+3. Your site will be built and deployed by Vercel
+
+Alternatively, you can deploy directly using the Vercel CLI:
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy from your project directory
+vercel
+```
+
+You can configure additional settings in the `vercel.json` file.
