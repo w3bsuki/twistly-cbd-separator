@@ -1,12 +1,16 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
 import { Navbar1 } from '@/components/blocks/shadcnblocks-com-navbar1'
+import { ShoppingCart, User, Search } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 const navData = {
   logo: {
     url: "/",
-    src: "/images/1.png",
+    src: "/images/logo.svg",
     alt: "Twistly CBD",
     title: "Twistly CBD",
   },
@@ -174,8 +178,79 @@ const navData = {
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <Navbar1 {...navData} />
+    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2">
+            <div className="relative h-8 w-8 overflow-hidden">
+              <Image
+                src="/images/logo.svg"
+                alt="Twistly CBD"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+            </div>
+            <span className="font-semibold text-green-800 text-lg hidden sm:inline-block">Twistly CBD</span>
+          </Link>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navData.menu.map((item, index) => (
+              <Link 
+                key={index} 
+                href={item.url}
+                className="px-3 py-2 text-sm font-medium text-green-700 hover:text-green-900 hover:bg-green-50 rounded-md transition-colors"
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
+          
+          {/* Right Side - Icons and Auth */}
+          <div className="flex items-center gap-4">
+            {/* Search */}
+            <Button variant="ghost" size="icon" className="text-green-700 hover:text-green-900 hover:bg-green-50">
+              <Search className="h-5 w-5" />
+            </Button>
+            
+            {/* Shopping Cart */}
+            <Button variant="ghost" size="icon" className="text-green-700 hover:text-green-900 hover:bg-green-50 relative">
+              <ShoppingCart className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                0
+              </span>
+            </Button>
+            
+            {/* Account */}
+            <Button variant="ghost" size="icon" className="text-green-700 hover:text-green-900 hover:bg-green-50">
+              <User className="h-5 w-5" />
+            </Button>
+            
+            {/* Auth Buttons */}
+            <div className="hidden lg:flex items-center gap-3">
+              <Link href={navData.auth.login.url}>
+                <Button variant="ghost" size="sm" className="text-green-700 hover:text-green-900 hover:bg-green-50">
+                  {navData.auth.login.text}
+                </Button>
+              </Link>
+              <Link href={navData.auth.signup.url}>
+                <Button size="sm" className="bg-green-700 text-white hover:bg-green-800">
+                  {navData.auth.signup.text}
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <Button variant="ghost" size="icon" className="md:hidden text-green-700 hover:text-green-900 hover:bg-green-50">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </Button>
+          </div>
+        </div>
+      </div>
     </header>
   )
 } 
