@@ -1,9 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, User, Search, ChevronDown, Menu } from 'lucide-react'
+import { ShoppingCart, User, Search, ChevronDown, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { 
   DropdownMenu, 
@@ -13,11 +13,23 @@ import {
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import { CartDrawer } from '@/components/features/cart/cart-drawer'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose
+} from '@/components/ui/sheet'
+import { Input } from '@/components/ui/input'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Separator } from "@/components/ui/separator"
 
 // Product categories data
 const productCategories = [
   {
-    name: "Health & Wellness",
+    name: "Wellness",
     color: "green",
     path: "/health-and-wellness",
     products: [
@@ -42,7 +54,7 @@ const productCategories = [
     ]
   },
   {
-    name: "Sport & Recovery",
+    name: "Sport",
     color: "red",
     path: "/sport-and-recovery",
     products: [
@@ -67,7 +79,7 @@ const productCategories = [
     ]
   },
   {
-    name: "Beauty & Cosmetics",
+    name: "Beauty",
     color: "amber",
     path: "/beauty-and-cosmetics",
     products: [
@@ -92,7 +104,7 @@ const productCategories = [
     ]
   },
   {
-    name: "Hybrid & Mushrooms",
+    name: "Hybrid",
     color: "brown",
     path: "/hybrid-and-mushrooms",
     products: [
@@ -120,6 +132,7 @@ const productCategories = [
 
 // Navigation links - removed Home and Shop
 const navLinks = [
+  { name: "Shop", path: "/shop" },
   { name: "About", path: "/about" },
   { name: "Blog", path: "/blog" },
   { name: "Contact", path: "/contact" },
@@ -128,42 +141,79 @@ const navLinks = [
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const [logoIndex, setLogoIndex] = React.useState(3) // Start with logo 3 instead of 2
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  
+  // Detect scroll for header shadow only (no height change)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+    
+    // Use passive event listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+  
+  // Cycle through logos 3, 4, 5 (skipping 2)
+  const cycleLogo = () => {
+    setLogoIndex(prev => {
+      if (prev >= 5) return 3
+      return prev + 1
+    })
+  }
   
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 shadow-sm">
-      <div className="container mx-auto">
-        <div className="flex h-16 items-center justify-between">
+    <header className={cn(
+      "sticky top-0 z-50 w-full border-b border-gray-100 bg-white h-20",
+      isScrolled ? "shadow-md" : "shadow-sm"
+    )}>
+      <div className="container mx-auto h-full">
+        <div className="flex items-center justify-between h-full">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative h-10 w-10 overflow-hidden">
+          <Link 
+            href="/" 
+            className="flex items-center gap-3"
+          >
+            <div className="relative h-12 w-12 overflow-hidden">
               <Image
-                src="/images/logo.svg"
-                alt="Twistly CBD"
-                width={40}
-                height={40}
+                src={`/images/${logoIndex}.png`}
+                alt="Twistly"
+                width={48}
+                height={48}
                 className="object-contain"
               />
             </div>
-            <span className="font-semibold text-green-800 text-xl hidden sm:inline-block">Twistly CBD</span>
+            <span className="font-bold text-black text-2xl hidden sm:inline-block tracking-tighter">
+              Twistly
+            </span>
           </Link>
           
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden md:flex items-center space-x-6">
             {/* Product Category Dropdowns with hover trigger */}
             {productCategories.map((category) => (
               <div key={category.path} className="group relative">
-                <button className={cn(
-                  "px-3 py-2 text-base font-medium rounded-md transition-colors flex items-center gap-1",
-                  category.color === "green" && "text-green-700 hover:text-green-900 group-hover:bg-green-50",
-                  category.color === "red" && "text-red-700 hover:text-red-900 group-hover:bg-red-50",
-                  category.color === "amber" && "text-amber-700 hover:text-amber-900 group-hover:bg-amber-50",
-                  category.color === "brown" && "text-amber-900 hover:text-amber-950 group-hover:bg-amber-100",
-                )}>
-                  {category.name} <ChevronDown className="h-4 w-4 opacity-50" />
+                <button 
+                  className={cn(
+                    "px-5 py-2.5 text-base font-medium tracking-tight rounded-md flex items-center gap-1.5",
+                    category.color === "green" && "text-green-700 hover:text-green-900 group-hover:bg-green-50",
+                    category.color === "red" && "text-red-700 hover:text-red-900 group-hover:bg-red-50",
+                    category.color === "amber" && "text-amber-700 hover:text-amber-900 group-hover:bg-amber-50",
+                    category.color === "brown" && "text-amber-900 hover:text-amber-950 group-hover:bg-amber-100",
+                  )}
+                >
+                  {category.name} <ChevronDown className="h-4.5 w-4.5 opacity-70" />
                 </button>
-                <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-[400px]">
+                <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[400px] z-20"
+                     style={{ transition: 'opacity 0.15s ease, visibility 0.15s ease' }}>
                   <div className={cn(
-                    "rounded-md border shadow-md bg-white p-4",
+                    "rounded-md border shadow-lg bg-white p-4",
                     category.color === "green" && "border-green-100",
                     category.color === "red" && "border-red-100",
                     category.color === "amber" && "border-amber-100",
@@ -174,7 +224,7 @@ export function Navbar() {
                         <Link key={product.path} href={product.path} className="group">
                           <div className="space-y-2">
                             <div className="relative w-full pt-[100%] rounded-md overflow-hidden border">
-                              <img
+                              <motion.img
                                 src={product.image}
                                 alt={product.name}
                                 style={{
@@ -186,12 +236,13 @@ export function Navbar() {
                                   objectFit: 'contain',
                                   padding: '8px'
                                 }}
-                                className="transition-transform group-hover:scale-105"
+                                whileHover={{ scale: 1.05 }}
+                                transition={{ duration: 0.2 }}
                               />
                             </div>
                             <div className="space-y-1">
                               <h4 className={cn(
-                                "text-sm font-medium transition-colors group-hover:underline",
+                                "text-sm font-semibold tracking-tight group-hover:underline",
                                 category.color === "green" && "group-hover:text-green-700",
                                 category.color === "red" && "group-hover:text-red-700",
                                 category.color === "amber" && "group-hover:text-amber-700",
@@ -199,7 +250,7 @@ export function Navbar() {
                               )}>
                                 {product.name}
                               </h4>
-                              <p className="text-xs text-muted-foreground line-clamp-2">
+                              <p className="text-xs text-gray-500 line-clamp-2 font-light">
                                 {product.description}
                               </p>
                             </div>
@@ -211,7 +262,7 @@ export function Navbar() {
                     <Link 
                       href={category.path} 
                       className={cn(
-                        "text-sm font-medium flex justify-end hover:underline",
+                        "text-sm font-medium flex justify-end hover:underline tracking-tight",
                         category.color === "green" && "text-green-700",
                         category.color === "red" && "text-red-700",
                         category.color === "amber" && "text-amber-700",
@@ -227,20 +278,24 @@ export function Navbar() {
             
             {/* Info Dropdown */}
             <div className="group relative">
-              <button className="px-3 py-2 text-base font-medium rounded-md transition-colors flex items-center gap-1 text-green-700 hover:text-green-900 group-hover:bg-green-50">
-                Info <ChevronDown className="h-4 w-4 opacity-50" />
+              <button 
+                className="px-5 py-2.5 text-base font-medium tracking-tight rounded-md flex items-center gap-1.5 text-gray-800 hover:text-gray-900 group-hover:bg-gray-50"
+              >
+                Info <ChevronDown className="h-4.5 w-4.5 opacity-70" />
               </button>
-              <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 w-[200px]">
-                <div className="rounded-md border border-green-100 shadow-md bg-white p-2">
+              <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[200px] z-20"
+                   style={{ transition: 'opacity 0.15s ease, visibility 0.15s ease' }}>
+                <div className="rounded-md border shadow-lg bg-white p-2">
                   <div className="flex flex-col space-y-1">
-                    {navLinks.map((link) => (
-                      <Link 
-                        key={link.path} 
-                        href={link.path}
-                        className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-900 hover:bg-green-50 rounded-md transition-colors"
-                      >
-                        {link.name}
-                      </Link>
+                    {navLinks.slice(1).map((link) => (
+                      <motion.div key={link.path} whileHover={{ x: 2 }} transition={{ duration: 0.2 }}>
+                        <Link 
+                          href={link.path}
+                          className="w-full text-left px-3 py-2 text-sm font-medium hover:bg-gray-50 rounded-md block"
+                        >
+                          {link.name}
+                        </Link>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -248,132 +303,206 @@ export function Navbar() {
             </div>
           </nav>
           
-          {/* Right Side - Icons and Auth */}
-          <div className="flex items-center gap-3">
-            {/* Search */}
-            <Button variant="ghost" size="icon" className="text-green-700 hover:text-green-900 hover:bg-green-50">
-              <Search className="h-5 w-5" />
-            </Button>
-            
-            {/* Shopping Cart */}
-            <Button variant="ghost" size="icon" className="text-green-700 hover:text-green-900 hover:bg-green-50 relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
-              </span>
-            </Button>
-            
-            {/* Account */}
-            <Button variant="ghost" size="icon" className="text-green-700 hover:text-green-900 hover:bg-green-50">
-              <User className="h-5 w-5" />
-            </Button>
-            
-            {/* Auth/Shop Button - Changed Get Started to Shop */}
-            <div className="hidden lg:flex items-center gap-3">
-              <Link href="/signin">
-                <Button variant="ghost" size="sm" className="text-green-700 hover:text-green-900 hover:bg-green-50">
-                  Sign in
-                </Button>
-              </Link>
-              <Link href="/shop">
-                <Button size="sm" className="bg-green-700 text-white hover:bg-green-800">
+          {/* Desktop Right Side Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Shop Button */}
+            <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              <Button asChild variant="default" className="bg-green-700 hover:bg-green-800 text-white rounded-md h-10 px-5 text-sm font-medium">
+                <Link href="/shop" className="flex items-center gap-2">
+                  <div className="relative w-6 h-6">
+                    <Image 
+                      src="/images/2.png"
+                      alt="Twistly Icon" 
+                      width={24}
+                      height={24}
+                      className="object-contain"
+                    />
+                  </div>
+                  <Separator orientation="vertical" className="h-4 bg-white/30" />
                   Shop
-                </Button>
-              </Link>
-            </div>
+                </Link>
+              </Button>
+            </motion.div>
             
-            {/* Mobile Menu Button */}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="md:hidden text-green-700 hover:text-green-900 hover:bg-green-50"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
+            {/* Desktop Search Button */}
+            <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="rounded-full h-10 w-10"
+                onClick={() => setIsSearchOpen(true)}
+              >
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Button>
+            </motion.div>
+            
+            {/* User Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+                  <Button variant="ghost" size="icon" className="rounded-full h-10 w-10">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">User menu</span>
+                  </Button>
+                </motion.div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link href="/account" className="font-medium text-sm">My Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/orders" className="font-medium text-sm">Orders</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/signin" className="font-medium text-sm">Sign In</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            {/* Cart */}
+            <CartDrawer />
+          </div>
+          
+          {/* Mobile Menu and Cart */}
+          <div className="flex md:hidden items-center space-x-2">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="rounded-full h-10 w-10"
+                onClick={() => setIsSearchOpen(true)}
+              >
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Button>
+            </motion.div>
+            
+            <CartDrawer />
+            
+            {/* Mobile Menu */}
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
+                  <Button variant="ghost" size="icon" className="rounded-full h-10 w-10">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </motion.div>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full sm:w-80 p-0">
+                <div className="flex flex-col h-full">
+                  <SheetHeader className="p-4 border-b">
+                    <div className="flex items-center justify-between">
+                      <SheetTitle className="text-left font-semibold tracking-tight">Menu</SheetTitle>
+                      <SheetClose asChild>
+                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
+                          <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+                            <X className="h-4 w-4" />
+                            <span className="sr-only">Close menu</span>
+                          </Button>
+                        </motion.div>
+                      </SheetClose>
+                    </div>
+                  </SheetHeader>
+                  
+                  <div className="flex-1 overflow-auto py-2">
+                    {/* Mobile Categories */}
+                    <div className="px-4 py-2">
+                      <div className="text-xs uppercase font-semibold tracking-wide text-gray-500 mb-2">Categories</div>
+                      <div className="space-y-1">
+                        {productCategories.map((category) => (
+                          <div key={category.path}>
+                            <Link
+                              href={category.path}
+                              className={cn(
+                                "block py-2 px-3 rounded-md text-base font-medium",
+                                category.color === "green" && "text-green-700 hover:bg-green-50",
+                                category.color === "red" && "text-red-700 hover:bg-red-50",
+                                category.color === "amber" && "text-amber-700 hover:bg-amber-50",
+                                category.color === "brown" && "text-amber-900 hover:bg-amber-100",
+                              )}
+                            >
+                              {category.name}
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Mobile Info Links */}
+                    <div className="px-4 py-2 mt-2 border-t">
+                      <div className="text-xs uppercase font-semibold tracking-wide text-gray-500 mb-2">Pages</div>
+                      <div className="space-y-1">
+                        {navLinks.map((link) => (
+                          <div key={link.path}>
+                            <Link
+                              href={link.path}
+                              className="block py-2 px-3 rounded-md text-base font-medium text-gray-800 hover:bg-gray-50"
+                            >
+                              {link.name}
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Mobile Account Links */}
+                  <div className="border-t p-4">
+                    <div className="flex flex-col space-y-2">
+                      <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                        <Button asChild variant="outline" size="lg" className="font-medium text-sm">
+                          <Link href="/account">My Account</Link>
+                        </Button>
+                      </motion.div>
+                      <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
+                        <Button asChild size="lg" className="font-medium text-sm">
+                          <Link href="/signin">Sign In</Link>
+                        </Button>
+                      </motion.div>
+                    </div>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
       
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t py-4 px-4 bg-white">
-          <nav className="flex flex-col space-y-3">
-            {/* Product Categories */}
-            {productCategories.map((category) => (
-              <div key={category.path} className="space-y-1">
-                <div className={cn(
-                  "px-3 py-2 text-base font-medium rounded-md",
-                  category.color === "green" && "text-green-700",
-                  category.color === "red" && "text-red-700",
-                  category.color === "amber" && "text-amber-700",
-                  category.color === "brown" && "text-amber-900",
-                )}>
-                  {category.name}
-                </div>
-                <div className="pl-4 space-y-1">
-                  {category.products.map((product) => (
-                    <Link 
-                      key={product.path} 
-                      href={product.path}
-                      className="px-3 py-1.5 text-sm flex items-center gap-3 text-gray-600 hover:text-green-900 hover:bg-green-50 rounded-md transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
+      {/* Search Overlay */}
+      <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+        <SheetContent side="top" className="h-auto max-h-[300px]">
+          <div className="flex flex-col space-y-4 pt-8 pb-6">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-400" />
+              <Input 
+                placeholder="Search products..." 
+                className="pl-10 h-11 text-base"
+                autoFocus
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="text-xs uppercase font-semibold tracking-wide text-gray-500">Popular Searches</div>
+              <div className="flex flex-wrap gap-2">
+                {["CBD Oil", "Softgels", "Sleep Aid", "Pain Relief", "Mushroom Extract"].map((term) => (
+                  <motion.div key={term} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setIsSearchOpen(false)}
+                      className="text-xs h-9 font-medium px-3"
                     >
-                      <div className="relative w-8 h-8 rounded-md overflow-hidden border border-gray-200">
-                        <img 
-                          src={product.image} 
-                          alt={product.name}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'contain'
-                          }}
-                        />
-                      </div>
-                      {product.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-            
-            <div className="h-px bg-gray-200 my-2"></div>
-            
-            {/* Info Section */}
-            <div className="space-y-1">
-              <div className="px-3 py-2 text-base font-medium rounded-md text-green-700">
-                Info
-              </div>
-              <div className="pl-4 space-y-1">
-                {navLinks.map((link) => (
-                  <Link 
-                    key={link.path} 
-                    href={link.path}
-                    className="px-3 py-1.5 text-sm text-gray-600 hover:text-green-900 hover:bg-green-50 rounded-md transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
+                      {term}
+                    </Button>
+                  </motion.div>
                 ))}
               </div>
             </div>
-            
-            <div className="h-px bg-gray-200 my-2"></div>
-            
-            {/* Mobile Auth/Shop */}
-            <div className="flex flex-col space-y-2 px-3">
-              <Link href="/signin">
-                <Button variant="outline" className="w-full justify-start">Sign in</Button>
-              </Link>
-              <Link href="/shop">
-                <Button className="w-full justify-start bg-green-700 hover:bg-green-800">
-                  Shop
-                </Button>
-              </Link>
-            </div>
-          </nav>
-        </div>
-      )}
+          </div>
+        </SheetContent>
+      </Sheet>
     </header>
   )
 } 

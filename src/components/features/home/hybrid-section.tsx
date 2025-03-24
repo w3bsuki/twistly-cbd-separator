@@ -5,7 +5,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Star, Heart, Brain, Flower2, Shield, Dumbbell, Activity, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { ArrowRight, Star, Heart, Brain, Flower2, Shield, Dumbbell, Activity, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker, Zap, CheckCircle as CheckCircleIcon } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
@@ -37,7 +38,7 @@ const hybridProducts = [
   {
     name: "Lion's Mane CBD Capsules",
     strength: "600mg CBD + 1000mg Lion's Mane",
-    image: "/images/3.png",
+    image: "/images/tincture2.png",
     price: "$49.99",
     rating: 4.7,
     reviews: 64,
@@ -49,7 +50,7 @@ const hybridProducts = [
   {
     name: "Reishi Calm Gummies",
     strength: "300mg CBD + 500mg Reishi",
-    image: "/images/4.png",
+    image: "/images/tincture2.png",
     price: "$39.99",
     rating: 4.9,
     reviews: 72,
@@ -61,7 +62,7 @@ const hybridProducts = [
   {
     name: "Chaga Immune Support",
     strength: "1000mg CBD + 800mg Chaga",
-    image: "/images/3.png",
+    image: "/images/tincture2.png",
     price: "$69.99",
     rating: 4.8,
     reviews: 48,
@@ -89,34 +90,34 @@ const mushroomCBDBenefits = [
   {
     title: "Cognitive Enhancement",
     description: "Functional mushrooms like Lion's Mane combined with CBD support brain health and cognitive function.",
-    icon: <Brain className="h-6 w-6 text-amber-700" />,
-    color: "bg-amber-50 border-amber-100"
+    icon: <Brain className="h-6 w-6 text-amber-800" />,
+    color: "bg-amber-50/80 border-amber-200"
   },
   {
     title: "Immune Support",
     description: "Medicinal mushrooms provide powerful immune system support, complemented by CBD's anti-inflammatory properties.",
-    icon: <Shield className="h-6 w-6 text-amber-700" />,
-    color: "bg-amber-50 border-amber-100"
+    icon: <Shield className="h-6 w-6 text-amber-800" />,
+    color: "bg-amber-50/80 border-amber-200"
   },
   {
     title: "Adaptogenic Balance",
     description: "Mushroom and CBD combinations help the body adapt to stress and maintain homeostasis.",
-    icon: <Leaf className="h-6 w-6 text-amber-700" />,
-    color: "bg-amber-50 border-amber-100"
+    icon: <Leaf className="h-6 w-6 text-amber-800" />,
+    color: "bg-amber-50/80 border-amber-200"
   },
   {
     title: "Synergistic Effect",
     description: "The entourage effect of combining mushrooms with CBD creates more powerful benefits than either alone.",
-    icon: <Sparkles className="h-6 w-6 text-amber-700" />,
-    color: "bg-amber-50 border-amber-100"
+    icon: <Sparkles className="h-6 w-6 text-amber-800" />,
+    color: "bg-amber-50/80 border-amber-200"
   }
 ]
 
 export function HybridAndMushrooms() {
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-amber-50 to-white">
+    <section className="py-10 md:py-14 bg-gradient-to-b from-amber-100/70 to-white">
       <div className="container mx-auto max-w-6xl px-4">
-        <div className="flex flex-col items-center mb-16">
+        <div className="flex flex-col items-center mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -124,20 +125,20 @@ export function HybridAndMushrooms() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center"
           >
-            <Badge className="bg-amber-800 text-white hover:bg-amber-900 px-4 py-1 rounded-full text-sm mb-4">
+            <Badge className="bg-amber-900 text-white hover:bg-amber-950 px-4 py-1 rounded-full text-sm mb-3">
               Hybrid & Mushrooms
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-amber-900 via-amber-700 to-amber-800 mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-amber-950 via-amber-800 to-amber-900 mb-3">
               Advanced CBD-Mushroom Formulas
             </h2>
-            <p className="text-amber-900 text-lg max-w-3xl text-center">
+            <p className="text-amber-950 text-base max-w-2xl text-center">
               Experience the synergistic benefits of functional mushrooms combined with premium CBD in our innovative hybrid formulations.
             </p>
           </motion.div>
         </div>
 
-        {/* CBD-Mushroom Benefits Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        {/* CBD-Mushroom Benefits Section - More compact */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {mushroomCBDBenefits.map((benefit, index) => (
             <motion.div
               key={index}
@@ -147,12 +148,12 @@ export function HybridAndMushrooms() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className={cn("border h-full transition-all hover:shadow-md", benefit.color)}>
-                <CardContent className="pt-6">
-                  <div className="rounded-full w-12 h-12 flex items-center justify-center bg-white border border-gray-100 shadow-sm mb-4">
+                <CardContent className="pt-4 p-4">
+                  <div className="rounded-full w-10 h-10 flex items-center justify-center bg-white border border-gray-100 shadow-sm mb-3">
                     {benefit.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm">{benefit.description}</p>
+                  <h3 className="text-base font-semibold text-gray-900 mb-1.5">{benefit.title}</h3>
+                  <p className="text-gray-600 text-xs line-clamp-3">{benefit.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -160,19 +161,25 @@ export function HybridAndMushrooms() {
         </div>
 
         {/* Featured Products Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10"
-        >
-          <h3 className="text-2xl md:text-3xl font-bold text-amber-900">Featured Hybrid Products</h3>
-          <p className="text-amber-700 mt-2">Discover our innovative CBD and functional mushroom blends</p>
-        </motion.div>
+        <div className="flex flex-col items-center justify-center mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h3 className="text-2xl md:text-3xl font-bold text-amber-950">Featured Hybrid Products</h3>
+            <p className="text-amber-800 mt-1">Discover our innovative CBD and functional mushroom blends</p>
+          </motion.div>
+          
+          <Link href="/hybrid-and-mushrooms" className="text-amber-800 hover:text-amber-950 font-medium text-sm flex items-center gap-1 mt-2">
+            View All <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {/* Products Grid - More compact */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {hybridProducts.filter(p => p.featured).map((product, index) => (
             <motion.div
               key={index}
@@ -181,16 +188,16 @@ export function HybridAndMushrooms() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group overflow-hidden border border-amber-200 hover:border-amber-300 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+              <Card className="group overflow-hidden border border-amber-300 hover:border-amber-400 transition-all duration-300 hover:shadow-md">
                 <CardContent className="p-0">
                   <div className="relative">
-                    <AspectRatio ratio={16/9} className="bg-gradient-to-b from-amber-50 to-white">
-                      <div className="relative h-full w-full p-4">
+                    <AspectRatio ratio={3/2} className="bg-gradient-to-b from-amber-100/70 to-white">
+                      <div className="relative h-full w-full p-3">
                         <Image
                           src={product.image}
                           alt={product.name}
                           fill
-                          className="object-contain group-hover:scale-105 transition-transform duration-500"
+                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
                         />
                       </div>
                       <div className="absolute top-2 right-2 z-10">
@@ -200,13 +207,13 @@ export function HybridAndMushrooms() {
                       </div>
                     </AspectRatio>
                   </div>
-                  <div className="p-4">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <h3 className="font-semibold text-base text-gray-900 group-hover:text-amber-800 transition-colors">{product.name}</h3>
-                      <p className="font-bold text-base text-amber-800">{product.price}</p>
+                  <div className="p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold text-sm text-gray-900 group-hover:text-amber-800 transition-colors">{product.name}</h3>
+                      <p className="font-bold text-sm text-amber-800">{product.price}</p>
                     </div>
                     
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center mb-1.5">
                       <div className="flex mr-1.5">
                         {[...Array(5)].map((_, i) => (
                           <Star 
@@ -217,53 +224,39 @@ export function HybridAndMushrooms() {
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-500">({product.reviews} verified reviews)</span>
+                      <span className="text-xs text-gray-500">({product.reviews})</span>
                     </div>
                     
-                    <p className="text-xs text-gray-600 mb-2.5">{product.description}</p>
+                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">{product.description}</p>
                     
-                    <div className="bg-amber-50 p-2 rounded-md mb-2.5">
-                      <p className="text-xs text-amber-800 font-medium">Key Ingredients</p>
-                      <p className="text-xs text-gray-600">Premium CBD, organic mushroom extract, adaptogens</p>
-                    </div>
-                    
-                    {/* Benefits */}
-                    <div className="mb-2">
-                      <p className="text-xs font-medium text-gray-700 mb-1.5">Primary Benefits:</p>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {product.benefits.map((benefit, i) => (
-                          <div key={i} className="flex items-center bg-amber-50 rounded-md px-1.5 py-1">
-                            <Check className="h-3 w-3 text-amber-700 flex-shrink-0" />
-                            <span className="text-xs text-gray-600 ml-1 truncate">{benefit}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between border-t border-amber-50 pt-2 text-xs text-gray-500">
-                      <span>Organic • Lab Tested</span>
-                      <span>Full Spectrum</span>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {product.benefits.map((benefit, i) => (
+                        <span key={i} className="bg-amber-50 text-[10px] text-amber-700 px-1.5 py-0.5 rounded-full flex items-center">
+                          <Check className="h-2 w-2 mr-0.5" /> {benefit}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="px-4 py-3 border-t border-amber-100 flex gap-1 flex-wrap">
-                  <Button size="sm" variant="default" className="bg-amber-800 hover:bg-amber-900 text-white text-xs px-3 h-8 rounded-lg">
-                    <ShoppingCart className="h-3.5 w-3.5 mr-1.5" /> Add to Cart
+                <CardFooter className="p-3 pt-0 flex gap-1">
+                  <Button size="sm" variant="default" className="bg-amber-800 hover:bg-amber-900 text-white text-xs px-3 h-7 rounded-lg transition-colors flex-1">
+                    <ShoppingCart className="h-3 w-3 mr-1" /> Add to Cart
                   </Button>
+                  
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs text-amber-800 border-amber-200 hover:bg-amber-50 hover:text-amber-900 rounded-lg"
+                        className="h-8 w-10 flex items-center justify-center text-amber-800 border-amber-200 hover:bg-amber-50 hover:text-amber-900 rounded-lg transition-colors"
                       >
-                        <Info className="h-3.5 w-3.5 mr-1.5" /> Benefits
+                        <Info className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle className="text-amber-800 flex items-center gap-1.5">
-                          <Flower2 className="h-5 w-5" />
+                          <Zap className="h-5 w-5" />
                           {product.name} Benefits
                         </DialogTitle>
                       </DialogHeader>
@@ -296,12 +289,12 @@ export function HybridAndMushrooms() {
                             {product.benefits.map((benefit, i) => (
                               <li key={i} className="flex items-start gap-2">
                                 <div className="bg-white rounded-full p-1 mt-0.5">
-                                  <Check className="h-3.5 w-3.5 text-amber-700" />
+                                  <Check className="h-3.5 w-3.5 text-amber-800" />
                                 </div>
                                 <div>
                                   <p className="text-sm font-medium text-gray-800">{benefit}</p>
                                   <p className="text-xs text-gray-600">
-                                    {getHybridBenefitDescription(benefit)}
+                                    Experience {benefit.toLowerCase()} with this specialized hybrid formula.
                                   </p>
                                 </div>
                               </li>
@@ -310,17 +303,10 @@ export function HybridAndMushrooms() {
                         </div>
                         
                         <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                          <Flower2 className="h-4 w-4 mr-1.5" /> Mushroom Profile
+                          <Shield className="h-4 w-4 mr-1.5" /> Hybrid Formula Advantages
                         </h4>
                         <p className="text-sm text-gray-700 mb-4">
-                          {getHybridMushroomProfile(product.name)}
-                        </p>
-                        
-                        <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                          <Leaf className="h-4 w-4 mr-1.5" /> Synergistic Effect
-                        </h4>
-                        <p className="text-sm text-gray-700">
-                          {getHybridSynergy(product.name)}
+                          This hybrid CBD product combines the best of multiple categories, giving you comprehensive benefits including improved wellness, athletic recovery, and skin health.
                         </p>
                       </div>
                     </DialogContent>
@@ -331,9 +317,9 @@ export function HybridAndMushrooms() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs text-amber-800 border-amber-200 hover:bg-amber-50 hover:text-amber-900 rounded-lg"
+                        className="h-8 w-10 flex items-center justify-center text-amber-800 border-amber-200 hover:bg-amber-50 hover:text-amber-900 rounded-lg transition-colors"
                       >
-                        <Users className="h-3.5 w-3.5 mr-1.5" /> For Who?
+                        <Users className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -346,52 +332,46 @@ export function HybridAndMushrooms() {
                       <div className="mt-4">
                         <div className="bg-amber-50 p-4 rounded-lg mb-4">
                           <p className="text-sm text-gray-700">
-                            {getHybridIdealUsers(product.name)}
+                            This hybrid product is perfect for individuals with multiple wellness goals who want a comprehensive solution. Ideal for those who need versatile benefits in one product.
                           </p>
                         </div>
                         
                         <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                          <CheckCircle className="h-4 w-4 mr-1.5" /> Recommended For
+                          <CheckCircleIcon className="h-4 w-4 mr-1.5" /> Recommended For
                         </h4>
                         <ul className="space-y-2 mb-4">
-                          {getHybridRecommendedGroups(product.name).map((group, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Check className="h-3.5 w-3.5 text-amber-700 mt-0.5" />
-                              <span className="text-sm text-gray-700">{group}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        
-                        <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                          <XCircle className="h-4 w-4 mr-1.5" /> Not Recommended For
-                        </h4>
-                        <ul className="space-y-2">
-                          {getHybridNotRecommendedGroups().map((group, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <X className="h-3.5 w-3.5 text-amber-700 mt-0.5" />
-                              <span className="text-sm text-gray-700">{group}</span>
-                            </li>
-                          ))}
+                          <li className="flex items-start gap-2">
+                            <Check className="h-3.5 w-3.5 text-amber-800 mt-0.5" />
+                            <span className="text-sm text-gray-700">Active individuals who also value mental wellness</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <Check className="h-3.5 w-3.5 text-amber-800 mt-0.5" />
+                            <span className="text-sm text-gray-700">Those seeking a multi-purpose CBD solution</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <Check className="h-3.5 w-3.5 text-amber-800 mt-0.5" />
+                            <span className="text-sm text-gray-700">People who want both internal and external benefits</span>
+                          </li>
                         </ul>
                       </div>
                     </DialogContent>
                   </Dialog>
-
+                  
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs text-amber-800 border-amber-200 hover:bg-amber-50 hover:text-amber-900 rounded-lg"
+                        className="h-8 w-10 flex items-center justify-center text-amber-800 border-amber-200 hover:bg-amber-50 hover:text-amber-900 rounded-lg transition-colors"
                       >
-                        <Beaker className="h-3.5 w-3.5 mr-1.5" /> Dosage
+                        <Beaker className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle className="text-amber-800 flex items-center gap-1.5">
                           <Beaker className="h-5 w-5" />
-                          {product.name} Dosage Guide
+                          {product.name} Usage Guide
                         </DialogTitle>
                       </DialogHeader>
                       <div className="mt-4">
@@ -399,136 +379,145 @@ export function HybridAndMushrooms() {
                           <Badge className={cn("mr-2", product.badgeColor)}>
                             {product.strength}
                           </Badge>
-                          <p className="text-xs text-gray-600">Total active ingredients: {product.strength}</p>
+                          <p className="text-xs text-gray-600">Total CBD: {product.strength}</p>
                         </div>
                         
                         <p className="text-sm text-gray-700 mb-4">
-                          This hybrid formula contains both CBD and functional mushroom extracts. Proper dosage depends on your individual needs and sensitivity.
+                          This hybrid product contains {product.strength} of specially formulated CBD blend. Follow the recommended guidelines for optimal experience with this versatile product.
                         </p>
                         
                         <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                          <Info className="h-4 w-4 mr-1.5" /> Dosage Guidelines
+                          <Info className="h-4 w-4 mr-1.5" /> How to Use
                         </h4>
                         <p className="text-sm text-gray-700 mb-4">
-                          Mushroom-CBD blends typically require a different approach to dosing than CBD-only products. Start with a lower dose to assess your body's response.
+                          Use as directed based on your specific needs. This hybrid formula can be applied topically, taken orally, or used in combination depending on your wellness goals.
                         </p>
                         
-                        <div className="bg-amber-50 rounded-lg p-4 mb-4">
-                          <h5 className="font-medium text-amber-800 mb-2">Recommended Starting Doses:</h5>
-                          <ul className="space-y-3">
-                            <li className="grid grid-cols-2 gap-2">
-                              <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-amber-200 text-amber-800">Beginner</Badge>
-                              </div>
-                              <p className="text-xs text-gray-700">
-                                ¼ serving daily<br />
-                                <span className="text-gray-500">For first-time users, sensitive individuals</span>
-                              </p>
+                        <div className="bg-amber-50 rounded-lg p-4">
+                          <h5 className="font-medium text-amber-800 mb-2">Application Methods:</h5>
+                          <ul className="space-y-2">
+                            <li className="flex items-start gap-2">
+                              <Check className="h-3.5 w-3.5 text-amber-800 mt-0.5" />
+                              <span className="text-xs text-gray-700">
+                                For internal wellness: Follow oral dosing instructions on package
+                              </span>
                             </li>
-                            <li className="grid grid-cols-2 gap-2">
-                              <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-amber-200 text-amber-800">Standard</Badge>
-                              </div>
-                              <p className="text-xs text-gray-700">
-                                ½ to 1 serving daily<br />
-                                <span className="text-gray-500">For regular maintenance, general wellness</span>
-                              </p>
+                            <li className="flex items-start gap-2">
+                              <Check className="h-3.5 w-3.5 text-amber-800 mt-0.5" />
+                              <span className="text-xs text-gray-700">
+                                For skin benefits: Apply topically to target areas
+                              </span>
                             </li>
-                            <li className="grid grid-cols-2 gap-2">
-                              <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-amber-200 text-amber-800">Therapeutic</Badge>
-                              </div>
-                              <p className="text-xs text-gray-700">
-                                1-2 servings daily<br />
-                                <span className="text-gray-500">For specific health concerns, under guidance</span>
-                              </p>
+                            <li className="flex items-start gap-2">
+                              <Check className="h-3.5 w-3.5 text-amber-800 mt-0.5" />
+                              <span className="text-xs text-gray-700">
+                                For athletic recovery: Use before or after exercise as needed
+                              </span>
                             </li>
                           </ul>
-                        </div>
-                        
-                        <h4 className="font-medium text-amber-800 mb-2 flex items-center">
-                          <Clock className="h-4 w-4 mr-1.5" /> Usage Tips
-                        </h4>
-                        <ul className="space-y-1 mb-4 text-sm text-gray-700">
-                          <li>• Take consistently for optimal results (functional mushrooms work cumulatively)</li>
-                          <li>• Morning use recommended for energy-promoting mushrooms (Lion's Mane, Cordyceps)</li>
-                          <li>• Evening use better for relaxation-promoting mushrooms (Reishi)</li>
-                          <li>• Take with food to improve absorption and reduce sensitivity</li>
-                        </ul>
-                        
-                        <div className="p-3 border border-yellow-200 bg-yellow-50 rounded-lg">
-                          <p className="text-xs text-yellow-800 flex items-start">
-                            <Info className="h-3.5 w-3.5 mr-1.5 flex-shrink-0 mt-0.5" />
-                            Always consult with a healthcare professional before beginning any new supplement regimen, especially if you have existing health conditions or are taking medication.
-                          </p>
                         </div>
                       </div>
                     </DialogContent>
                   </Dialog>
                   
-                  <Button size="sm" variant="ghost" className="ml-auto px-2 h-8 hover:bg-transparent hover:text-amber-800">
-                    <Heart className="h-3.5 w-3.5" />
+                  <Button 
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-10 flex items-center justify-center text-amber-800 hover:text-amber-900 hover:bg-amber-50 transition-colors"
+                  >
+                    <Heart className="h-4 w-4" />
                   </Button>
                 </CardFooter>
               </Card>
             </motion.div>
           ))}
         </div>
-
-        {/* Product Infinite Slider */}
-        <InfiniteSlider gap={16} className="w-full py-6 mb-8">
+        
+        {/* Compact Infinite Slider */}
+        <InfiniteSlider gap={12} className="w-full py-4 mb-6">
           {hybridProducts.map((product, index) => (
-            <div key={`slider-${index}`} className="relative group w-[220px]">
-              <AspectRatio ratio={1} className="bg-white rounded-xl border border-amber-100">
+            <motion.div 
+              key={`slider-${index}`} 
+              className="relative group w-[180px]"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <AspectRatio ratio={1} className="bg-white rounded-xl border border-amber-200">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
-                  className="object-contain p-4"
+                  className="object-contain p-4 scale-90"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-amber-900/60 via-amber-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
-                  <p className="text-white text-sm font-medium leading-tight">{product.name}</p>
-                  <Badge variant="outline" className="mt-1 text-[10px] bg-white/10 text-white border-white/20">
+                <div className="absolute inset-0 bg-gradient-to-t from-amber-950 via-amber-900/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                  <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                  <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
                     {product.strength}
                   </Badge>
                 </div>
               </AspectRatio>
-            </div>
+            </motion.div>
           ))}
         </InfiniteSlider>
 
-        {/* Quality Promise Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-r from-amber-700 to-amber-800 rounded-xl p-8 mb-16 text-white"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="md:w-2/3">
-              <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                <Sparkles className="h-6 w-6" />
-                Our Hybrid Formula Promise
-              </h3>
-              <p className="text-amber-100 mb-4">
-                Our mushroom-CBD formulas combine certified organic mushrooms with premium CBD for maximum effectiveness. All products undergo rigorous testing for potency, purity, and bioavailability.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Organic Mushrooms</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Full Spectrum</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Synergistic Formulas</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Lab Verified</Badge>
-              </div>
-            </div>
-            <Button asChild size="lg" className="bg-white text-amber-800 hover:bg-amber-50 px-6">
-              <Link href="/lab-results">
-                View Lab Results <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
+        {/* What Makes Hybrid Special - More compact */}
+        <div className="mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-6 text-center"
+          >
+            <h3 className="text-2xl md:text-3xl font-bold text-amber-950">What Makes Our Hybrid Formulas Special</h3>
+            <p className="text-amber-800 mt-1">The science behind our CBD and functional mushroom combinations</p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <motion.div
+              whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <Card className="border border-amber-200 transition-all h-full">
+                <CardContent className="p-4">
+                  <Beaker className="h-8 w-8 text-amber-800 mb-3" />
+                  <h4 className="text-base font-semibold text-gray-900 mb-1">Scientific Formulation</h4>
+                  <p className="text-xs text-gray-600 line-clamp-4">
+                    Our hybrid formulas are developed by a team of experts in botanical medicine and cannabinoid science to ensure optimal ratios and synergistic effects between CBD and functional mushrooms.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <Card className="border border-amber-200 transition-all h-full">
+                <CardContent className="p-4">
+                  <Sparkles className="h-8 w-8 text-amber-800 mb-3" />
+                  <h4 className="text-base font-semibold text-gray-900 mb-1">Enhanced Bioavailability</h4>
+                  <p className="text-xs text-gray-600 line-clamp-4">
+                    Through our proprietary extraction methods, we enhance the bioavailability of both CBD and mushroom compounds, allowing for better absorption and more effective results.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -5, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <Card className="border border-amber-200 transition-all h-full">
+                <CardContent className="p-4">
+                  <Shield className="h-8 w-8 text-amber-800 mb-3" />
+                  <h4 className="text-base font-semibold text-gray-900 mb-1">Third-Party Testing</h4>
+                  <p className="text-xs text-gray-600 line-clamp-4">
+                    All our hybrid products undergo rigorous third-party testing to verify potency, purity, and the presence of beneficial compounds from both CBD and mushroom extracts.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Explore Button */}
         <div className="flex justify-center">
@@ -538,10 +527,12 @@ export function HybridAndMushrooms() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <Button asChild size="lg" className="bg-amber-800 hover:bg-amber-900 text-white rounded-full px-8 py-6 shadow-md">
-              <Link href="/hybrid-and-mushrooms">
-                Explore All Hybrid Products
-                <ArrowRight className="w-5 h-5 ml-2" />
+            <Button asChild size="lg" className="bg-amber-900 hover:bg-amber-950 text-white rounded-full px-6 transition-colors">
+              <Link href="/hybrid-and-mushrooms" className="flex items-center gap-2">
+                <Image src="/images/2.png" width={24} height={24} alt="Twistly" className="h-5 w-5" />
+                <Separator orientation="vertical" className="h-4 bg-amber-50/20" />
+                Explore Hybrid Collection
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
           </motion.div>

@@ -6,7 +6,11 @@ import { ProductDetail } from '@/components/features/products/product-detail'
 import { ProductCard } from '@/components/features/products/product-card'
 
 export default function ProductPage({ params }: { params: { productId: string } }) {
-  const product = getProductById(params.productId)
+  // Unwrap params with React.use() to fix hydration error
+  const unwrappedParams = React.use(params);
+  const productId = unwrappedParams.productId;
+  
+  const product = getProductById(productId)
   const relatedProducts = getBestSellerProducts(4)
   
   if (!product) {

@@ -1,10 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart, Dumbbell, Sparkles, Leaf, ArrowRight, Check } from 'lucide-react';
 import { Badge } from '@/components/common/ui/badge';
 import { Button } from '@/components/common/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/common/ui/card';
+import { motion } from 'framer-motion';
 
 const categories = [
   {
@@ -131,10 +134,20 @@ export function CategoryCards() {
               </CardContent>
               
               <CardFooter className="bg-gray-50 border-t pt-4 pb-4">
-                <Button asChild className={`w-full ${category.btnClass}`}>
-                  <Link href={category.href} className="flex items-center justify-center">
-                    Explore {category.title.split('&')[0].trim()}
-                    <ArrowRight className="ml-2 w-4 h-4" />
+                <Button asChild className={`w-full ${category.btnClass} rounded-md shadow-md`}>
+                  <Link href={category.href} className="flex items-center justify-center gap-2">
+                    <div className="relative w-5 h-5">
+                      <Image 
+                        src="/images/2.png"
+                        alt="Twistly Icon" 
+                        width={20}
+                        height={20}
+                        className="object-contain"
+                      />
+                    </div>
+                    <Separator orientation="vertical" className="h-4 bg-white/30" />
+                    <span>Explore {category.title.split('&')[0].trim()}</span>
+                    <ArrowRight className="ml-1 w-4 h-4" />
                   </Link>
                 </Button>
               </CardFooter>

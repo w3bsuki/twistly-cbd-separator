@@ -26,7 +26,7 @@ const blogArticles = [
     title: "CBD for Anxiety and Stress Management: What Science Says",
     date: "May 15, 2024",
     readTime: "8 min read",
-    image: "/images/tincture2.png",
+    image: "/images/4.png",
     category: "Mental Health",
     categoryColor: "bg-green-600",
     excerpt: "Explore the scientific evidence behind CBD's potential to reduce anxiety and manage stress in everyday life.",
@@ -40,7 +40,7 @@ const blogArticles = [
     title: "How CBD Supports Recovery After Intense Workouts",
     date: "June 2, 2024",
     readTime: "6 min read",
-    image: "/images/tincture2.png",
+    image: "/images/4.png",
     category: "Sport & Recovery",
     categoryColor: "bg-red-600",
     excerpt: "Discover how CBD helps athletes recover faster and reduce inflammation and muscle soreness after intense training sessions.",
@@ -54,7 +54,7 @@ const blogArticles = [
     title: "CBD and Sleep: Improving Your Nightly Rest Naturally",
     date: "April 28, 2024",
     readTime: "7 min read",
-    image: "/images/tincture2.png",
+    image: "/images/4.png",
     category: "Wellness",
     categoryColor: "bg-indigo-600",
     excerpt: "Learn how CBD could help improve sleep quality and address common sleep issues without the side effects of traditional sleep medications.",
@@ -67,45 +67,13 @@ const blogArticles = [
 ]
 
 export function BlogSection() {
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        type: "spring", 
-        stiffness: 300, 
-        damping: 25,
-        duration: 0.5 
-      }
-    }
-  };
-  
   return (
     <section className="py-12 md:py-16 bg-gradient-to-b from-white to-green-50">
       {/* Background Pattern */}
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px] opacity-20 pointer-events-none" />
       
       <div className="container mx-auto max-w-6xl px-4 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center mb-8"
-        >
+        <div className="flex flex-col items-center mb-8">
           <Badge className="bg-green-600 text-white hover:bg-green-700 px-3 py-0.5 rounded-full text-xs mb-3">
             <BookOpen className="mr-1 h-3 w-3" />
             Featured Articles
@@ -116,31 +84,26 @@ export function BlogSection() {
           <p className="text-green-700 text-sm md:text-base max-w-3xl text-center">
             Discover the latest research and insights about how CBD can enhance your wellness journey
           </p>
-        </motion.div>
+        </div>
 
         {/* Articles Grid */}
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {blogArticles.map((article, index) => (
             <motion.div
               key={index}
-              variants={itemVariants}
-              whileHover={{ 
-                y: -8,
-                transition: { duration: 0.2 }
-              }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.2, delay: index * 0.05 }}
+              whileHover={{ y: -3, transition: { duration: 0.15 } }}
+              className="transition-all"
             >
-              <Card className="group overflow-hidden border border-green-100 hover:border-green-300 shadow-sm transition-all duration-300 h-full flex flex-col">
+              <Card className="group overflow-hidden border border-green-100 hover:border-green-300 shadow-sm transition-all duration-200 h-full flex flex-col">
                 <div className="relative">
                   <div className="relative h-44 w-full overflow-hidden">
                     <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.2 }}
                       className="h-full w-full"
                     >
                       <Image
@@ -151,16 +114,11 @@ export function BlogSection() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     </motion.div>
-                    <motion.div 
-                      className="absolute top-2 left-2 z-10"
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
+                    <div className="absolute top-2 left-2 z-10">
                       <Badge className={`${article.categoryColor} text-white text-xs px-2 py-0.5`}>
                         {article.category}
                       </Badge>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
                 
@@ -176,13 +134,9 @@ export function BlogSection() {
                     </div>
                   </div>
                   
-                  <motion.h3 
-                    className="font-bold text-base mb-2 group-hover:text-green-700 transition-colors line-clamp-2"
-                    whileHover={{ x: 2 }}
-                    transition={{ type: "spring", stiffness: 400 }}
-                  >
+                  <h3 className="font-bold text-base mb-2 group-hover:text-green-700 transition-colors line-clamp-2">
                     {article.title}
-                  </motion.h3>
+                  </h3>
                   
                   <p className="text-xs text-gray-600 mb-3 line-clamp-2">
                     {article.excerpt}
@@ -208,57 +162,32 @@ export function BlogSection() {
                         </Badge>
                       ))}
                     </div>
-                    <motion.div
-                      whileHover={{ x: 3 }}
-                      transition={{ type: "spring", stiffness: 400 }}
+                    <Link 
+                      href={article.href} 
+                      className="text-green-700 font-medium text-xs flex items-center gap-1 group-hover:gap-1.5 transition-all"
                     >
-                      <Link 
-                        href={article.href} 
-                        className="text-green-700 font-medium text-xs flex items-center gap-1 group-hover:gap-1.5 transition-all"
-                      >
-                        Read More <ArrowRight className="h-3 w-3" />
-                      </Link>
-                    </motion.div>
+                      Read More <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
                 </CardFooter>
               </Card>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
         
         {/* Explore Button */}
-        <motion.div
-          className="flex justify-center"
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
+        <div className="flex justify-center">
           <Button 
             asChild 
             size="sm" 
-            className="bg-green-700 hover:bg-green-800 text-white text-sm rounded-full px-6 py-1.5 shadow-sm relative overflow-hidden group"
+            className="bg-green-700 hover:bg-green-800 text-white text-sm rounded-full px-6 py-1.5 shadow-sm group"
           >
-            <Link href="/blog">
-              <motion.span 
-                className="absolute inset-0 w-0 bg-green-900 transition-all duration-300 group-hover:w-full"
-                initial={{ width: "0%" }}
-                whileHover={{ width: "100%" }}
-                transition={{ duration: 0.3 }}
-              />
-              <span className="relative z-10 flex items-center">
-                Explore All Articles
-                <motion.div 
-                  className="ml-1.5 inline-flex"
-                  whileHover={{ x: 3 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </motion.div>
-              </span>
+            <Link href="/blog" className="flex items-center">
+              Explore All Articles
+              <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

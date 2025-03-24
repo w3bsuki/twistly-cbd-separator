@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { Badge } from '@/components/common/ui/badge'
 import { Button } from '@/components/common/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { 
   Carousel, 
   CarouselContent, 
@@ -144,16 +145,32 @@ export function FeaturedCollection({ title, category, href }: FeaturedCollection
         >
           <Link href={href}>
             <Button 
-              className="rounded-md bg-green-500 hover:bg-green-600 text-white px-6 py-1.5 text-sm"
+              className={`rounded-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 text-sm shadow-md ${
+                category === 'health' ? 'bg-green-600 hover:bg-green-700' :
+                category === 'sport' ? 'bg-red-600 hover:bg-red-700' :
+                category === 'beauty' ? 'bg-amber-600 hover:bg-amber-700' :
+                'bg-stone-600 hover:bg-stone-700'
+              }`}
               asChild
             >
               <motion.div
-                whileHover={{ scale: 1.03 }}
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.2 }}
               >
+                <div className="relative w-5 h-5">
+                  <Image 
+                    src="/images/2.png"
+                    alt="Twistly Icon" 
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </div>
+                <Separator orientation="vertical" className="h-4 bg-white/30" />
                 Explore Collection
-                <ArrowRight className="ml-2 h-3 w-3" />
+                <ArrowRight className="ml-1 h-3.5 w-3.5" />
               </motion.div>
             </Button>
           </Link>

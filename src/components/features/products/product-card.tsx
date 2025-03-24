@@ -4,7 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Product } from '@/lib/products';
 import { cn } from '@/lib/utils';
 import { OptimizedImage } from '@/components/ui/optimized-image';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Check } from 'lucide-react';
+import { useCart } from '@/context/cart-context';
+import { useToast } from "@/hooks/use-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -18,8 +20,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   className,
 }) => {
   const { id, name, price, rating, image, category, tags, discount } = product;
+  const { addItem } = useCart();
+  const { toast } = useToast();
+  const [isAdding, setIsAdding] = React.useState(false);
   
   const discountedPrice = discount ? price - (price * discount) / 100 : price;
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    setIsAdding(true);
+    addItem(product, 1);
+    
+    toast({
+      title: "Added to cart",
+      description: `${name} has been added to your cart.`,
+    });
+    
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 1000);
+  };
   
   return (
     <div 
@@ -70,8 +92,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               <span className="text-lg font-semibold text-gray-900 dark:text-white">${price.toFixed(2)}</span>
             )}
           </div>
-          <Button size="sm" variant="outline" className="rounded-full">
-            <ShoppingCart className="h-4 w-4" />
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className={cn(
+              "rounded-full transition-all duration-200",
+              isAdding && "bg-green-50 text-green-700 border-green-300"
+            )}
+            onClick={handleAddToCart}
+            disabled={isAdding}
+          >
+            {isAdding ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <ShoppingCart className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>

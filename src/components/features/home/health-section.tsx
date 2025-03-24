@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { ArrowRight, Star, Heart, Brain, Moon, Droplet, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
@@ -139,9 +140,9 @@ const testimonials = [
 
 export function HealthAndWellness() {
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-green-50 to-white">
+    <section className="py-10 md:py-14 bg-gradient-to-b from-green-50 to-white">
       <div className="container mx-auto max-w-6xl px-4">
-        <div className="flex flex-col items-center mb-16">
+        <div className="flex flex-col items-center mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -149,20 +150,20 @@ export function HealthAndWellness() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center"
           >
-            <Badge className="bg-green-600 text-white hover:bg-green-700 px-4 py-1 rounded-full text-sm mb-4">
+            <Badge className="bg-green-600 text-white hover:bg-green-700 px-4 py-1 rounded-full text-sm mb-3">
               Health & Wellness
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-600 to-green-700 mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-600 to-green-700 mb-3">
               Premium CBD for Daily Wellness
             </h2>
-            <p className="text-green-700 text-lg max-w-3xl text-center">
+            <p className="text-[#171717] text-base max-w-2xl text-center font-normal">
               Our health and wellness collection features premium CBD oils designed to support your daily wellness routine and promote balance in body and mind.
             </p>
           </motion.div>
         </div>
 
-        {/* CBD Benefits Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        {/* CBD Benefits Section - More compact */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {cbdBenefits.map((benefit, index) => (
             <motion.div
               key={index}
@@ -172,12 +173,12 @@ export function HealthAndWellness() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className={cn("border h-full transition-all hover:shadow-md", benefit.color)}>
-                <CardContent className="pt-6">
-                  <div className="rounded-full w-12 h-12 flex items-center justify-center bg-white border border-gray-100 shadow-sm mb-4">
+                <CardContent className="pt-4 p-4">
+                  <div className="rounded-full w-10 h-10 flex items-center justify-center bg-white border border-gray-100 shadow-sm mb-3">
                     {benefit.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm">{benefit.description}</p>
+                  <h3 className="text-base font-semibold text-gray-900 mb-1.5">{benefit.title}</h3>
+                  <p className="text-gray-600 text-xs line-clamp-3">{benefit.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -185,19 +186,25 @@ export function HealthAndWellness() {
         </div>
 
         {/* Featured Products Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10"
-        >
-          <h3 className="text-2xl md:text-3xl font-bold text-green-800">Featured CBD Products</h3>
-          <p className="text-green-600 mt-2">Discover our most popular wellness formulas</p>
-        </motion.div>
+        <div className="flex flex-col items-center justify-center mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h3 className="text-2xl md:text-3xl font-bold text-green-800">Featured CBD Products</h3>
+            <p className="text-green-600 mt-1 font-normal">Discover our most popular wellness formulas</p>
+          </motion.div>
+          
+          <Link href="/health-and-wellness" className="text-green-700 hover:text-green-800 font-medium text-sm flex items-center gap-1 mt-2">
+            View All <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {/* Products Grid - More compact */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {healthProducts.filter(p => p.featured).map((product, index) => (
             <motion.div
               key={index}
@@ -206,16 +213,16 @@ export function HealthAndWellness() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group overflow-hidden border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+              <Card className="group overflow-hidden border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-md">
                 <CardContent className="p-0">
                   <div className="relative">
-                    <AspectRatio ratio={16/9} className="bg-gradient-to-b from-green-50 to-white">
-                      <div className="relative h-full w-full p-4">
+                    <AspectRatio ratio={3/2} className="bg-gradient-to-b from-green-50 to-white">
+                      <div className="relative h-full w-full p-3">
                         <Image
                           src={product.image}
                           alt={product.name}
                           fill
-                          className="object-contain group-hover:scale-105 transition-transform duration-500"
+                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
                         />
                       </div>
                       <div className="absolute top-2 right-2 z-10">
@@ -225,13 +232,13 @@ export function HealthAndWellness() {
                       </div>
                     </AspectRatio>
                   </div>
-                  <div className="p-4">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <h3 className="font-semibold text-base text-gray-900 group-hover:text-green-700 transition-colors">{product.name}</h3>
-                      <p className="font-bold text-base text-green-700">{product.price}</p>
+                  <div className="p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold text-sm text-gray-900 group-hover:text-green-700 transition-colors">{product.name}</h3>
+                      <p className="font-bold text-sm text-green-700">{product.price}</p>
                     </div>
                     
-                    <div className="flex items-center mb-2">
+                    <div className="flex items-center mb-1.5">
                       <div className="flex mr-1.5">
                         {[...Array(5)].map((_, i) => (
                           <Star 
@@ -242,47 +249,33 @@ export function HealthAndWellness() {
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-gray-500">({product.reviews} verified reviews)</span>
+                      <span className="text-xs text-gray-500">({product.reviews})</span>
                     </div>
                     
-                    <p className="text-xs text-gray-600 mb-2.5">{product.description}</p>
+                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">{product.description}</p>
                     
-                    <div className="bg-green-50 p-2 rounded-md mb-2.5">
-                      <p className="text-xs text-green-800 font-medium">Key Ingredients</p>
-                      <p className="text-xs text-gray-600">Premium {product.strength} CBD extract, MCT oil, terpenes</p>
-                    </div>
-                    
-                    {/* Benefits */}
-                    <div className="mb-2">
-                      <p className="text-xs font-medium text-gray-700 mb-1.5">Primary Benefits:</p>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {product.benefits.map((benefit, i) => (
-                          <div key={i} className="flex items-center bg-green-50 rounded-md px-1.5 py-1">
-                            <Check className="h-3 w-3 text-green-500 flex-shrink-0" />
-                            <span className="text-xs text-gray-600 ml-1 truncate">{benefit}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between border-t border-green-50 pt-2 text-xs text-gray-500">
-                      <span>Non-GMO • Vegan</span>
-                      <span>30ml bottle</span>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {product.benefits.map((benefit, i) => (
+                        <span key={i} className="bg-green-50 text-[10px] text-green-700 px-1.5 py-0.5 rounded-full flex items-center">
+                          <Check className="h-2 w-2 mr-0.5" /> {benefit}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </CardContent>
-                <CardFooter className="px-4 py-3 border-t border-green-50 flex gap-1 flex-wrap">
-                  <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 h-8 rounded-lg">
-                    <ShoppingCart className="h-3.5 w-3.5 mr-1.5" /> Add to Cart
+                <CardFooter className="p-3 pt-0 flex gap-1">
+                  <Button size="sm" variant="default" className="bg-green-600 hover:bg-green-700 text-white text-xs px-3 h-7 rounded-lg transition-colors flex-1">
+                    <ShoppingCart className="h-3 w-3 mr-1" /> Add to Cart
                   </Button>
+                  
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs text-green-700 border-green-200 hover:bg-green-50 hover:text-green-800 rounded-lg"
+                        className="h-8 w-10 flex items-center justify-center text-green-700 border-green-200 hover:bg-green-50 hover:text-green-800 rounded-lg transition-colors"
                       >
-                        <Info className="h-3.5 w-3.5 mr-1.5" /> Benefits
+                        <Info className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -356,9 +349,9 @@ export function HealthAndWellness() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs text-green-700 border-green-200 hover:bg-green-50 hover:text-green-800 rounded-lg"
+                        className="h-8 w-10 flex items-center justify-center text-green-700 border-green-200 hover:bg-green-50 hover:text-green-800 rounded-lg transition-colors"
                       >
-                        <Users className="h-3.5 w-3.5 mr-1.5" /> For Who?
+                        <Users className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -401,15 +394,15 @@ export function HealthAndWellness() {
                       </div>
                     </DialogContent>
                   </Dialog>
-
+ 
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 px-3 text-xs text-green-700 border-green-200 hover:bg-green-50 hover:text-green-800 rounded-lg"
+                        className="h-8 w-10 flex items-center justify-center text-green-700 border-green-200 hover:bg-green-50 hover:text-green-800 rounded-lg transition-colors"
                       >
-                        <Beaker className="h-3.5 w-3.5 mr-1.5" /> Dosage
+                        <Beaker className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -479,32 +472,16 @@ export function HealthAndWellness() {
                             </li>
                           </ul>
                         </div>
-                        
-                        <h4 className="font-medium text-green-700 mb-2 flex items-center">
-                          <Clock className="h-4 w-4 mr-1.5" /> How to Calculate Your Dose
-                        </h4>
-                        <p className="text-sm text-gray-700 mb-2">
-                          For this {product.strength} product:
-                        </p>
-                        <ul className="space-y-1 mb-4 text-sm text-gray-700">
-                          <li>• A full dropper typically contains 1ml of oil</li>
-                          <li>• Each full dropper provides approximately {Number(product.strength.replace(/[^0-9]/g, ''))/30}mg of CBD</li>
-                          <li>• For a 10mg dose: take {Math.round((10/(Number(product.strength.replace(/[^0-9]/g, ''))/30)) * 10) / 10} ml (about {Math.round((10/(Number(product.strength.replace(/[^0-9]/g, ''))/30)) * 10) / 4} dropper)</li>
-                          <li>• For a 25mg dose: take {Math.round((25/(Number(product.strength.replace(/[^0-9]/g, ''))/30)) * 10) / 10} ml (about {Math.round((25/(Number(product.strength.replace(/[^0-9]/g, ''))/30)) * 10) / 4} dropper)</li>
-                        </ul>
-                        
-                        <div className="p-3 border border-yellow-200 bg-yellow-50 rounded-lg mb-4">
-                          <p className="text-xs text-yellow-800 flex items-start">
-                            <Info className="h-3.5 w-3.5 mr-1.5 flex-shrink-0 mt-0.5" />
-                            Always consult with a healthcare professional before starting any CBD regimen, especially if you have underlying health conditions or take medications.
-                          </p>
-                        </div>
                       </div>
                     </DialogContent>
                   </Dialog>
                   
-                  <Button size="sm" variant="ghost" className="ml-auto px-2 h-8 hover:bg-transparent hover:text-green-700">
-                    <Heart className="h-3.5 w-3.5" />
+                  <Button 
+                    size="sm"
+                    variant="ghost"
+                    className="h-8 w-10 flex items-center justify-center text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors"
+                  >
+                    <Heart className="h-4 w-4" />
                   </Button>
                 </CardFooter>
               </Card>
@@ -512,42 +489,47 @@ export function HealthAndWellness() {
           ))}
         </div>
         
-        <InfiniteSlider gap={16} className="w-full py-6 mb-8">
+        {/* Compact Infinite Slider */}
+        <InfiniteSlider gap={12} className="w-full py-4 mb-6">
           {healthProducts.map((product, index) => (
-            <div key={`slider-${index}`} className="relative group w-[220px]">
+            <motion.div 
+              key={`slider-${index}`} 
+              className="relative group w-[180px]"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
               <AspectRatio ratio={1} className="bg-white rounded-xl border border-green-100">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
-                  className="object-contain p-4"
+                  className="object-contain p-4 scale-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-green-900/60 via-green-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
-                  <p className="text-white text-sm font-medium leading-tight">{product.name}</p>
-                  <Badge variant="outline" className="mt-1 text-[10px] bg-white/10 text-white border-white/20">
+                <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                  <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                  <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
                     {product.strength}
                   </Badge>
                 </div>
               </AspectRatio>
-            </div>
+            </motion.div>
           ))}
         </InfiniteSlider>
 
-        {/* Testimonials Section */}
-        <div className="mb-16">
+        {/* Testimonials Section - More compact */}
+        <div className="mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-10"
+            className="mb-6"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-green-800">Customer Testimonials</h3>
-            <p className="text-green-600 mt-2">Real stories from people whose health has improved with our products</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-green-800 text-center">Customer Testimonials</h3>
+            <p className="text-green-600 mt-1 text-center">Real stories from people whose health has improved with our products</p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
@@ -557,13 +539,13 @@ export function HealthAndWellness() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Card className="h-full border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-md">
-                  <CardContent className="p-6">
-                    <div className="flex mb-4">
+                  <CardContent className="p-4">
+                    <div className="flex mb-2">
                       {[...Array(5)].map((_, i) => (
                         <Star 
                           key={i} 
                           className={cn(
-                            "h-4 w-4", 
+                            "h-3 w-3", 
                             i < testimonial.rating 
                               ? "text-yellow-400 fill-yellow-400" 
                               : "text-gray-200 fill-gray-200"
@@ -571,9 +553,9 @@ export function HealthAndWellness() {
                         />
                       ))}
                     </div>
-                    <p className="text-gray-700 italic mb-6">"{testimonial.quote}"</p>
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-10 h-10 rounded-full bg-green-100 overflow-hidden">
+                    <p className="text-gray-700 text-sm italic mb-4 line-clamp-4">"{testimonial.quote}"</p>
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-8 h-8 rounded-full bg-green-100 overflow-hidden">
                         <Image
                           src={testimonial.image}
                           alt={testimonial.author}
@@ -582,8 +564,8 @@ export function HealthAndWellness() {
                         />
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                        <p className="text-xs text-gray-500">{testimonial.role}</p>
+                        <p className="font-semibold text-xs text-gray-900">{testimonial.author}</p>
+                        <p className="text-[10px] text-gray-500">{testimonial.role}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -593,33 +575,33 @@ export function HealthAndWellness() {
           </div>
         </div>
 
-        {/* CBD Quality Banner */}
+        {/* CBD Quality Banner - More compact */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl p-8 mb-16 text-white"
+          className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl p-6 mb-12 text-white"
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="md:w-2/3">
-              <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                <Sparkles className="h-6 w-6" />
+              <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                <Sparkles className="h-5 w-5" />
                 Our CBD Quality Promise
               </h3>
-              <p className="text-green-100 mb-4">
+              <p className="text-green-100 text-sm mb-3">
                 We source only the finest organic hemp plants and use advanced CO2 extraction methods to ensure the highest quality CBD products. Every batch is third-party tested for purity and potency.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Organic Hemp</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">CO2 Extracted</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Lab Tested</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Non-GMO</Badge>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Organic Hemp</Badge>
+                <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">CO2 Extracted</Badge>
+                <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Lab Tested</Badge>
+                <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Non-GMO</Badge>
               </div>
             </div>
-            <Button asChild size="lg" className="bg-white text-green-700 hover:bg-green-50 px-6">
+            <Button asChild size="sm" className="bg-white text-green-700 hover:bg-green-50 px-4 py-2">
               <Link href="/lab-results">
-                View Lab Results <ArrowRight className="w-4 h-4 ml-2" />
+                View Lab Results <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
               </Link>
             </Button>
           </div>
@@ -633,10 +615,12 @@ export function HealthAndWellness() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <Button asChild size="lg" className="bg-green-700 hover:bg-green-800 text-white rounded-full px-8 py-6 shadow-md">
-              <Link href="/health-and-wellness">
-                Explore All Wellness Products
-                <ArrowRight className="w-5 h-5 ml-2" />
+            <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white rounded-full px-6 transition-colors">
+              <Link href="/health-and-wellness" className="flex items-center gap-2">
+                <Image src="/images/2.png" width={24} height={24} alt="Twistly" className="h-5 w-5" />
+                <Separator orientation="vertical" className="h-4 bg-green-50/20" />
+                Explore Health & Wellness
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
           </motion.div>

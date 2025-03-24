@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ChevronLeft, Star, ShoppingCart } from 'lucide-react';
+import { ChevronLeft, Star, ShoppingCart, Check } from 'lucide-react';
 import { type Product } from '@/lib/products';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useCart } from '@/context/cart-context';
+import { useToast } from "@/hooks/use-toast";
 
 interface ProductDetailProps {
   product: Product;
@@ -22,6 +24,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
+  const { addItem } = useCart();
+  const { toast } = useToast();
 
   const increaseQuantity = () => {
     if (quantity < product.stock) {
@@ -33,6 +38,20 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
     if (quantity > 1) {
       setQuantity(prev => prev - 1);
     }
+  };
+
+  const handleAddToCart = () => {
+    setIsAdding(true);
+    addItem(product, quantity);
+    
+    toast({
+      title: "Added to cart",
+      description: `${quantity} ${quantity === 1 ? 'item' : 'items'} of ${product.name} has been added to your cart.`,
+    });
+    
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 1000);
   };
 
   return (
@@ -47,7 +66,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Image Gallery */}
-        <div className="space-y-4">
+        <div>
           <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100">
             <Image
               src={product.images[selectedImage]}
@@ -61,7 +80,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
           </div>
           
           {/* Thumbnail gallery */}
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-5 gap-2 mt-4">
             {product.images.map((image, index) => (
               <button
                 key={index}
@@ -85,7 +104,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
         </div>
         
         {/* Product details */}
-        <div className="flex flex-col">
+        <div>
           <div className="mb-4">
             <Badge className="mb-2 bg-green-100 text-green-800 hover:bg-green-200">
               {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
@@ -130,7 +149,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             
             <p className="text-gray-600 mb-6">{product.description}</p>
             
-            <div className="mb-8">
+            <div>
               <div className="flex items-center mb-4">
                 <span className="mr-3 text-sm font-medium text-gray-900">Size:</span>
                 <span className="text-sm text-gray-600">{product.details.size}</span>
@@ -185,11 +204,24 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Button 
                 size="lg" 
-                className="flex items-center justify-center bg-green-700 hover:bg-green-800"
-                disabled={product.stock === 0}
+                className={cn(
+                  "flex items-center justify-center transition-all",
+                  isAdding ? "bg-green-600 hover:bg-green-700" : "bg-green-700 hover:bg-green-800"
+                )}
+                disabled={product.stock === 0 || isAdding}
+                onClick={handleAddToCart}
               >
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                Add to Cart
+                {isAdding ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    Added to Cart
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    Add to Cart
+                  </>
+                )}
               </Button>
               
               <Button 
@@ -203,7 +235,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
           </div>
           
           {/* Product tabs */}
-          <Tabs defaultValue="details" className="mt-4">
+          <Tabs defaultValue="details">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="details">Details</TabsTrigger>
               <TabsTrigger value="ingredients">Ingredients</TabsTrigger>

@@ -5,12 +5,20 @@ import Link from "next/link"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Star, Sparkles, Check, Flower, Award, Shield, Smile, Droplet, ShoppingCart, Heart } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { ArrowRight, Star, Sparkles, Check, Flower, Award, Shield, Smile, Droplet, ShoppingCart, Heart, Info, Users, Beaker, CheckCircle } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { cn } from "@/lib/utils"
 import { InfiniteSlider } from "@/components/common/ui/infinite-slider"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/common/ui/dialog"
 
 // Updated with local image paths and more product details
 const beautyProducts = [
@@ -33,7 +41,7 @@ const beautyProducts = [
     price: "$49.99",
     rating: 4.7,
     reviews: 108,
-    description: "Hydrating daily moisturizer for all skin types",
+    description: "Hydrating daily moisturizer for all skin types.",
     benefits: ["24hr hydration", "Calms redness", "Non-greasy"],
     badgeColor: "bg-yellow-600",
     featured: true
@@ -131,9 +139,9 @@ const testimonials = [
 
 export function Beauty() {
   return (
-    <section className="py-12 md:py-16 bg-gradient-to-b from-amber-50 to-white">
+    <section className="py-10 md:py-14 bg-gradient-to-b from-amber-50 to-white">
       <div className="container mx-auto max-w-6xl px-4">
-        <div className="flex flex-col items-center mb-16">
+        <div className="flex flex-col items-center mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -141,20 +149,20 @@ export function Beauty() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center"
           >
-            <Badge className="bg-amber-600 text-white hover:bg-amber-700 px-4 py-1 rounded-full text-sm mb-4">
+            <Badge className="bg-amber-600 text-white hover:bg-amber-700 px-4 py-1 rounded-full text-sm mb-3">
               Beauty & Skincare
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-amber-800 via-amber-600 to-yellow-600 mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-amber-800 via-amber-600 to-yellow-600 mb-3">
               CBD-Infused Radiant Beauty
             </h2>
-            <p className="text-amber-700 text-lg max-w-3xl text-center">
+            <p className="text-amber-700 text-base max-w-2xl text-center">
               Our beauty and skincare collection harnesses the power of CBD to nourish, rejuvenate, and enhance your natural beauty from the inside out.
             </p>
           </motion.div>
         </div>
 
-        {/* Beauty Benefits Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        {/* Beauty Benefits Section - More compact */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
           {beautyBenefits.map((benefit, index) => (
             <motion.div
               key={index}
@@ -164,12 +172,12 @@ export function Beauty() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card className={cn("border h-full transition-all hover:shadow-md", benefit.color)}>
-                <CardContent className="pt-6">
-                  <div className="rounded-full w-12 h-12 flex items-center justify-center bg-white border border-gray-100 shadow-sm mb-4">
+                <CardContent className="pt-4 p-4">
+                  <div className="rounded-full w-10 h-10 flex items-center justify-center bg-white border border-gray-100 shadow-sm mb-3">
                     {benefit.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-gray-600 text-sm">{benefit.description}</p>
+                  <h3 className="text-base font-semibold text-gray-900 mb-1.5">{benefit.title}</h3>
+                  <p className="text-gray-600 text-xs line-clamp-3">{benefit.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -177,18 +185,24 @@ export function Beauty() {
         </div>
 
         {/* Featured Products Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-10"
-        >
-          <h3 className="text-2xl md:text-3xl font-bold text-amber-800">Bestselling Beauty Products</h3>
-          <p className="text-amber-600 mt-2">Discover our most loved CBD skincare formulations</p>
-        </motion.div>
+        <div className="flex flex-col items-center justify-center mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h3 className="text-2xl md:text-3xl font-bold text-amber-800">Bestselling Beauty Products</h3>
+            <p className="text-amber-600 mt-1">Discover our most loved CBD skincare formulations</p>
+          </motion.div>
+          
+          <Link href="/beauty-and-skincare" className="text-amber-700 hover:text-amber-800 font-medium text-sm flex items-center gap-1 mt-2">
+            View All <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           {beautyProducts.filter(p => p.featured).map((product, index) => (
             <motion.div
               key={index}
@@ -197,72 +211,247 @@ export function Beauty() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group overflow-hidden border border-amber-100 hover:border-amber-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 rounded-xl">
+              <Card className="group overflow-hidden border border-amber-100 hover:border-amber-200 transition-all duration-300 hover:shadow-lg rounded-xl">
                 <CardContent className="p-0">
-                  <div className="flex flex-col md:flex-row">
-                    {/* Product Image */}
-                    <div className="relative md:w-2/5">
-                      <AspectRatio ratio={1} className="bg-gradient-radial from-amber-50 to-white">
-                        <div className="relative h-full w-full p-4">
-                          <div className="absolute -inset-1 bg-amber-100/30 rounded-full blur-xl opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            className="object-contain transform translate-y-11 group-hover:scale-105 transition-transform duration-500 z-10"
-                          />
-                        </div>
-                        <div className="absolute top-2 left-2 z-10">
-                          <Badge className={cn("text-white text-xs font-medium px-2.5 py-0.5 rounded-full shadow-sm", product.badgeColor)}>
-                            {product.strength}
-                          </Badge>
-                        </div>
-                      </AspectRatio>
+                  <div className="relative">
+                    <AspectRatio ratio={3/2} className="bg-gradient-to-b from-amber-50 to-white">
+                      <div className="relative h-full w-full p-3">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+                        />
+                      </div>
+                    </AspectRatio>
+                  </div>
+                  
+                  <div className="p-3 md:p-4 flex flex-col h-full">
+                    <div>
+                      <h3 className="font-semibold text-base text-gray-900 group-hover:text-amber-700 transition-colors">{product.name}</h3>
+                      <p className="text-xs text-gray-600 mt-1 line-clamp-2">{product.description}</p>
+                      
+                      {/* Benefits */}
+                      <div className="mt-2 space-y-0.5">
+                        {product.benefits.map((benefit, i) => (
+                          <div key={i} className="flex items-start gap-1">
+                            <Check className="h-3 w-3 text-amber-500 mt-0.5" />
+                            <span className="text-xs text-gray-600 leading-tight">{benefit}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     
-                    {/* Product Details */}
-                    <div className="p-4 md:p-5 md:w-3/5 flex flex-col h-full">
-                      <div>
-                        <h3 className="font-semibold text-lg text-gray-900 group-hover:text-amber-700 transition-colors">{product.name}</h3>
-                        <p className="text-sm text-gray-600 mt-1.5">{product.description}</p>
-                        
-                        {/* Benefits */}
-                        <div className="mt-2.5 space-y-1">
-                          {product.benefits.map((benefit, i) => (
-                            <div key={i} className="flex items-start gap-1.5">
-                              <Check className="h-3.5 w-3.5 text-amber-500 mt-0.5" />
-                              <span className="text-xs text-gray-600 leading-tight">{benefit}</span>
-                            </div>
-                          ))}
+                    <div className="mt-auto pt-2">
+                      <div className="flex items-center justify-between">
+                        <p className="font-bold text-sm text-amber-700">{product.price}</p>
+                        <div className="flex items-center bg-amber-50 rounded-full px-2 py-0.5">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star 
+                                key={i} 
+                                className={`h-3 w-3 ${i < Math.floor(product.rating) 
+                                  ? "text-yellow-400 fill-yellow-400" 
+                                  : "text-gray-200 fill-gray-200"}`} 
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs text-gray-500 ml-1">({product.reviews})</span>
                         </div>
                       </div>
-                      
-                      <div className="mt-auto pt-3">
-                        <div className="flex items-center justify-between">
-                          <p className="font-bold text-lg text-amber-700">{product.price}</p>
-                          <div className="flex items-center bg-amber-50 rounded-full px-2 py-0.5">
-                            <div className="flex">
-                              {[...Array(5)].map((_, i) => (
-                                <Star 
-                                  key={i} 
-                                  className={`h-3 w-3 ${i < Math.floor(product.rating) 
-                                    ? "text-yellow-400 fill-yellow-400" 
-                                    : "text-gray-200 fill-gray-200"}`} 
-                                />
-                              ))}
-                            </div>
-                            <span className="text-[10px] font-medium text-amber-800 ml-1">({product.reviews})</span>
-                          </div>
-                        </div>
+                      <div className="mt-2 flex items-center gap-1">
+                        <Button 
+                          size="sm" 
+                          variant="default"
+                          className="bg-amber-600 hover:bg-amber-700 text-white text-xs px-3 h-7 rounded-lg transition-colors flex-1"
+                        >
+                          <ShoppingCart className="h-3 w-3 mr-1" /> Add to Cart
+                        </Button>
                         
-                        <div className="flex gap-2 mt-3">
-                          <Button className="flex-1 bg-amber-600 hover:bg-amber-700 text-white text-xs h-9 rounded-lg">
-                            <ShoppingCart className="h-3.5 w-3.5 mr-1.5" /> Add to Cart
-                          </Button>
-                          <Button variant="outline" size="icon" className="h-9 w-9 border-amber-200 text-amber-700 hover:bg-amber-50 hover:text-amber-800 rounded-lg">
-                            <Heart className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="h-8 w-10 flex items-center justify-center text-amber-700 border-amber-200 hover:bg-amber-50 hover:text-amber-800 rounded-lg transition-colors"
+                            >
+                              <Info className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="text-amber-700 flex items-center gap-1.5">
+                                <Flower className="h-5 w-5" />
+                                {product.name} Benefits
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="mt-4">
+                              <div className="flex items-center mb-3">
+                                <Badge className={cn("mr-2", product.badgeColor)}>
+                                  {product.strength}
+                                </Badge>
+                                <div className="flex">
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star 
+                                      key={i} 
+                                      className={`h-3.5 w-3.5 ${i < Math.floor(product.rating) 
+                                        ? "text-yellow-400 fill-yellow-400" 
+                                        : "text-gray-200 fill-gray-200"}`} 
+                                    />
+                                  ))}
+                                  <span className="text-xs text-gray-500 ml-1.5">({product.reviews} reviews)</span>
+                                </div>
+                              </div>
+                              
+                              <p className="text-sm text-gray-700 mb-4">{product.description}</p>
+                              
+                              <h4 className="font-medium text-amber-700 mb-2 flex items-center">
+                                <Sparkles className="h-4 w-4 mr-1.5" /> Key Benefits
+                              </h4>
+                              
+                              <div className="bg-amber-50 rounded-lg p-4 mb-4">
+                                <ul className="space-y-3">
+                                  {product.benefits.map((benefit, i) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                      <div className="bg-white rounded-full p-1 mt-0.5">
+                                        <Check className="h-3.5 w-3.5 text-amber-600" />
+                                      </div>
+                                      <div>
+                                        <p className="text-sm font-medium text-gray-800">{benefit}</p>
+                                        <p className="text-xs text-gray-600">
+                                          Supports {benefit.toLowerCase()} for enhanced beauty and skin health.
+                                        </p>
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                              
+                              <h4 className="font-medium text-amber-700 mb-2 flex items-center">
+                                <Shield className="h-4 w-4 mr-1.5" /> Skin Benefits
+                              </h4>
+                              <p className="text-sm text-gray-700 mb-4">
+                                This premium CBD beauty product nourishes skin deeply while helping reduce inflammation and signs of aging. Suitable for daily use in your beauty routine.
+                              </p>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                        
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="h-8 w-10 flex items-center justify-center text-amber-700 border-amber-200 hover:bg-amber-50 hover:text-amber-800 rounded-lg transition-colors"
+                            >
+                              <Users className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="text-amber-700 flex items-center gap-1.5">
+                                <Users className="h-5 w-5" />
+                                Who is {product.name} for?
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="mt-4">
+                              <div className="bg-amber-50 p-4 rounded-lg mb-4">
+                                <p className="text-sm text-gray-700">
+                                  This product is ideal for beauty enthusiasts looking for high-performance skincare with the benefits of CBD. Perfect for those wanting to address specific skin concerns naturally.
+                                </p>
+                              </div>
+                              
+                              <h4 className="font-medium text-amber-700 mb-2 flex items-center">
+                                <CheckCircle className="h-4 w-4 mr-1.5" /> Recommended For
+                              </h4>
+                              <ul className="space-y-2 mb-4">
+                                <li className="flex items-start gap-2">
+                                  <Check className="h-3.5 w-3.5 text-amber-600 mt-0.5" />
+                                  <span className="text-sm text-gray-700">All skin types, especially sensitive or problem skin</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <Check className="h-3.5 w-3.5 text-amber-600 mt-0.5" />
+                                  <span className="text-sm text-gray-700">Those concerned about signs of aging</span>
+                                </li>
+                                <li className="flex items-start gap-2">
+                                  <Check className="h-3.5 w-3.5 text-amber-600 mt-0.5" />
+                                  <span className="text-sm text-gray-700">People seeking natural, plant-based beauty solutions</span>
+                                </li>
+                              </ul>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                        
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="h-8 w-10 flex items-center justify-center text-amber-700 border-amber-200 hover:bg-amber-50 hover:text-amber-800 rounded-lg transition-colors"
+                            >
+                              <Beaker className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle className="text-amber-700 flex items-center gap-1.5">
+                                <Beaker className="h-5 w-5" />
+                                {product.name} Usage Guide
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="mt-4">
+                              <div className="flex items-center mb-3">
+                                <Badge className={cn("mr-2", product.badgeColor)}>
+                                  {product.strength}
+                                </Badge>
+                                <p className="text-xs text-gray-600">Total CBD: {product.strength}</p>
+                              </div>
+                              
+                              <p className="text-sm text-gray-700 mb-4">
+                                This beauty product contains {product.strength} of high-quality CBD combined with premium skincare ingredients. For optimal results, follow the recommended application guidelines.
+                              </p>
+                              
+                              <h4 className="font-medium text-amber-700 mb-2 flex items-center">
+                                <Info className="h-4 w-4 mr-1.5" /> How to Use
+                              </h4>
+                              <p className="text-sm text-gray-700 mb-4">
+                                Apply a small amount to clean skin, gently massaging until fully absorbed. Can be used morning and evening as part of your regular skincare routine.
+                              </p>
+                              
+                              <div className="bg-amber-50 rounded-lg p-4">
+                                <h5 className="font-medium text-amber-700 mb-2">Pro Tips:</h5>
+                                <ul className="space-y-2">
+                                  <li className="flex items-start gap-2">
+                                    <Check className="h-3.5 w-3.5 text-amber-600 mt-0.5" />
+                                    <span className="text-xs text-gray-700">
+                                      For deeper hydration, apply after shower or bath when skin is still slightly damp
+                                    </span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <Check className="h-3.5 w-3.5 text-amber-600 mt-0.5" />
+                                    <span className="text-xs text-gray-700">
+                                      Store in a cool, dry place to preserve the active ingredients
+                                    </span>
+                                  </li>
+                                  <li className="flex items-start gap-2">
+                                    <Check className="h-3.5 w-3.5 text-amber-600 mt-0.5" />
+                                    <span className="text-xs text-gray-700">
+                                      Use consistently for 4-6 weeks to see optimal results
+                                    </span>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                        
+                        <Button 
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 w-10 flex items-center justify-center text-amber-600 hover:text-amber-700 hover:bg-amber-50 transition-colors"
+                        >
+                          <Heart className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -271,43 +460,48 @@ export function Beauty() {
             </motion.div>
           ))}
         </div>
-
-        <InfiniteSlider gap={16} className="w-full py-6 mb-8" reverse={true}>
+        
+        {/* Compact Infinite Slider */}
+        <InfiniteSlider gap={12} className="w-full py-4 mb-6">
           {beautyProducts.map((product, index) => (
-            <div key={`slider-${index}`} className="relative group w-[220px]">
+            <motion.div 
+              key={`slider-${index}`} 
+              className="relative group w-[180px]"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
               <AspectRatio ratio={1} className="bg-white rounded-xl border border-amber-100">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
-                  className="object-contain p-4"
+                  className="object-contain p-4 scale-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-amber-900/60 via-amber-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
-                  <p className="text-white text-sm font-medium leading-tight">{product.name}</p>
-                  <Badge variant="outline" className="mt-1 text-[10px] bg-white/10 text-white border-white/20">
+                <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                  <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                  <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
                     {product.strength}
                   </Badge>
                 </div>
               </AspectRatio>
-            </div>
+            </motion.div>
           ))}
         </InfiniteSlider>
 
-        {/* Testimonials Section */}
-        <div className="mb-16">
+        {/* Testimonials Section - More compact */}
+        <div className="mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-center mb-10"
+            className="mb-6"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-amber-800">Customer Experiences</h3>
-            <p className="text-amber-600 mt-2">Real results from real people using our CBD beauty products</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-amber-800 text-center">Customer Testimonials</h3>
+            <p className="text-amber-600 mt-1 text-center">See why our customers love our CBD beauty products</p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
@@ -317,13 +511,13 @@ export function Beauty() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Card className="h-full border border-amber-100 hover:border-amber-200 transition-all duration-300 hover:shadow-md">
-                  <CardContent className="p-6">
-                    <div className="flex mb-4">
+                  <CardContent className="p-4">
+                    <div className="flex mb-2">
                       {[...Array(5)].map((_, i) => (
                         <Star 
                           key={i} 
                           className={cn(
-                            "h-4 w-4", 
+                            "h-3 w-3", 
                             i < testimonial.rating 
                               ? "text-yellow-400 fill-yellow-400" 
                               : "text-gray-200 fill-gray-200"
@@ -331,9 +525,9 @@ export function Beauty() {
                         />
                       ))}
                     </div>
-                    <p className="text-gray-700 italic mb-6">"{testimonial.quote}"</p>
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-10 h-10 rounded-full bg-amber-100 overflow-hidden">
+                    <p className="text-gray-700 text-sm italic mb-4 line-clamp-4">"{testimonial.quote}"</p>
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-8 h-8 rounded-full bg-amber-100 overflow-hidden">
                         <Image
                           src={testimonial.image}
                           alt={testimonial.author}
@@ -342,8 +536,8 @@ export function Beauty() {
                         />
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                        <p className="text-xs text-gray-500">{testimonial.role}</p>
+                        <p className="font-semibold text-xs text-gray-900">{testimonial.author}</p>
+                        <p className="text-[10px] text-gray-500">{testimonial.role}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -353,38 +547,6 @@ export function Beauty() {
           </div>
         </div>
 
-        {/* Beauty Quality Promise Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl p-8 mb-16 text-white"
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="md:w-2/3">
-              <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                <Sparkles className="h-6 w-6" />
-                Our Beauty Promise
-              </h3>
-              <p className="text-amber-100 mb-4">
-                Every product in our beauty collection is formulated with care using premium ingredients. Our CBD is ethically sourced and combined with botanical actives for visible results.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Cruelty-Free</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Paraben-Free</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Dermatologist Tested</Badge>
-                <Badge variant="outline" className="bg-white/10 border-white/20 text-white">Natural Ingredients</Badge>
-              </div>
-            </div>
-            <Button asChild size="lg" className="bg-white text-amber-700 hover:bg-amber-50 px-6">
-              <Link href="/our-ingredients">
-                Learn More <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-
         {/* Explore Button */}
         <div className="flex justify-center">
           <motion.div
@@ -393,10 +555,12 @@ export function Beauty() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <Button asChild size="lg" className="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-8 py-6 shadow-md">
-              <Link href="/beauty-and-cosmetics">
-                Explore All Beauty Products
-                <ArrowRight className="w-5 h-5 ml-2" />
+            <Button asChild size="lg" className="bg-amber-600 hover:bg-amber-700 text-white rounded-full px-6 transition-colors">
+              <Link href="/beauty-products" className="flex items-center gap-2">
+                <Image src="/images/2.png" width={24} height={24} alt="Twistly" className="h-5 w-5" />
+                <Separator orientation="vertical" className="h-4 bg-amber-50/20" />
+                Explore Beauty & Skincare
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
           </motion.div>
