@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -24,7 +25,7 @@ const categories = [
     borderColor: "border-green-200",
     hoverBorderColor: "group-hover:border-green-300",
     hoverShadow: "hover:shadow-green-100/50",
-    icon: <Heart className="w-5 h-5 text-white" />,
+    icon: <Heart className="w-6 h-6 text-white" />,
     tagline: "Balance your mind and body",
   },
   {
@@ -32,13 +33,13 @@ const categories = [
     description: "Active formulations to support performance, recovery, and mobility",
     src: "/images/2.png",
     href: "/sport",
-    bgColor: "bg-gradient-to-br from-red-50 to-red-100/60",
-    iconBg: "bg-red-600",
-    textColor: "text-red-800",
-    borderColor: "border-red-200",
-    hoverBorderColor: "group-hover:border-red-300",
-    hoverShadow: "hover:shadow-red-100/50",
-    icon: <Activity className="w-5 h-5 text-white" />,
+    bgColor: "bg-gradient-to-br from-blue-50 to-blue-100/60",
+    iconBg: "bg-blue-600",
+    textColor: "text-blue-800",
+    borderColor: "border-blue-200",
+    hoverBorderColor: "group-hover:border-blue-300",
+    hoverShadow: "hover:shadow-blue-100/50",
+    icon: <Activity className="w-6 h-6 text-white" />,
     tagline: "Enhance performance and recovery",
   },
   {
@@ -46,13 +47,13 @@ const categories = [
     description: "CBD-infused formulas to enhance your natural glow and skin health",
     src: "/images/2.png",
     href: "/beauty",
-    bgColor: "bg-gradient-to-br from-amber-50 to-amber-100/60",
-    iconBg: "bg-amber-600",
-    textColor: "text-amber-800",
-    borderColor: "border-amber-200",
-    hoverBorderColor: "group-hover:border-amber-300",
-    hoverShadow: "hover:shadow-amber-100/50",
-    icon: <Sparkles className="w-5 h-5 text-white" />,
+    bgColor: "bg-gradient-to-br from-purple-50 to-pink-100/60",
+    iconBg: "bg-purple-600",
+    textColor: "text-purple-800",
+    borderColor: "border-purple-200",
+    hoverBorderColor: "group-hover:border-purple-300",
+    hoverShadow: "hover:shadow-purple-100/50",
+    icon: <Sparkles className="w-6 h-6 text-white" />,
     tagline: "Radiant skin from within",
   },
   {
@@ -66,12 +67,28 @@ const categories = [
     borderColor: "border-amber-300",
     hoverBorderColor: "group-hover:border-amber-400",
     hoverShadow: "hover:shadow-amber-100/50",
-    icon: <Leaf className="w-5 h-5 text-white" />,
+    icon: <Leaf className="w-6 h-6 text-white" />,
     tagline: "The best of both worlds",
   }
 ]
 
 export function FeaturedProducts() {
+  const router = useRouter();
+  
+  const handleCardClick = (href: string, event: React.MouseEvent) => {
+    // Prevent navigation if clicking on a button or link inside the card
+    if (
+      event.target instanceof HTMLButtonElement ||
+      event.target instanceof HTMLAnchorElement ||
+      (event.target instanceof HTMLElement && 
+       (event.target.closest('button') || event.target.closest('a')))
+    ) {
+      return;
+    }
+    
+    router.push(href);
+  };
+  
   return (
     <section className="py-14 md:py-20 bg-gradient-to-b from-green-50 via-white to-white relative overflow-hidden">
       {/* Background Pattern */}
@@ -121,27 +138,35 @@ export function FeaturedProducts() {
               transition={{ duration: 0.4, delay: index * 0.1 }}
               className="w-full"
             >
-              <Link href={category.href} className="block h-full">
-                <Card className={cn(
-                  "group relative overflow-hidden h-full transition-all duration-300 border",
-                  category.borderColor,
-                  category.bgColor,
-                  `${category.hoverBorderColor} hover:shadow-md ${category.hoverShadow} hover:translate-y-[-3px]`
-                )}>
-                  <div className="p-6 flex flex-col h-full">
+              <div className="block h-full">
+                <Card 
+                  className={cn(
+                    "group relative overflow-hidden h-full transition-all duration-300 border cursor-pointer",
+                    category.borderColor,
+                    category.bgColor,
+                    "shadow-sm hover:shadow-md"
+                  )}
+                  onClick={(e) => handleCardClick(category.href, e)}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/0 via-white/0 to-white/0 group-hover:from-white/10 group-hover:via-white/5 group-hover:to-white/0 transition-colors duration-500"></div>
+                  <div className={cn(
+                    "absolute bottom-0 h-1 left-0 w-0 group-hover:w-full transition-all duration-500",
+                    category.iconBg
+                  )}></div>
+                  <div className="p-6 flex flex-col h-full justify-between relative z-20">
                     {/* Icon and Category - Centered */}
-                    <div className="flex flex-col items-center text-center gap-3 mb-4">
+                    <div className="flex flex-col items-center text-center gap-3 mb-2">
                       <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center",
+                        "w-12 h-12 rounded-full flex items-center justify-center shadow-md transition-transform duration-300",
                         category.iconBg
                       )}>
                         {category.icon}
                       </div>
-                      <h3 className={cn("text-lg font-semibold", category.textColor)}>{category.title}</h3>
+                      <h3 className={cn("text-xl md:text-2xl font-bold", category.textColor)}>{category.title}</h3>
                     </div>
                     
                     {/* Product Image */}
-                    <div className="relative w-full h-36 my-4 mx-auto group-hover:scale-105 transition-transform duration-300">
+                    <div className="relative w-full h-36 my-4 mx-auto">
                       <Image
                         src={category.src}
                         alt={category.title}
@@ -151,15 +176,35 @@ export function FeaturedProducts() {
                     </div>
                     
                     {/* Description */}
-                    <p className="text-sm text-center text-gray-600 mb-4 line-clamp-2">{category.description}</p>
+                    <p className="text-sm text-center text-gray-600 mb-5 line-clamp-2">{category.description}</p>
                     
-                    {/* Tagline */}
-                    <div className={cn("mt-auto text-center text-sm font-medium py-1", category.textColor)}>
-                      {category.tagline} <ArrowRight className="inline ml-1 w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                    {/* CTA Button */}
+                    <div className="mt-4 pt-4 border-t">
+                      <Button 
+                        className={cn(
+                          "w-full rounded-full justify-center gap-1 border",
+                          category.iconBg,
+                          "text-white",
+                          "transition-all duration-300",
+                          {
+                            "hover:bg-white hover:text-green-600 hover:border-green-600": category.title === "Health & Wellness",
+                            "hover:bg-white hover:text-blue-600 hover:border-blue-600": category.title === "Sport & Recovery",
+                            "hover:bg-white hover:text-purple-600 hover:border-purple-600": category.title === "Beauty & Skincare",
+                            "hover:bg-white hover:text-amber-800 hover:border-amber-800": category.title === "Hybrid Solutions"
+                          }
+                        )}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(category.href);
+                        }}
+                      >
+                        <span className="font-medium">Explore</span>
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                      </Button>
                     </div>
                   </div>
                 </Card>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -172,32 +217,40 @@ export function FeaturedProducts() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2 }}
+          <Button 
+            className="bg-green-600 hover:bg-white hover:text-green-700 text-white border border-green-600 rounded-full px-7 py-6 h-auto shadow-sm transition-colors duration-300"
+            asChild
           >
-            <Button 
-              className="bg-green-600 hover:bg-green-700 text-white rounded-full px-7 py-3 h-auto shadow-md"
-              asChild
-            >
-              <Link href="/shop" className="flex items-center gap-2.5">
-                <div className="relative w-5 h-5">
-                  <Image 
-                    src="/images/2.png"
-                    alt="Twistly Icon" 
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <Separator orientation="vertical" className="h-4 bg-white/30" />
-                <span className="text-base font-medium">View All Products</span>
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-          </motion.div>
+            <Link href="/shop" className="flex items-center gap-2.5">
+              <div className="relative w-5 h-5">
+                <Image 
+                  src="/images/2.png"
+                  alt="Twistly Icon" 
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <Separator orientation="vertical" className="h-4 bg-white/30 group-hover:bg-green-200/50" />
+              <span className="text-base font-medium">View All Products</span>
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
         </motion.div>
       </div>
     </section>
   )
+}
+
+export function FeaturedCollection({ title, category, href }: FeaturedCollectionProps) {
+  // Create simplified product data for the carousel
+  const productTypes = [
+    { name: "Full Spectrum", concentration: "1000mg CBD" },
+    { name: "Broad Spectrum", concentration: "750mg CBD" },
+    { name: "Sleep CBD", concentration: "500mg CBD" },
+    { name: "Wellness Plus", concentration: "500mg CBD" },
+    { name: "Daily Wellness", concentration: "250mg CBD" },
+    { name: "Full Spectrum", concentration: "1000mg CBD" },
+    { name: "Broad Spectrum", concentration: "750mg CBD" },
+    { name: "Sleep CBD", concentration: "500mg CBD" }
+  ]
 } 

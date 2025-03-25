@@ -20,23 +20,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   className,
 }) => {
   const { id, name, price, rating, image, category, tags, discount } = product;
-  const { addItem } = useCart();
+  const { addItem, state } = useCart();
   const { toast } = useToast();
   const [isAdding, setIsAdding] = React.useState(false);
   
   const discountedPrice = discount ? price - (price * discount) / 100 : price;
   
   const handleAddToCart = (e: React.MouseEvent) => {
+    console.log('Add to cart clicked for:', name);
     e.preventDefault();
     e.stopPropagation();
     
     setIsAdding(true);
-    addItem(product, 1);
     
-    toast({
-      title: "Added to cart",
-      description: `${name} has been added to your cart.`,
-    });
+    try {
+      addItem(product, 1);
+      console.log('Added to cart, current cart items:', state?.items?.length || 0);
+      
+      toast({
+        title: "Added to cart",
+        description: `${name} has been added to your cart.`,
+      });
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast({
+        title: "Error",
+        description: "There was an error adding this item to your cart.",
+        variant: "destructive",
+      });
+    }
     
     setTimeout(() => {
       setIsAdding(false);
@@ -101,6 +113,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             )}
             onClick={handleAddToCart}
             disabled={isAdding}
+            type="button"
           >
             {isAdding ? (
               <Check className="h-4 w-4" />

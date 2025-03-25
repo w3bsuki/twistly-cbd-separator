@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/cart-context';
@@ -17,14 +17,28 @@ import {
   DollarSign, 
   Truck, 
   ShieldCheck,
-  ArrowRight
+  ArrowRight,
+  Copy,
+  Bitcoin,
+  Check
 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+// Mock crypto payment addresses
+const CRYPTO_ADDRESSES = {
+  bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
+  ethereum: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+  usdc: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+  dogecoin: 'D5jFZgsmgYAAk5NAZUcL9pQaUP9qmJWgTF'
+};
 
 export default function CheckoutPage() {
   const { state, clearCart } = useCart();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('credit-card');
+  const [cryptoCurrency, setCryptoCurrency] = useState<string>('bitcoin');
+  const [cryptoAddressCopied, setCryptoAddressCopied] = useState(false);
   
   // Form state
   const [formData, setFormData] = useState({
@@ -41,6 +55,7 @@ export default function CheckoutPage() {
     cardNumber: '',
     expiration: '',
     cvv: '',
+    cryptoTransactionId: ''
   });
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +81,16 @@ export default function CheckoutPage() {
       return;
     }
     
+    // Verify crypto transaction ID if paying with crypto
+    if (paymentMethod === 'crypto' && !formData.cryptoTransactionId) {
+      toast({
+        title: "Transaction ID required",
+        description: "Please enter the transaction ID from your crypto payment.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
     
     // Simulate payment processing
@@ -82,6 +107,38 @@ export default function CheckoutPage() {
       window.location.href = '/checkout/success';
     }, 2000);
   };
+  
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCryptoAddressCopied(true);
+    toast({
+      title: "Address copied",
+      description: "Crypto address copied to clipboard.",
+    });
+    
+    setTimeout(() => {
+      setCryptoAddressCopied(false);
+    }, 3000);
+  };
+  
+  // Calculate crypto prices
+  const [cryptoPrices, setCryptoPrices] = useState({
+    bitcoin: 0.00,
+    ethereum: 0.00,
+    usdc: 0.00,
+    dogecoin: 0.00
+  });
+  
+  // Mock function to simulate getting crypto rates
+  useEffect(() => {
+    // In a real app, you would fetch real-time conversion rates from an API
+    setCryptoPrices({
+      bitcoin: +(total / 62000).toFixed(8),
+      ethereum: +(total / 3500).toFixed(6),
+      usdc: +total.toFixed(2),
+      dogecoin: +(total / 0.15).toFixed(2)
+    });
+  }, [total]);
   
   return (
     <div className="bg-gray-50 py-10">
@@ -333,6 +390,13 @@ export default function CheckoutPage() {
                             PayPal
                           </Label>
                         </div>
+                        <div className="flex items-center space-x-2 border rounded-md p-3">
+                          <RadioGroupItem value="crypto" id="crypto" />
+                          <Label htmlFor="crypto" className="flex items-center gap-2">
+                            <Bitcoin className="h-4 w-4" />
+                            Cryptocurrency
+                          </Label>
+                        </div>
                       </RadioGroup>
                       
                       {paymentMethod === 'credit-card' && (
@@ -380,6 +444,128 @@ export default function CheckoutPage() {
                                 value={formData.cvv}
                                 onChange={handleChange}
                               />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {paymentMethod === 'crypto' && (
+                        <div className="mt-4 space-y-4">
+                          <div>
+                            <Label className="mb-2 block">Select Cryptocurrency</Label>
+                            <Tabs defaultValue="bitcoin" value={cryptoCurrency} onValueChange={setCryptoCurrency}>
+                              <TabsList className="grid grid-cols-4 w-full">
+                                <TabsTrigger value="bitcoin">BTC</TabsTrigger>
+                                <TabsTrigger value="ethereum">ETH</TabsTrigger>
+                                <TabsTrigger value="usdc">USDC</TabsTrigger>
+                                <TabsTrigger value="dogecoin">DOGE</TabsTrigger>
+                              </TabsList>
+                              
+                              <TabsContent value="bitcoin" className="mt-4">
+                                <div className="rounded-md border p-4">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <h4 className="font-medium">Bitcoin</h4>
+                                    <p className="text-green-700 font-medium">{cryptoPrices.bitcoin} BTC</p>
+                                  </div>
+                                  <p className="text-sm text-gray-500 mb-3">Send exactly {cryptoPrices.bitcoin} BTC to the following address:</p>
+                                  
+                                  <div className="flex">
+                                    <div className="bg-gray-100 rounded-l-md p-2 font-mono text-sm flex-1 border-y border-l truncate">
+                                      {CRYPTO_ADDRESSES.bitcoin}
+                                    </div>
+                                    <button 
+                                      type="button" 
+                                      className="bg-gray-200 hover:bg-gray-300 rounded-r-md flex items-center justify-center px-3 border-y border-r"
+                                      onClick={() => copyToClipboard(CRYPTO_ADDRESSES.bitcoin)}
+                                    >
+                                      {cryptoAddressCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                    </button>
+                                  </div>
+                                </div>
+                              </TabsContent>
+                              
+                              <TabsContent value="ethereum" className="mt-4">
+                                <div className="rounded-md border p-4">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <h4 className="font-medium">Ethereum</h4>
+                                    <p className="text-green-700 font-medium">{cryptoPrices.ethereum} ETH</p>
+                                  </div>
+                                  <p className="text-sm text-gray-500 mb-3">Send exactly {cryptoPrices.ethereum} ETH to the following address:</p>
+                                  
+                                  <div className="flex">
+                                    <div className="bg-gray-100 rounded-l-md p-2 font-mono text-sm flex-1 border-y border-l truncate">
+                                      {CRYPTO_ADDRESSES.ethereum}
+                                    </div>
+                                    <button 
+                                      type="button" 
+                                      className="bg-gray-200 hover:bg-gray-300 rounded-r-md flex items-center justify-center px-3 border-y border-r"
+                                      onClick={() => copyToClipboard(CRYPTO_ADDRESSES.ethereum)}
+                                    >
+                                      {cryptoAddressCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                    </button>
+                                  </div>
+                                </div>
+                              </TabsContent>
+                              
+                              <TabsContent value="usdc" className="mt-4">
+                                <div className="rounded-md border p-4">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <h4 className="font-medium">USD Coin</h4>
+                                    <p className="text-green-700 font-medium">{cryptoPrices.usdc} USDC</p>
+                                  </div>
+                                  <p className="text-sm text-gray-500 mb-3">Send exactly {cryptoPrices.usdc} USDC to the following address:</p>
+                                  
+                                  <div className="flex">
+                                    <div className="bg-gray-100 rounded-l-md p-2 font-mono text-sm flex-1 border-y border-l truncate">
+                                      {CRYPTO_ADDRESSES.usdc}
+                                    </div>
+                                    <button 
+                                      type="button" 
+                                      className="bg-gray-200 hover:bg-gray-300 rounded-r-md flex items-center justify-center px-3 border-y border-r"
+                                      onClick={() => copyToClipboard(CRYPTO_ADDRESSES.usdc)}
+                                    >
+                                      {cryptoAddressCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                    </button>
+                                  </div>
+                                </div>
+                              </TabsContent>
+                              
+                              <TabsContent value="dogecoin" className="mt-4">
+                                <div className="rounded-md border p-4">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <h4 className="font-medium">Dogecoin</h4>
+                                    <p className="text-green-700 font-medium">{cryptoPrices.dogecoin} DOGE</p>
+                                  </div>
+                                  <p className="text-sm text-gray-500 mb-3">Send exactly {cryptoPrices.dogecoin} DOGE to the following address:</p>
+                                  
+                                  <div className="flex">
+                                    <div className="bg-gray-100 rounded-l-md p-2 font-mono text-sm flex-1 border-y border-l truncate">
+                                      {CRYPTO_ADDRESSES.dogecoin}
+                                    </div>
+                                    <button 
+                                      type="button" 
+                                      className="bg-gray-200 hover:bg-gray-300 rounded-r-md flex items-center justify-center px-3 border-y border-r"
+                                      onClick={() => copyToClipboard(CRYPTO_ADDRESSES.dogecoin)}
+                                    >
+                                      {cryptoAddressCopied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                                    </button>
+                                  </div>
+                                </div>
+                              </TabsContent>
+                            </Tabs>
+                            
+                            <div className="mt-6">
+                              <Label htmlFor="cryptoTransactionId">Transaction ID / Hash</Label>
+                              <Input
+                                id="cryptoTransactionId"
+                                name="cryptoTransactionId"
+                                placeholder="Enter the transaction ID after sending payment"
+                                value={formData.cryptoTransactionId}
+                                onChange={handleChange}
+                              />
+                              <p className="text-sm text-gray-500 mt-1">
+                                Enter the transaction ID from your wallet after sending the payment.
+                              </p>
                             </div>
                           </div>
                         </div>

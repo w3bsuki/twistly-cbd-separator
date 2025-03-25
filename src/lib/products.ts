@@ -32,11 +32,11 @@ export const products: Product[] = [
     price: 89.99,
     discountPrice: 79.99,
     images: [
-      "https://images.unsplash.com/photo-1642267016710-b1c2aaae0a33?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1642266798843-413a3bfb7253?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1642266797901-ff125464e2e0?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1642267016710-b1c2aaae0a33?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "health",
     tags: ["oil", "full-spectrum", "organic", "tincture"],
     rating: 4.8,
@@ -63,11 +63,11 @@ export const products: Product[] = [
     description: "Our CBD Wellness Drops combine premium CBD with essential vitamins and adaptogens for a daily wellness boost that supports your body's natural balance.",
     price: 69.99,
     images: [
-      "https://images.unsplash.com/photo-1611070923452-af3ebbd3e7dd?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1611070923452-af3ebbd3e7dd?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1611070923452-af3ebbd3e7dd?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1611070923452-af3ebbd3e7dd?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "health",
     tags: ["wellness", "drops", "vitamins", "daily"],
     rating: 4.6,
@@ -93,11 +93,11 @@ export const products: Product[] = [
     price: 54.99,
     discountPrice: 49.99,
     images: [
-      "https://images.unsplash.com/photo-1617952385804-2f9e953d7a01?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1617952385804-2f9e953d7a01?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1617952385804-2f9e953d7a01?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1617952385804-2f9e953d7a01?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "sport",
     tags: ["balm", "recovery", "muscle", "topical"],
     rating: 4.9,
@@ -123,11 +123,11 @@ export const products: Product[] = [
     description: "Our CBD Sleep Gummies combine premium CBD with melatonin and calming herbs to promote restful sleep and help you wake up refreshed.",
     price: 49.99,
     images: [
-      "https://images.unsplash.com/photo-1611930022073-84f34f54a2d3?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1611930021592-a8cfd5319ceb?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1611930022073-84f34f54a2d3?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1611930022073-84f34f54a2d3?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "health",
     tags: ["gummies", "sleep", "melatonin", "edible"],
     rating: 4.7,
@@ -153,11 +153,11 @@ export const products: Product[] = [
     description: "This luxurious face serum combines the power of CBD with hyaluronic acid and vitamin C to hydrate, brighten and rejuvenate your skin for a radiant complexion.",
     price: 79.99,
     images: [
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "beauty",
     tags: ["serum", "face", "skincare", "beauty"],
     rating: 4.8,
@@ -184,11 +184,11 @@ export const products: Product[] = [
     price: 74.99,
     discountPrice: 64.99,
     images: [
-      "https://images.unsplash.com/photo-1556227834-09f1de7a7d14?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1556227834-09f1de7a7d14?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1556227834-09f1de7a7d14?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1556227834-09f1de7a7d14?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "sport",
     tags: ["sport", "performance", "recovery", "tincture"],
     rating: 4.7,
@@ -214,11 +214,11 @@ export const products: Product[] = [
     description: "Our CBD Calm Capsules deliver a precise dose of CBD combined with calming adaptogens to help you manage stress and maintain focus throughout your day.",
     price: 64.99,
     images: [
-      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "health",
     tags: ["capsules", "calm", "stress", "focus"],
     rating: 4.6,
@@ -243,11 +243,11 @@ export const products: Product[] = [
     description: "This convenient roll-on applicator delivers targeted CBD relief for on-the-go use, perfect for sore muscles, tension, and discomfort wherever you need it.",
     price: 39.99,
     images: [
-      "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "sport",
     tags: ["roll-on", "relief", "topical", "travel"],
     rating: 4.5,
@@ -274,11 +274,11 @@ export const products: Product[] = [
     price: 84.99,
     discountPrice: 74.99,
     images: [
-      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "beauty",
     tags: ["night cream", "anti-aging", "skincare", "beauty"],
     rating: 4.7,
@@ -304,11 +304,11 @@ export const products: Product[] = [
     description: "Specially formulated for your furry friends, our Pet Wellness Tincture helps support your pet's overall health, calm, and comfort with a gentle, pet-safe CBD formula.",
     price: 59.99,
     images: [
-      "https://images.unsplash.com/photo-1568393691622-c7ba131d63b4?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1568393691622-c7ba131d63b4?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1568393691622-c7ba131d63b4?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1568393691622-c7ba131d63b4?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "health",
     tags: ["pet", "tincture", "wellness", "animal"],
     rating: 4.9,
@@ -334,11 +334,11 @@ export const products: Product[] = [
     description: "Transform your bath into a therapeutic experience with our CBD-infused bath bombs, combining essential oils and Epsom salts for the ultimate relaxation and skin nourishment.",
     price: 44.99,
     images: [
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop&q=60",
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop&q=60"
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg",
+      "/images/products/placeholder.jpg"
     ],
-    image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&auto=format&fit=crop&q=60",
+    image: "/images/products/placeholder.jpg",
     category: "beauty",
     tags: ["bath", "relaxation", "spa", "beauty"],
     rating: 4.6,

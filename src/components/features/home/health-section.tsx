@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { ArrowRight, Star, Heart, Brain, Moon, Droplet, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker } from "lucide-react"
+import { ArrowRight, Star, Heart, Brain, Moon, Droplet, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker, Bot } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
@@ -216,13 +216,13 @@ export function HealthAndWellness() {
               <Card className="group overflow-hidden border border-green-100 hover:border-green-200 transition-all duration-300 hover:shadow-md">
                 <CardContent className="p-0">
                   <div className="relative">
-                    <AspectRatio ratio={3/2} className="bg-gradient-to-b from-green-50 to-white">
+                    <AspectRatio ratio={1/1} className="bg-gradient-to-b from-green-50 to-white">
                       <div className="relative h-full w-full p-3">
                         <Image
                           src={product.image}
                           alt={product.name}
                           fill
-                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+                          className="object-contain p-1 scale-75 transition-transform duration-300 group-hover:scale-[0.85]"
                         />
                       </div>
                       <div className="absolute top-2 right-2 z-10">
@@ -614,6 +614,7 @@ export function HealthAndWellness() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            className="flex gap-3"
           >
             <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white rounded-full px-6 transition-colors">
               <Link href="/health-and-wellness" className="flex items-center gap-2">
@@ -621,6 +622,17 @@ export function HealthAndWellness() {
                 <Separator orientation="vertical" className="h-4 bg-green-50/20" />
                 Explore Health & Wellness
                 <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+            <Button 
+              asChild 
+              size="lg" 
+              variant="outline" 
+              className="border-green-600 text-green-700 hover:bg-green-50 rounded-full px-6 transition-colors"
+            >
+              <Link href="#cbd-doctor" className="flex items-center gap-2">
+                <Bot className="h-5 w-5" />
+                Ask AI
               </Link>
             </Button>
           </motion.div>

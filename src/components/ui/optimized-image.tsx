@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image, { ImageProps } from 'next/image';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +10,7 @@ interface OptimizedImageProps extends Omit<ImageProps, 'alt'> {
   className?: string;
   wrapperClassName?: string;
   coverClassName?: string;
+  fallbackSrc?: string;
 }
 
 /**
@@ -27,8 +28,19 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
   quality = 85,
   priority = false,
+  fallbackSrc = '/images/2.png',
   ...props
 }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+  const [isError, setIsError] = useState(false);
+
+  // Handle image load error
+  const handleError = () => {
+    console.log('Image load error, using fallback image');
+    setIsError(true);
+    setImgSrc(fallbackSrc);
+  };
+
   // Calculate aspect ratio
   const getAspectRatioClass = () => {
     switch (aspectRatio) {
@@ -55,14 +67,16 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       )}
     >
       <Image
-        src={src}
+        src={imgSrc}
         alt={alt}
         fill={fill}
         sizes={sizes}
         quality={quality}
         priority={priority}
+        onError={handleError}
         className={cn(
           'object-cover transition-all',
+          isError ? 'object-contain p-4' : 'object-cover',
           coverClassName,
           className
         )}

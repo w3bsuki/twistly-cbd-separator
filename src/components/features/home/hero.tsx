@@ -7,11 +7,48 @@ import { motion } from "framer-motion"
 import { TextRotate } from "@/components/ui/text-rotate"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Leaf, ArrowRight, Shield, Award, HeartPulse, Sparkles } from "lucide-react"
+import { Leaf, ArrowRight, Shield, Award, HeartPulse, Sparkles, Bot } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
 function Hero() {
+  const [aiResponse, setAiResponse] = React.useState<string>("");
+  const [userQuestion, setUserQuestion] = React.useState<string>("");
+  const [isAiTyping, setIsAiTyping] = React.useState<boolean>(false);
+  
+  const handleAskAI = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userQuestion.trim()) return;
+    
+    setIsAiTyping(true);
+    setAiResponse("");
+    
+    // Simulate AI typing response
+    const demoResponses = [
+      "Based on your interest, I recommend our Full Spectrum CBD Oil which contains a balanced profile of cannabinoids that work together through the entourage effect.",
+      "For sleep issues, our Sleep CBD Formula with added melatonin and CBN might be most beneficial. It's specifically formulated to support healthy sleep cycles.",
+      "If you're looking for topical relief, our CBD Recovery Balm provides targeted application for sore muscles and joints with cooling menthol.",
+      "Our CBD Beauty Serum would be perfect for your skincare concerns, combining the anti-inflammatory properties of CBD with hyaluronic acid for hydration."
+    ];
+    
+    const randomResponse = demoResponses[Math.floor(Math.random() * demoResponses.length)];
+    let displayText = "";
+    
+    const typeWriter = (text: string, i: number = 0) => {
+      if (i < text.length) {
+        displayText += text.charAt(i);
+        setAiResponse(displayText);
+        setTimeout(() => typeWriter(text, i + 1), 30);
+      } else {
+        setIsAiTyping(false);
+      }
+    };
+    
+    setTimeout(() => typeWriter(randomResponse), 1000);
+    setUserQuestion("");
+  };
+
   return (
     <div className="relative bg-gradient-to-b from-green-50 via-white to-green-50 overflow-hidden">
       {/* Background blobs */}
@@ -63,22 +100,51 @@ function Hero() {
             </div>
           </motion.h1>
           
-          {/* Product image with improved styling */}
+          {/* Product images showing different categories */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="mt-8 mb-8 relative w-[260px] h-[260px] sm:w-[280px] sm:h-[280px]"
+            className="mt-8 mb-8 relative flex justify-center gap-6 md:gap-8"
           >
-            <Image 
-              src="/images/tincture2.png" 
-              alt="Twistly CBD Oil" 
-              fill
-              className="object-contain drop-shadow-xl"
-              priority
-            />
-            <div className="absolute inset-0 w-full h-full flex items-center justify-center -z-10">
-              <div className="w-[200px] h-[200px] sm:w-[220px] sm:h-[220px] rounded-full bg-gradient-to-br from-white/90 to-green-50/90 border border-green-100 shadow-inner" />
+            {/* Product 1 - CBD Oil */}
+            <div className="relative w-[200px] h-[200px] sm:w-[220px] sm:h-[220px] group">
+              <Image 
+                src="/images/tincture2.png" 
+                alt="Twistly CBD Oil" 
+                fill
+                className="object-contain drop-shadow-xl transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center -z-10">
+                <div className="w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] rounded-full bg-gradient-to-br from-white/90 to-green-50/90 border border-green-100 shadow-inner" />
+              </div>
+            </div>
+            
+            {/* Product 2 - Gummies */}
+            <div className="relative w-[200px] h-[200px] sm:w-[220px] sm:h-[220px] group">
+              <Image 
+                src="/images/tincture2.png" 
+                alt="Twistly CBD Gummies" 
+                fill
+                className="object-contain drop-shadow-xl transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center -z-10">
+                <div className="w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] rounded-full bg-gradient-to-br from-white/90 to-green-100/90 border border-green-100 shadow-inner" />
+              </div>
+            </div>
+            
+            {/* Product 3 - Topicals */}
+            <div className="relative w-[200px] h-[200px] sm:w-[220px] sm:h-[220px] group">
+              <Image 
+                src="/images/tincture2.png" 
+                alt="Twistly CBD Topicals" 
+                fill
+                className="object-contain drop-shadow-xl transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center -z-10">
+                <div className="w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] rounded-full bg-gradient-to-br from-white/90 to-green-200/90 border border-green-100 shadow-inner" />
+              </div>
             </div>
           </motion.div>
           
@@ -134,20 +200,59 @@ function Hero() {
               </Button>
             </a>
             
-            <a href="/lab" className="block">
-              <Button 
-                className={cn(
-                  "h-12 px-7 rounded-full text-sm font-semibold transition-all duration-300 shadow-md cursor-pointer",
-                  "bg-white text-green-700 border border-green-200 hover:bg-green-50"
-                )}
-                size="default"
-              >
-                <span className="flex items-center gap-2">
-                  View Lab Results
-                  <ArrowRight className="w-4 h-4" />
-                </span>
-              </Button>
-            </a>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button 
+                  className={cn(
+                    "h-12 px-7 rounded-full text-sm font-semibold transition-all duration-300 shadow-md cursor-pointer",
+                    "bg-white text-green-700 border border-green-200 hover:bg-green-50"
+                  )}
+                  size="default"
+                >
+                  <span className="flex items-center gap-2">
+                    <Bot className="w-4 h-4" />
+                    Consult with AI
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Bot className="h-5 w-5 text-green-600" />
+                    <span>Ask Our CBD Expert AI</span>
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="bg-gray-50 p-4 rounded-md mb-4 max-h-[300px] overflow-y-auto">
+                  {aiResponse ? (
+                    <div className="text-gray-800">
+                      {aiResponse}
+                      {isAiTyping && <span className="inline-block w-1.5 h-4 ml-1 bg-green-600 animate-pulse" />}
+                    </div>
+                  ) : (
+                    <div className="text-gray-500 italic">
+                      Ask about our CBD products, usage recommendations, or which product might be right for your needs...
+                    </div>
+                  )}
+                </div>
+                <form onSubmit={handleAskAI} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={userQuestion}
+                    onChange={(e) => setUserQuestion(e.target.value)}
+                    placeholder="Type your question here..."
+                    className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-600/30"
+                  />
+                  <Button 
+                    type="submit"
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                    disabled={isAiTyping}
+                  >
+                    {isAiTyping ? "Thinking..." : "Ask"}
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
           </motion.div>
           
           {/* Improved tagline with more engaging copy */}

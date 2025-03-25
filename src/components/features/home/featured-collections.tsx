@@ -65,15 +65,41 @@ const itemVariants = {
 }
 
 // Simple product card for the carousel
-function SimpleProductCard({ name, concentration }: { name: string, concentration: string }) {
+function SimpleProductCard({ name, concentration, category }: { name: string, concentration: string, category: string }) {
+  // Set background color based on category
+  const getBgColor = () => {
+    switch(category) {
+      case 'sport':
+        return "bg-blue-600";
+      case 'beauty':
+        return "bg-purple-600";
+      case 'health':
+      default:
+        return "bg-green-600";
+    }
+  };
+
+  // Set gradient colors based on category
+  const getGradientColors = () => {
+    switch(category) {
+      case 'sport':
+        return "bg-gradient-to-t from-blue-900/80 to-blue-600/30";
+      case 'beauty':
+        return "bg-gradient-to-t from-purple-900/80 to-pink-600/30";
+      case 'health':
+      default:
+        return "bg-gradient-to-t from-green-900/80 to-green-600/30";
+    }
+  };
+
   return (
     <motion.div 
-      className="relative w-full h-full bg-blue-600 rounded-lg overflow-hidden flex flex-col justify-end p-3 text-white"
+      className={`relative w-full h-full ${getBgColor()} rounded-lg overflow-hidden flex flex-col justify-end p-3 text-white`}
       variants={itemVariants}
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.2 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 to-blue-600/30" />
+      <div className={`absolute inset-0 ${getGradientColors()}`} />
       <div className="relative z-10">
         <h3 className="font-medium text-base mb-0.5">{name}</h3>
         <p className="text-xs text-white/80">{concentration}</p>
@@ -94,6 +120,19 @@ export function FeaturedCollection({ title, category, href }: FeaturedCollection
     { name: "Broad Spectrum", concentration: "750mg CBD" },
     { name: "Sleep CBD", concentration: "500mg CBD" }
   ]
+
+  // Set badge color based on category
+  const getBadgeColor = () => {
+    switch(category) {
+      case 'sport':
+        return "bg-blue-600";
+      case 'beauty':
+        return "bg-purple-600";
+      case 'health':
+      default:
+        return "bg-green-600";
+    }
+  };
   
   return (
     <section className="py-8 relative overflow-hidden">
@@ -107,7 +146,7 @@ export function FeaturedCollection({ title, category, href }: FeaturedCollection
         <div className="flex flex-col items-center text-center mb-4">
           <motion.div variants={itemVariants}>
             <Badge 
-              className="px-3 py-1 text-xs bg-green-500 text-white border-0 mb-2"
+              className={`px-3 py-1 text-xs ${getBadgeColor()} text-white border-0 mb-2`}
             >
               Featured Collection
             </Badge>
@@ -132,7 +171,7 @@ export function FeaturedCollection({ title, category, href }: FeaturedCollection
             {productTypes.map((product, index) => (
               <CarouselItem key={index} className="pl-2 basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6">
                 <div className="aspect-square">
-                  <SimpleProductCard name={product.name} concentration={product.concentration} />
+                  <SimpleProductCard name={product.name} concentration={product.concentration} category={category} />
                 </div>
               </CarouselItem>
             ))}
@@ -145,10 +184,10 @@ export function FeaturedCollection({ title, category, href }: FeaturedCollection
         >
           <Link href={href}>
             <Button 
-              className={`rounded-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 text-sm shadow-md ${
+              className={`rounded-full text-white px-6 py-2 text-sm shadow-md ${
                 category === 'health' ? 'bg-green-600 hover:bg-green-700' :
-                category === 'sport' ? 'bg-red-600 hover:bg-red-700' :
-                category === 'beauty' ? 'bg-amber-600 hover:bg-amber-700' :
+                category === 'sport' ? 'bg-blue-600 hover:bg-blue-700' :
+                category === 'beauty' ? 'bg-purple-600 hover:bg-purple-700' :
                 'bg-stone-600 hover:bg-stone-700'
               }`}
               asChild

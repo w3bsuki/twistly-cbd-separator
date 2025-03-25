@@ -34,8 +34,11 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Reducer to manage cart state
 function cartReducer(state: CartState, action: CartAction): CartState {
+  console.log('Cart reducer action:', action.type, action);
+  
   switch (action.type) {
     case 'ADD_ITEM':
+      console.log('Adding item to cart:', action.product.name, 'quantity:', action.quantity);
       return addItemToCart(state, action.product, action.quantity);
     
     case 'UPDATE_QUANTITY':
@@ -75,27 +78,67 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Load cart from localStorage on initial render
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        dispatch({ type: 'LOAD_CART', state: parsedCart });
-      } catch (error) {
-        console.error('Failed to parse saved cart:', error);
+    try {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        try {
+          const parsedCart = JSON.parse(savedCart);
+          console.log('Loaded cart from localStorage:', parsedCart);
+          
+          // Validate the parsedCart has the expected structure
+          if (parsedCart && typeof parsedCart === 'object') {
+            // Ensure it has at least the items array
+            if (!Array.isArray(parsedCart.items)) {
+              parsedCart.items = [];
+              console.warn('Cart items missing or invalid, initializing empty array');
+            }
+            
+            // Ensure other required fields
+            if (typeof parsedCart.itemCount !== 'number') parsedCart.itemCount = 0;
+            if (typeof parsedCart.subtotal !== 'number') parsedCart.subtotal = 0;
+            if (typeof parsedCart.discount !== 'number') parsedCart.discount = 0;
+            if (typeof parsedCart.tax !== 'number') parsedCart.tax = 0;
+            if (typeof parsedCart.shipping !== 'number') parsedCart.shipping = 0;
+            if (typeof parsedCart.total !== 'number') parsedCart.total = 0;
+            
+            dispatch({ type: 'LOAD_CART', state: parsedCart });
+          } else {
+            console.warn('Invalid cart data structure, using default state');
+            dispatch({ type: 'LOAD_CART', state: initialCartState });
+          }
+        } catch (error) {
+          console.error('Failed to parse saved cart:', error);
+          // If parse fails, clear the corrupted data
+          localStorage.removeItem('cart');
+          dispatch({ type: 'LOAD_CART', state: initialCartState });
+        }
+      } else {
+        console.log('No saved cart found, using default state');
+        dispatch({ type: 'LOAD_CART', state: initialCartState });
       }
+    } catch (e) {
+      console.error('Error accessing localStorage:', e);
+      dispatch({ type: 'LOAD_CART', state: initialCartState });
     }
   }, []);
 
   // Save cart to localStorage when it changes
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(state));
+    try {
+      console.log('Saving cart to localStorage:', state);
+      localStorage.setItem('cart', JSON.stringify(state));
+    } catch (e) {
+      console.error('Error saving cart to localStorage:', e);
+    }
   }, [state]);
 
   // Context value
   const value = {
     state,
-    addItem: (product: Product, quantity: number = 1) => 
-      dispatch({ type: 'ADD_ITEM', product, quantity }),
+    addItem: (product: Product, quantity: number = 1) => {
+      console.log('addItem called with product:', product.name, 'quantity:', quantity);
+      dispatch({ type: 'ADD_ITEM', product, quantity });
+    },
     updateQuantity: (productId: string, quantity: number) => 
       dispatch({ type: 'UPDATE_QUANTITY', productId, quantity }),
     removeItem: (productId: string) => 

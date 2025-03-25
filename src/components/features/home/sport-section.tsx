@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { InfiniteSlider } from "@/components/common/ui/infinite-slider"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Separator } from "@/components/ui/separator"
-import { ArrowRight, Star, Dumbbell, Activity, Clock, Medal, Check, Sparkles, ShoppingCart, Heart, Info, Users, CheckCircle, XCircle, X, Beaker } from "lucide-react"
+import { ArrowRight, Star, Dumbbell, Activity, Clock, Medal, Check, Sparkles, ShoppingCart, Heart, Info, Users, CheckCircle, XCircle, X, Beaker, Bot } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -32,7 +32,7 @@ const sportProducts = [
     reviews: 142,
     description: "Fast-acting formula designed for post-workout recovery",
     benefits: ["Accelerated recovery", "Reduces inflammation", "Muscle relief"],
-    badgeColor: "bg-red-600",
+    badgeColor: "bg-blue-600",
     featured: true
   },
   {
@@ -44,7 +44,7 @@ const sportProducts = [
     reviews: 118,
     description: "Targeted relief for sore muscles and joint discomfort",
     benefits: ["Deep tissue relief", "Joint support", "Anti-inflammatory"],
-    badgeColor: "bg-orange-600",
+    badgeColor: "bg-blue-700",
     featured: true
   },
   {
@@ -68,7 +68,7 @@ const sportProducts = [
     reviews: 87,
     description: "Enhanced with glucosamine for optimal joint health",
     benefits: ["Cartilage support", "Mobility improvement", "Pain relief"],
-    badgeColor: "bg-purple-600",
+    badgeColor: "bg-blue-500",
     featured: false
   },
   {
@@ -80,7 +80,7 @@ const sportProducts = [
     reviews: 74,
     description: "Energizing blend to prepare your body for intense workouts",
     benefits: ["Energy boost", "Mental clarity", "Improved focus"],
-    badgeColor: "bg-yellow-600",
+    badgeColor: "bg-blue-600",
     featured: false
   }
 ]
@@ -90,26 +90,26 @@ const sportBenefits = [
   {
     title: "Enhanced Recovery",
     description: "Our CBD formulations help reduce recovery time between workouts by supporting muscle repair and reducing inflammation.",
-    icon: <Dumbbell className="h-6 w-6 text-red-500" />,
-    color: "bg-red-50 border-red-100"
+    icon: <Dumbbell className="h-6 w-6 text-blue-600" />,
+    color: "bg-blue-50 border-blue-100"
   },
   {
     title: "Improved Performance",
     description: "CBD may help enhance focus and endurance during workouts while reducing exercise-induced anxiety and stress.",
-    icon: <Activity className="h-6 w-6 text-red-500" />,
-    color: "bg-red-50 border-red-100"
+    icon: <Activity className="h-6 w-6 text-blue-600" />,
+    color: "bg-blue-50 border-blue-100"
   },
   {
     title: "Better Sleep & Recovery",
     description: "Quality sleep is crucial for recovery and performance. Our CBD formulas help improve sleep quality for maximum results.",
-    icon: <Clock className="h-6 w-6 text-red-500" />,
-    color: "bg-red-50 border-red-100"
+    icon: <Clock className="h-6 w-6 text-blue-600" />,
+    color: "bg-blue-50 border-blue-100"
   },
   {
     title: "Joint & Muscle Support",
     description: "Our targeted formulas provide relief to sore muscles and joints while supporting long-term mobility and flexibility.",
-    icon: <Medal className="h-6 w-6 text-red-500" />,
-    color: "bg-red-50 border-red-100"
+    icon: <Medal className="h-6 w-6 text-blue-600" />,
+    color: "bg-blue-50 border-blue-100"
   }
 ]
 
@@ -140,7 +140,7 @@ const testimonials = [
 
 export function Sport() {
   return (
-    <section className="py-10 md:py-14 bg-gradient-to-b from-red-50 to-white">
+    <section className="py-10 md:py-14 bg-gradient-to-b from-blue-50 to-white">
       <div className="container mx-auto max-w-6xl px-4">
         <div className="flex flex-col items-center mb-12">
           <motion.div
@@ -150,13 +150,13 @@ export function Sport() {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center"
           >
-            <Badge className="bg-red-600 text-white hover:bg-red-700 px-4 py-1 rounded-full text-sm mb-3">
+            <Badge className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-1 rounded-full text-sm mb-3">
               Sport & Recovery
             </Badge>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-red-800 via-red-600 to-red-700 mb-3">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-800 via-blue-600 to-blue-700 mb-3">
               Performance & Recovery CBD
             </h2>
-            <p className="text-red-700 text-base max-w-2xl text-center">
+            <p className="text-blue-700 text-base max-w-2xl text-center">
               Our sport collection is specially formulated to support athletic performance, enhance recovery, and provide targeted relief for active lifestyles.
             </p>
           </motion.div>
@@ -194,11 +194,11 @@ export function Sport() {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-red-800">Featured Sport Products</h3>
-            <p className="text-red-600 mt-1">Discover our most popular performance formulas</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-blue-800">Featured Sport Products</h3>
+            <p className="text-blue-600 mt-1">Discover our most popular performance formulas</p>
           </motion.div>
           
-          <Link href="/sport-and-recovery" className="text-red-700 hover:text-red-800 font-medium text-sm flex items-center gap-1 mt-2">
+          <Link href="/sport-and-recovery" className="text-blue-700 hover:text-blue-800 font-medium text-sm flex items-center gap-1 mt-2">
             View All <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -213,16 +213,16 @@ export function Sport() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group overflow-hidden border border-red-100 hover:border-red-200 transition-all duration-300 hover:shadow-md">
+              <Card className="group overflow-hidden border border-blue-100 hover:border-blue-200 transition-all duration-300 hover:shadow-md">
                 <CardContent className="p-0">
                   <div className="relative">
-                    <AspectRatio ratio={3/2} className="bg-gradient-to-b from-red-50 to-white">
+                    <AspectRatio ratio={1/1} className="bg-gradient-to-b from-blue-50 to-white">
                       <div className="relative h-full w-full p-3">
                         <Image
                           src={product.image}
                           alt={product.name}
                           fill
-                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+                          className="object-contain p-1 scale-75 transition-transform duration-300 group-hover:scale-[0.85]"
                         />
                       </div>
                       <div className="absolute top-2 right-2 z-10">
@@ -234,8 +234,8 @@ export function Sport() {
                   </div>
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className="font-semibold text-sm text-gray-900 group-hover:text-red-700 transition-colors">{product.name}</h3>
-                      <p className="font-bold text-sm text-red-700">{product.price}</p>
+                      <h3 className="font-semibold text-sm text-gray-900 group-hover:text-blue-700 transition-colors">{product.name}</h3>
+                      <p className="font-bold text-sm text-blue-700">{product.price}</p>
                     </div>
                     
                     <div className="flex items-center mb-1.5">
@@ -256,7 +256,7 @@ export function Sport() {
                     
                     <div className="flex flex-wrap gap-1 mb-2">
                       {product.benefits.map((benefit, i) => (
-                        <span key={i} className="bg-red-50 text-[10px] text-red-700 px-1.5 py-0.5 rounded-full flex items-center">
+                        <span key={i} className="bg-blue-50 text-[10px] text-blue-700 px-1.5 py-0.5 rounded-full flex items-center">
                           <Check className="h-2 w-2 mr-0.5" /> {benefit}
                         </span>
                       ))}
@@ -264,7 +264,7 @@ export function Sport() {
                   </div>
                 </CardContent>
                 <CardFooter className="p-3 pt-0 flex gap-1">
-                  <Button size="sm" variant="default" className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 h-7 rounded-lg transition-colors flex-1">
+                  <Button size="sm" variant="default" className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 h-7 rounded-lg transition-colors flex-1">
                     <ShoppingCart className="h-3 w-3 mr-1" /> Add to Cart
                   </Button>
                   
@@ -273,14 +273,14 @@ export function Sport() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 w-10 flex items-center justify-center text-red-700 border-red-200 hover:bg-red-50 hover:text-red-800 rounded-lg transition-colors"
+                        className="h-8 w-10 flex items-center justify-center text-blue-700 border-blue-200 hover:bg-blue-50 hover:text-blue-800 rounded-lg transition-colors"
                       >
                         <Info className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle className="text-red-700 flex items-center gap-1.5">
+                        <DialogTitle className="text-blue-700 flex items-center gap-1.5">
                           <Activity className="h-5 w-5" />
                           {product.name} Benefits
                         </DialogTitle>
@@ -305,16 +305,16 @@ export function Sport() {
                         
                         <p className="text-sm text-gray-700 mb-4">{product.description}</p>
                         
-                        <h4 className="font-medium text-red-700 mb-2 flex items-center">
+                        <h4 className="font-medium text-blue-700 mb-2 flex items-center">
                           <Sparkles className="h-4 w-4 mr-1.5" /> Key Benefits
                         </h4>
                         
-                        <div className="bg-red-50 rounded-lg p-4 mb-4">
+                        <div className="bg-blue-50 rounded-lg p-4 mb-4">
                           <ul className="space-y-3">
                             {product.benefits.map((benefit, i) => (
                               <li key={i} className="flex items-start gap-2">
                                 <div className="bg-white rounded-full p-1 mt-0.5">
-                                  <Check className="h-3.5 w-3.5 text-red-600" />
+                                  <Check className="h-3.5 w-3.5 text-blue-600" />
                                 </div>
                                 <div>
                                   <p className="text-sm font-medium text-gray-800">{benefit}</p>
@@ -327,14 +327,14 @@ export function Sport() {
                           </ul>
                         </div>
                         
-                        <h4 className="font-medium text-red-700 mb-2 flex items-center">
+                        <h4 className="font-medium text-blue-700 mb-2 flex items-center">
                           <Users className="h-4 w-4 mr-1.5" /> Ideal For
                         </h4>
                         <p className="text-sm text-gray-700 mb-4">
                           {getSportIdealUsers(product.name)}
                         </p>
                         
-                        <h4 className="font-medium text-red-700 mb-2 flex items-center">
+                        <h4 className="font-medium text-blue-700 mb-2 flex items-center">
                           <Clock className="h-4 w-4 mr-1.5" /> Recommended Usage
                         </h4>
                         <p className="text-sm text-gray-700">
@@ -349,44 +349,44 @@ export function Sport() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 w-10 flex items-center justify-center text-red-700 border-red-200 hover:bg-red-50 hover:text-red-800 rounded-lg transition-colors"
+                        className="h-8 w-10 flex items-center justify-center text-blue-700 border-blue-200 hover:bg-blue-50 hover:text-blue-800 rounded-lg transition-colors"
                       >
                         <Users className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle className="text-red-700 flex items-center gap-1.5">
+                        <DialogTitle className="text-blue-700 flex items-center gap-1.5">
                           <Users className="h-5 w-5" />
                           Who is {product.name} for?
                         </DialogTitle>
                       </DialogHeader>
                       <div className="mt-4">
-                        <div className="bg-red-50 p-4 rounded-lg mb-4">
+                        <div className="bg-blue-50 p-4 rounded-lg mb-4">
                           <p className="text-sm text-gray-700">
                             {getSportIdealUsers(product.name)}
                           </p>
                         </div>
                         
-                        <h4 className="font-medium text-red-700 mb-2 flex items-center">
+                        <h4 className="font-medium text-blue-700 mb-2 flex items-center">
                           <CheckCircle className="h-4 w-4 mr-1.5" /> Recommended For
                         </h4>
                         <ul className="space-y-2 mb-4">
                           {getSportRecommendedGroups(product.name).map((group, i) => (
                             <li key={i} className="flex items-start gap-2">
-                              <Check className="h-3.5 w-3.5 text-red-600 mt-0.5" />
+                              <Check className="h-3.5 w-3.5 text-blue-600 mt-0.5" />
                               <span className="text-sm text-gray-700">{group}</span>
                             </li>
                           ))}
                         </ul>
                         
-                        <h4 className="font-medium text-red-700 mb-2 flex items-center">
+                        <h4 className="font-medium text-blue-700 mb-2 flex items-center">
                           <XCircle className="h-4 w-4 mr-1.5" /> Not Recommended For
                         </h4>
                         <ul className="space-y-2">
                           {getSportNotRecommendedGroups().map((group, i) => (
                             <li key={i} className="flex items-start gap-2">
-                              <X className="h-3.5 w-3.5 text-red-500 mt-0.5" />
+                              <X className="h-3.5 w-3.5 text-blue-500 mt-0.5" />
                               <span className="text-sm text-gray-700">{group}</span>
                             </li>
                           ))}
@@ -400,14 +400,14 @@ export function Sport() {
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        className="h-8 w-10 flex items-center justify-center text-red-700 border-red-200 hover:bg-red-50 hover:text-red-800 rounded-lg transition-colors"
+                        className="h-8 w-10 flex items-center justify-center text-blue-700 border-blue-200 hover:bg-blue-50 hover:text-blue-800 rounded-lg transition-colors"
                       >
                         <Beaker className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle className="text-red-700 flex items-center gap-1.5">
+                        <DialogTitle className="text-blue-700 flex items-center gap-1.5">
                           <Beaker className="h-5 w-5" />
                           {product.name} Dosage Guide
                         </DialogTitle>
@@ -424,19 +424,19 @@ export function Sport() {
                           This sport-focused {product.name} contains {product.strength} of high-quality CBD. Athletic dosage needs may differ based on training intensity and recovery goals.
                         </p>
                         
-                        <h4 className="font-medium text-red-700 mb-2 flex items-center">
+                        <h4 className="font-medium text-blue-700 mb-2 flex items-center">
                           <Info className="h-4 w-4 mr-1.5" /> Athletic Dosage Guidelines
                         </h4>
                         <p className="text-sm text-gray-700 mb-4">
                           For athletes and active individuals, CBD dosage may need to be adjusted based on training intensity, body weight, and recovery needs. We recommend a personalized approach.
                         </p>
                         
-                        <div className="bg-red-50 rounded-lg p-4 mb-4">
-                          <h5 className="font-medium text-red-700 mb-2">Recommended Doses for Athletes:</h5>
+                        <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                          <h5 className="font-medium text-blue-700 mb-2">Recommended Doses for Athletes:</h5>
                           <ul className="space-y-3">
                             <li className="grid grid-cols-2 gap-2">
                               <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-red-200 text-red-700">Light Training</Badge>
+                                <Badge variant="outline" className="h-5 border-blue-200 text-blue-700">Light Training</Badge>
                               </div>
                               <p className="text-xs text-gray-700">
                                 10-15mg CBD daily<br />
@@ -445,7 +445,7 @@ export function Sport() {
                             </li>
                             <li className="grid grid-cols-2 gap-2">
                               <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-red-200 text-red-700">Moderate Training</Badge>
+                                <Badge variant="outline" className="h-5 border-blue-200 text-blue-700">Moderate Training</Badge>
                               </div>
                               <p className="text-xs text-gray-700">
                                 20-40mg CBD daily<br />
@@ -454,7 +454,7 @@ export function Sport() {
                             </li>
                             <li className="grid grid-cols-2 gap-2">
                               <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-red-200 text-red-700">Intense Training</Badge>
+                                <Badge variant="outline" className="h-5 border-blue-200 text-blue-700">Intense Training</Badge>
                               </div>
                               <p className="text-xs text-gray-700">
                                 50-80mg CBD daily<br />
@@ -463,7 +463,7 @@ export function Sport() {
                             </li>
                             <li className="grid grid-cols-2 gap-2">
                               <div className="flex items-start gap-1.5">
-                                <Badge variant="outline" className="h-5 border-red-200 text-red-700">Recovery Focus</Badge>
+                                <Badge variant="outline" className="h-5 border-blue-200 text-blue-700">Recovery Focus</Badge>
                               </div>
                               <p className="text-xs text-gray-700">
                                 60-100mg+ CBD daily<br />
@@ -479,7 +479,7 @@ export function Sport() {
                   <Button 
                     size="sm"
                     variant="ghost"
-                    className="h-8 w-10 flex items-center justify-center text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors"
+                    className="h-8 w-10 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
                   >
                     <Heart className="h-4 w-4" />
                   </Button>
@@ -497,14 +497,14 @@ export function Sport() {
               className="relative group w-[180px]"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <AspectRatio ratio={1} className="bg-white rounded-xl border border-red-100">
+              <AspectRatio ratio={1} className="bg-white rounded-xl border border-blue-100">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
                   className="object-contain p-4 scale-90"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-red-900/60 via-red-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-blue-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
                 <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
                   <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
                   <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
@@ -525,8 +525,8 @@ export function Sport() {
             transition={{ duration: 0.5 }}
             className="mb-6"
           >
-            <h3 className="text-2xl md:text-3xl font-bold text-red-800 text-center">Athlete Testimonials</h3>
-            <p className="text-red-600 mt-1 text-center">Real stories from athletes who have improved their performance</p>
+            <h3 className="text-2xl md:text-3xl font-bold text-blue-800 text-center">Athlete Testimonials</h3>
+            <p className="text-blue-600 mt-1 text-center">Real stories from athletes who have improved their performance</p>
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -538,7 +538,7 @@ export function Sport() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="h-full border border-red-100 hover:border-red-200 transition-all duration-300 hover:shadow-md">
+                <Card className="h-full border border-blue-100 hover:border-blue-200 transition-all duration-300 hover:shadow-md">
                   <CardContent className="p-4">
                     <div className="flex mb-2">
                       {[...Array(5)].map((_, i) => (
@@ -555,7 +555,7 @@ export function Sport() {
                     </div>
                     <p className="text-gray-700 text-sm italic mb-4 line-clamp-4">"{testimonial.quote}"</p>
                     <div className="flex items-center gap-2">
-                      <div className="relative w-8 h-8 rounded-full bg-red-100 overflow-hidden">
+                      <div className="relative w-8 h-8 rounded-full bg-blue-100 overflow-hidden">
                         <Image
                           src={testimonial.image}
                           alt={testimonial.author}
@@ -581,7 +581,7 @@ export function Sport() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-gradient-to-r from-red-600 to-red-700 rounded-xl p-6 mb-12 text-white"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 mb-12 text-white"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="md:w-2/3">
@@ -589,7 +589,7 @@ export function Sport() {
                 <Sparkles className="h-5 w-5" />
                 Performance-Grade Quality
               </h3>
-              <p className="text-red-100 text-sm mb-3">
+              <p className="text-blue-100 text-sm mb-3">
                 Our sport CBD formulations are designed specifically for athletes and active individuals. Each batch is tested for banned substances and verified by third-party labs.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -599,7 +599,7 @@ export function Sport() {
                 <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Fast-Acting</Badge>
               </div>
             </div>
-            <Button asChild size="sm" className="bg-white text-red-700 hover:bg-red-50 px-4 py-2">
+            <Button asChild size="sm" className="bg-white text-blue-700 hover:bg-blue-50 px-4 py-2">
               <Link href="/lab-results">
                 View Lab Tests <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
               </Link>
@@ -614,13 +614,25 @@ export function Sport() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            className="flex gap-3"
           >
-            <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 transition-colors">
+            <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 transition-colors">
               <Link href="/sport-and-recovery" className="flex items-center gap-2">
                 <Image src="/images/2.png" width={24} height={24} alt="Twistly" className="h-5 w-5" />
-                <Separator orientation="vertical" className="h-4 bg-red-50/20" />
+                <Separator orientation="vertical" className="h-4 bg-blue-50/20" />
                 Explore Sport & Recovery
                 <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+            <Button 
+              asChild 
+              size="lg" 
+              variant="outline" 
+              className="border-blue-600 text-blue-700 hover:bg-blue-50 rounded-full px-6 transition-colors"
+            >
+              <Link href="#cbd-doctor" className="flex items-center gap-2">
+                <Bot className="h-5 w-5" />
+                Ask AI
               </Link>
             </Button>
           </motion.div>

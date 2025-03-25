@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { ArrowRight, Star, Heart, Brain, Flower2, Shield, Dumbbell, Activity, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker, Zap, CheckCircle as CheckCircleIcon } from "lucide-react"
+import { ArrowRight, Star, Heart, Brain, Flower2, Shield, Dumbbell, Activity, Check, Sparkles, ShoppingCart, Info, Leaf, Users, Clock, CheckCircle, XCircle, X, Beaker, Zap, CheckCircle as CheckCircleIcon, Bot } from "lucide-react"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
@@ -188,16 +188,16 @@ export function HybridAndMushrooms() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <Card className="group overflow-hidden border border-amber-300 hover:border-amber-400 transition-all duration-300 hover:shadow-md">
+              <Card className="group overflow-hidden border border-amber-200 hover:border-amber-300 transition-all duration-300 hover:shadow-md">
                 <CardContent className="p-0">
                   <div className="relative">
-                    <AspectRatio ratio={3/2} className="bg-gradient-to-b from-amber-100/70 to-white">
+                    <AspectRatio ratio={1/1} className="bg-gradient-to-b from-amber-100/70 to-white">
                       <div className="relative h-full w-full p-3">
                         <Image
                           src={product.image}
                           alt={product.name}
                           fill
-                          className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+                          className="object-contain p-1 scale-75 transition-transform duration-300 group-hover:scale-[0.85]"
                         />
                       </div>
                       <div className="absolute top-2 right-2 z-10">
@@ -526,6 +526,7 @@ export function HybridAndMushrooms() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            className="flex gap-3"
           >
             <Button asChild size="lg" className="bg-amber-900 hover:bg-amber-950 text-white rounded-full px-6 transition-colors">
               <Link href="/hybrid-and-mushrooms" className="flex items-center gap-2">
@@ -533,6 +534,17 @@ export function HybridAndMushrooms() {
                 <Separator orientation="vertical" className="h-4 bg-amber-50/20" />
                 Explore Hybrid Collection
                 <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+            <Button 
+              asChild 
+              size="lg" 
+              variant="outline" 
+              className="border-amber-900 text-amber-900 hover:bg-amber-50 rounded-full px-6 transition-colors"
+            >
+              <Link href="#cbd-doctor" className="flex items-center gap-2">
+                <Bot className="h-5 w-5" />
+                Ask AI
               </Link>
             </Button>
           </motion.div>

@@ -25,7 +25,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
-  const { addItem } = useCart();
+  const { addItem, state } = useCart();
   const { toast } = useToast();
 
   const increaseQuantity = () => {
@@ -41,13 +41,25 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
   };
 
   const handleAddToCart = () => {
+    console.log('Add to cart clicked from product detail page for:', product.name, 'quantity:', quantity);
     setIsAdding(true);
-    addItem(product, quantity);
     
-    toast({
-      title: "Added to cart",
-      description: `${quantity} ${quantity === 1 ? 'item' : 'items'} of ${product.name} has been added to your cart.`,
-    });
+    try {
+      addItem(product, quantity);
+      console.log('Added to cart, current cart state:', state?.items?.length || 0);
+      
+      toast({
+        title: "Added to cart",
+        description: `${quantity} ${quantity === 1 ? 'item' : 'items'} of ${product.name} has been added to your cart.`,
+      });
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast({
+        title: "Error",
+        description: "There was an error adding this item to your cart.",
+        variant: "destructive",
+      });
+    }
     
     setTimeout(() => {
       setIsAdding(false);
