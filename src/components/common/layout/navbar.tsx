@@ -128,6 +128,31 @@ const productCategories = [
         path: "/hybrid/gummies"
       }
     ]
+  },
+  {
+    name: "Pet CBD",
+    color: "amber",
+    path: "/pet-cbd",
+    products: [
+      {
+        name: "Dog Tinctures",
+        description: "Calming CBD oil specially formulated for dogs",
+        image: "/images/tincture2.png",
+        path: "/pet-cbd/dog-tinctures"
+      },
+      {
+        name: "Cat Drops",
+        description: "Gentle CBD formulas for feline wellness",
+        image: "/images/4.png",
+        path: "/pet-cbd/cat-drops"
+      },
+      {
+        name: "Treats",
+        description: "CBD-infused treats for joint support and anxiety relief",
+        image: "/images/5.png",
+        path: "/pet-cbd/treats"
+      }
+    ]
   }
 ]
 
@@ -218,6 +243,7 @@ export function Navbar() {
                     category.color === "blue" && "text-blue-700 hover:text-blue-900 group-hover:bg-blue-50",
                     category.color === "purple" && "text-purple-700 hover:text-purple-900 group-hover:bg-purple-50",
                     category.color === "brown" && "text-amber-900 hover:text-amber-950 group-hover:bg-amber-100",
+                    category.color === "amber" && "text-amber-700 hover:text-amber-800 group-hover:bg-amber-50"
                   )}
                 >
                   {category.name} <ChevronDown className="h-4 w-4 opacity-70" />
@@ -229,6 +255,7 @@ export function Navbar() {
                     category.color === "blue" && "border-blue-100",
                     category.color === "purple" && "border-purple-100",
                     category.color === "brown" && "border-amber-200",
+                    category.color === "amber" && "border-amber-100"
                   )}>
                     <div className="grid grid-cols-3 gap-4">
                       {category.products.map((product) => (
@@ -258,6 +285,7 @@ export function Navbar() {
                                 category.color === "blue" && "group-hover:text-blue-700",
                                 category.color === "purple" && "group-hover:text-purple-700",
                                 category.color === "brown" && "group-hover:text-amber-900",
+                                category.color === "amber" && "group-hover:text-amber-700"
                               )}>
                                 {product.name}
                               </h4>
@@ -278,6 +306,7 @@ export function Navbar() {
                         category.color === "blue" && "text-blue-700",
                         category.color === "purple" && "text-purple-700",
                         category.color === "brown" && "text-amber-900",
+                        category.color === "amber" && "text-amber-700"
                       )}
                     >
                       View all {category.name} products
@@ -452,7 +481,8 @@ export function Navbar() {
                             category.color === "green" && "text-green-700",
                             category.color === "blue" && "text-blue-700",
                             category.color === "purple" && "text-purple-700",
-                            category.color === "brown" && "text-amber-900"
+                            category.color === "brown" && "text-amber-900",
+                            category.color === "amber" && "text-amber-700"
                           )}
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
