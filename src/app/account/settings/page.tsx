@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
+import { Switch } from '@/components/common/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Loader2, Save, X } from 'lucide-react';
 import { toast } from 'sonner';
@@ -28,26 +28,23 @@ const mockUser = {
   },
 };
 
-export default function AccountSettingsPage() {
+// Component to handle tab selection with search params
+function TabSelector({ onTabChange }: { onTabChange: (tab: string) => void }) {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
   
-  // Set default tab based on URL parameter
-  const [activeTab, setActiveTab] = useState(
-    tabParam === 'security' ? 'security' : 
-    tabParam === 'preferences' ? 'preferences' : 'personal'
-  );
-  
-  // Update active tab when URL parameter changes
   useEffect(() => {
-    if (tabParam === 'security') {
-      setActiveTab('security');
-    } else if (tabParam === 'preferences') {
-      setActiveTab('preferences');
-    } else if (tabParam === 'personal') {
-      setActiveTab('personal');
-    }
-  }, [tabParam]);
+    const selectedTab = tabParam === 'security' ? 'security' : 
+                        tabParam === 'preferences' ? 'preferences' : 'personal';
+    onTabChange(selectedTab);
+  }, [tabParam, onTabChange]);
+  
+  return null;
+}
+
+export default function AccountSettingsPage() {
+  // Set default tab
+  const [activeTab, setActiveTab] = useState('personal');
   
   // Personal Information form state
   const [personalInfo, setPersonalInfo] = useState({
@@ -209,6 +206,11 @@ export default function AccountSettingsPage() {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
+      
+      {/* Suspense boundary for useSearchParams */}
+      <Suspense fallback={<div>Loading tabs...</div>}>
+        <TabSelector onTabChange={setActiveTab} />
+      </Suspense>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="w-full max-w-md">
