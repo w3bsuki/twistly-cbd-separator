@@ -31,12 +31,8 @@ export const products: Product[] = [
     description: "Our premium full-spectrum CBD oil is crafted from organically grown hemp plants, providing a complete profile of beneficial cannabinoids and terpenes for maximum effectiveness.",
     price: 89.99,
     discountPrice: 79.99,
-    images: [
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg"
-    ],
-    image: "/images/products/placeholder.jpg",
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
     category: "health",
     tags: ["oil", "full-spectrum", "organic", "tincture"],
     rating: 4.8,
@@ -60,29 +56,53 @@ export const products: Product[] = [
   {
     id: "cbd-wellness-drops",
     name: "CBD Wellness Drops",
-    description: "Our CBD Wellness Drops combine premium CBD with essential vitamins and adaptogens for a daily wellness boost that supports your body's natural balance.",
+    description: "A balanced blend of CBD and adaptogenic herbs for daily wellness support.",
     price: 69.99,
-    images: [
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg"
-    ],
-    image: "/images/products/placeholder.jpg",
+    discountPrice: 59.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
     category: "health",
-    tags: ["wellness", "drops", "vitamins", "daily"],
-    rating: 4.6,
-    reviewCount: 89,
-    stock: 35,
+    tags: ["wellness", "drops", "daily", "adaptogenic"],
+    rating: 4.7,
+    reviewCount: 98,
+    stock: 45,
+    featured: true,
     details: {
       size: "30ml",
       concentration: "750mg CBD",
-      ingredients: ["Broad Spectrum Hemp Extract", "MCT Oil", "Vitamin D3", "Vitamin B12", "Ashwagandha", "Natural Flavors"],
-      usage: "Take 1ml daily, preferably in the morning with or without food.",
+      ingredients: ["Broad Spectrum CBD", "Adaptogenic Herbs", "MCT Oil"],
+      usage: "Take 1ml daily for optimal wellness support.",
       benefits: [
-        "Supports overall wellness",
-        "Enhances daily energy levels",
-        "Promotes immune system function",
-        "Helps maintain mental clarity"
+        "Daily wellness support",
+        "Enhanced vitality",
+        "Natural balance",
+        "Stress management"
+      ]
+    }
+  },
+  {
+    id: "cbd-sleep-formula",
+    name: "CBD Sleep Formula",
+    description: "Advanced sleep support combining CBD with melatonin and calming herbs.",
+    price: 79.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "health",
+    tags: ["sleep", "melatonin", "relaxation"],
+    rating: 4.9,
+    reviewCount: 156,
+    stock: 35,
+    featured: true,
+    details: {
+      size: "30ml",
+      concentration: "1000mg CBD + 3mg Melatonin",
+      ingredients: ["Broad Spectrum CBD", "Melatonin", "Chamomile", "Valerian Root"],
+      usage: "Take 1ml 30 minutes before bedtime.",
+      benefits: [
+        "Promotes restful sleep",
+        "Natural sleep support",
+        "Gentle formula",
+        "Wake up refreshed"
       ]
     }
   },
@@ -150,30 +170,52 @@ export const products: Product[] = [
   {
     id: "cbd-face-serum",
     name: "CBD Radiance Face Serum",
-    description: "This luxurious face serum combines the power of CBD with hyaluronic acid and vitamin C to hydrate, brighten and rejuvenate your skin for a radiant complexion.",
-    price: 79.99,
-    images: [
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg"
-    ],
-    image: "/images/products/placeholder.jpg",
+    description: "Lightweight serum with CBD and vitamin C for bright, glowing skin.",
+    price: 69.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
     category: "beauty",
-    tags: ["serum", "face", "skincare", "beauty"],
+    tags: ["serum", "vitamin c", "glow", "radiance"],
     rating: 4.8,
-    reviewCount: 97,
-    stock: 25,
-    new: true,
+    reviewCount: 84,
+    stock: 28,
+    featured: true,
     details: {
       size: "30ml",
-      concentration: "500mg CBD",
-      ingredients: ["CBD Isolate", "Hyaluronic Acid", "Vitamin C", "Niacinamide", "Aloe Vera", "Green Tea Extract", "Jojoba Oil"],
-      usage: "Apply 3-4 drops to clean skin morning and evening. Follow with moisturizer.",
+      concentration: "200mg CBD",
+      ingredients: ["CBD Isolate", "Vitamin C", "Niacinamide", "Hyaluronic Acid"],
+      usage: "Apply to clean face morning and evening before moisturizer.",
       benefits: [
-        "Hydrates and plumps skin",
         "Brightens complexion",
-        "Reduces appearance of fine lines",
-        "Calms redness and irritation"
+        "Evens skin tone",
+        "Boosts collagen",
+        "Antioxidant protection"
+      ]
+    }
+  },
+  {
+    id: "cbd-beauty-oil",
+    name: "CBD Beauty Elixir Oil",
+    description: "Multi-purpose beauty oil for face, hair, and body.",
+    price: 59.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "beauty",
+    tags: ["beauty", "oil", "multi-purpose"],
+    rating: 4.6,
+    reviewCount: 62,
+    stock: 35,
+    featured: true,
+    details: {
+      size: "50ml",
+      concentration: "250mg CBD",
+      ingredients: ["CBD Isolate", "Jojoba Oil", "Argan Oil", "Vitamin E"],
+      usage: "Apply to face, hair, or body as needed.",
+      benefits: [
+        "Versatile beauty oil",
+        "Nourishes skin and hair",
+        "Promotes radiance",
+        "Natural ingredients"
       ]
     }
   },
@@ -183,12 +225,8 @@ export const products: Product[] = [
     description: "Formulated specifically for athletes, our Sport Performance Drops combine CBD with BCAAs and electrolytes to support recovery, endurance and optimal performance.",
     price: 74.99,
     discountPrice: 64.99,
-    images: [
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg"
-    ],
-    image: "/images/products/placeholder.jpg",
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
     category: "sport",
     tags: ["sport", "performance", "recovery", "tincture"],
     rating: 4.7,
@@ -205,6 +243,58 @@ export const products: Product[] = [
         "Enhances endurance",
         "Helps maintain electrolyte balance",
         "Promotes joint mobility"
+      ]
+    }
+  },
+  {
+    id: "cbd-muscle-gel",
+    name: "CBD Recovery Muscle Gel",
+    description: "Fast-acting topical gel with cooling menthol and CBD for muscle recovery.",
+    price: 54.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "sport",
+    tags: ["muscle", "recovery", "topical", "cooling"],
+    rating: 4.8,
+    reviewCount: 92,
+    stock: 40,
+    featured: true,
+    details: {
+      size: "100ml",
+      concentration: "1000mg CBD",
+      ingredients: ["CBD Isolate", "Menthol", "Arnica", "Aloe Vera"],
+      usage: "Apply directly to sore muscles and joints as needed.",
+      benefits: [
+        "Rapid muscle relief",
+        "Cooling sensation",
+        "Targeted recovery",
+        "Non-greasy formula"
+      ]
+    }
+  },
+  {
+    id: "cbd-sport-capsules",
+    name: "CBD Sport Performance Capsules",
+    description: "Pre-workout capsules combining CBD with performance-enhancing compounds.",
+    price: 64.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "sport",
+    tags: ["sport", "capsules", "pre-workout"],
+    rating: 4.6,
+    reviewCount: 78,
+    stock: 25,
+    featured: true,
+    details: {
+      size: "60 capsules",
+      concentration: "25mg CBD per capsule",
+      ingredients: ["CBD Isolate", "L-Theanine", "Caffeine", "B-Vitamins"],
+      usage: "Take 2 capsules 30 minutes before workout.",
+      benefits: [
+        "Enhanced focus",
+        "Improved endurance",
+        "Clean energy",
+        "Better performance"
       ]
     }
   },
@@ -273,12 +363,8 @@ export const products: Product[] = [
     description: "This rich night cream works while you sleep, combining CBD with retinol and peptides to rejuvenate your skin, reduce signs of aging, and wake up with a refreshed complexion.",
     price: 84.99,
     discountPrice: 74.99,
-    images: [
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg"
-    ],
-    image: "/images/products/placeholder.jpg",
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
     category: "beauty",
     tags: ["night cream", "anti-aging", "skincare", "beauty"],
     rating: 4.7,
@@ -303,18 +389,14 @@ export const products: Product[] = [
     name: "CBD Pet Wellness Tincture",
     description: "Specially formulated for your furry friends, our Pet Wellness Tincture helps support your pet's overall health, calm, and comfort with a gentle, pet-safe CBD formula.",
     price: 59.99,
-    images: [
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg",
-      "/images/products/placeholder.jpg"
-    ],
-    image: "/images/products/placeholder.jpg",
-    category: "health",
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "pet",
     tags: ["pet", "tincture", "wellness", "animal"],
     rating: 4.9,
     reviewCount: 112,
     stock: 40,
-    bestSeller: true,
+    featured: true,
     details: {
       size: "30ml",
       concentration: "500mg CBD",
@@ -325,6 +407,58 @@ export const products: Product[] = [
         "Helps maintain calm during stressful situations",
         "Promotes overall wellness",
         "Supports healthy sleep patterns"
+      ]
+    }
+  },
+  {
+    id: "cbd-pet-treats",
+    name: "CBD Calming Pet Treats",
+    description: "Delicious CBD-infused treats to help pets stay calm and relaxed.",
+    price: 34.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "pet",
+    tags: ["pet", "treats", "calming"],
+    rating: 4.8,
+    reviewCount: 96,
+    stock: 50,
+    featured: true,
+    details: {
+      size: "30 treats",
+      concentration: "5mg CBD per treat",
+      ingredients: ["Broad Spectrum CBD", "Natural Ingredients", "Peanut Butter"],
+      usage: "Give 1-2 treats daily based on pet size.",
+      benefits: [
+        "Promotes calmness",
+        "Reduces anxiety",
+        "Tasty formula",
+        "Easy to administer"
+      ]
+    }
+  },
+  {
+    id: "cbd-pet-balm",
+    name: "CBD Pet Care Balm",
+    description: "Soothing balm for pet skin, paw, and nose care.",
+    price: 29.99,
+    images: ["/images/tincture2.png", "/images/tincture2.png", "/images/tincture2.png"],
+    image: "/images/tincture2.png",
+    category: "pet",
+    tags: ["pet", "balm", "topical"],
+    rating: 4.7,
+    reviewCount: 84,
+    stock: 45,
+    featured: true,
+    details: {
+      size: "60ml",
+      concentration: "150mg CBD",
+      ingredients: ["CBD Isolate", "Coconut Oil", "Shea Butter", "Vitamin E"],
+      usage: "Apply to affected areas as needed.",
+      benefits: [
+        "Soothes skin",
+        "Protects paws",
+        "Moisturizes nose",
+        "Safe if licked"
       ]
     }
   },

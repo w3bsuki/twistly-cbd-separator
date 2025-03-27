@@ -283,6 +283,35 @@ export default function PetCBDPage() {
             <p className="text-amber-600 mt-1">Specially formulated CBD for your pets' health and happiness</p>
           </motion.div>
           
+          {/* Product Slider */}
+          <div className="mb-8">
+            <InfiniteSlider speed={35} className="w-full py-4">
+              {petProducts.map((product, index) => (
+                <motion.div 
+                  key={`slider-${index}`} 
+                  className="relative group w-[180px]"
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  <AspectRatio ratio={1} className="bg-white rounded-xl border border-amber-100">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-contain p-4 scale-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-amber-900/60 via-amber-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                      <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                      <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
+                        {product.strength}
+                      </Badge>
+                    </div>
+                  </AspectRatio>
+                </motion.div>
+              ))}
+            </InfiniteSlider>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {petProducts.map((product, index) => (
               <motion.div
@@ -359,33 +388,25 @@ export default function PetCBDPage() {
             <p className="text-amber-600 mt-1">See how our CBD products have helped pets live healthier, happier lives</p>
           </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <InfiniteSlider speed={35} pauseOnHover={true} className="py-4">
             {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-              >
-                <Card className="h-full border">
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
+              <div key={index} className="px-3 min-w-[280px] max-w-[350px]">
+                <Card className="bg-white shadow-sm border border-amber-100 h-full">
+                  <CardContent className="p-5">
+                    <div className="flex mb-3">
                       {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={cn(
-                            "w-4 h-4", 
-                            i < testimonial.rating 
-                              ? "text-amber-500 fill-amber-500" 
-                              : "text-gray-300"
-                          )} 
+                        <Star
+                          key={i}
+                          fill={i < testimonial.rating ? "currentColor" : "none"}
+                          className={`h-4 w-4 ${
+                            i < testimonial.rating ? "text-yellow-400" : "text-gray-300"
+                          }`}
                         />
                       ))}
                     </div>
-                    <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>
+                    <p className="text-sm text-gray-700 italic mb-4">"{testimonial.quote}"</p>
                     <div className="flex items-center">
-                      <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
+                      <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 mr-3 flex items-center justify-center">
                         <Image
                           src={testimonial.image}
                           alt={testimonial.author}
@@ -395,15 +416,15 @@ export default function PetCBDPage() {
                         />
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                        <p className="text-xs text-gray-600">{testimonial.role}</p>
+                        <p className="font-semibold text-sm text-gray-900">{testimonial.author}</p>
+                        <p className="text-xs text-gray-500">{testimonial.role}</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
-          </div>
+          </InfiniteSlider>
         </div>
         
         {/* Research & Studies */}

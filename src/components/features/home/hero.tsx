@@ -50,7 +50,7 @@ function Hero() {
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-green-50 via-white to-green-50 overflow-hidden">
+    <div className="relative bg-gradient-to-b from-green-50 via-white to-green-50 overflow-hidden min-h-[calc(100vh-80px)] flex items-center">
       {/* Background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-green-100/40 mix-blend-multiply filter blur-3xl" />
@@ -58,13 +58,13 @@ function Hero() {
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] rounded-full bg-green-100/30 mix-blend-multiply filter blur-3xl" />
       </div>
 
-      <div className="container relative mx-auto px-4 pt-14 pb-12 md:pt-18 md:pb-16 lg:pt-20 lg:pb-20 flex flex-col items-center z-10">
+      <div className="container relative mx-auto px-4 py-10 md:py-14 flex flex-col items-center z-10 w-full">
         {/* Central badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex justify-center mb-6"
+          className="flex justify-center mb-2 -mt-6"
         >
           <Badge 
             className="px-5 py-2 text-sm bg-white shadow-md border-green-200 text-green-700 flex items-center gap-2"
@@ -78,7 +78,7 @@ function Hero() {
         {/* Content - centered layout */}
         <div className="flex flex-col items-center max-w-4xl mx-auto">
           <motion.h1
-            className="text-3xl sm:text-5xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-center"
+            className="text-3xl sm:text-5xl md:text-5xl font-extrabold tracking-tight leading-[1.1] text-center mb-8"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4 }}
@@ -86,7 +86,7 @@ function Hero() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-600 to-green-700">
               Rediscover Balance with
             </span>
-            <div className="mt-3 md:mt-4">
+            <div className="mt-2 md:mt-3">
               <TextRotate
                 texts={[
                   <span key="nature" className="text-green-600">Nature's Power</span>,
@@ -105,7 +105,7 @@ function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="mt-8 mb-8 relative flex justify-center gap-6 md:gap-8"
+            className="mt-0 mb-8 relative flex justify-center gap-6 md:gap-8"
           >
             {/* Product 1 - CBD Oil */}
             <div className="relative w-[200px] h-[200px] sm:w-[220px] sm:h-[220px] group">
@@ -147,31 +147,10 @@ function Hero() {
               </div>
             </div>
           </motion.div>
-          
-          {/* Trust indicators with improved styling */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-3 mb-8"
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-          >
-            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-green-50">
-              <Shield className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-700">3rd Party Lab Tested</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-green-50">
-              <Award className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-700">Premium Quality</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-green-50">
-              <HeartPulse className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-green-700">Sustainable Farming</span>
-            </div>
-          </motion.div>
 
           {/* CTA buttons with improved styling */}
           <motion.div
-            className="flex flex-col sm:flex-row justify-center gap-3 relative z-20 mb-8"
+            className="flex flex-col sm:flex-row justify-center gap-3 relative z-20 mt-6 mb-6"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: 0.3 }}
@@ -257,13 +236,36 @@ function Hero() {
           
           {/* Improved tagline with more engaging copy */}
           <motion.p
-            className="text-sm md:text-base text-[#171717]/70 max-w-2xl text-center font-normal"
+            className="text-sm md:text-base text-[#171717]/70 max-w-2xl text-center font-normal mb-7"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: 0.35 }}
           >
             Expertly crafted with nature's finest ingredients to elevate your daily wellness journey
           </motion.p>
+          
+          {/* Trust indicators after buttons and subtext */}
+          <motion.div
+            className="flex justify-center gap-4 md:gap-6 mx-auto"
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+          >
+            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-green-50">
+              <Shield className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-green-700">Lab Tested</span>
+            </div>
+            
+            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-green-50">
+              <Award className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-green-700">Premium Quality</span>
+            </div>
+            
+            <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg shadow-sm border border-green-50">
+              <Leaf className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium text-green-700">Organic Hemp</span>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>

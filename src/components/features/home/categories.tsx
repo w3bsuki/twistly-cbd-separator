@@ -8,17 +8,21 @@ import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { ArrowRight, Heart, Activity, Sparkles, Leaf } from "lucide-react"
+import { ArrowRight, Sparkles, Droplets, Star, Heart } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-// Main category data
-const categories = [
+// Best sellers by category
+const categoryBestSellers = [
   {
     title: "Health & Wellness",
-    description: "Products designed to promote balance, relaxation, and overall wellbeing",
-    src: "/images/2.png",
-    href: "/health",
+    description: "Our top CBD oil for anxiety relief and better sleep",
+    productName: "Premium CBD Oil",
+    price: 59.99,
+    rating: 4.9,
+    reviewCount: 142,
+    src: "/images/tincture2.png",
+    href: "/shop/premium-cbd-oil",
     bgColor: "bg-gradient-to-br from-green-50 to-green-100/60",
     iconBg: "bg-green-600",
     textColor: "text-green-800",
@@ -26,49 +30,84 @@ const categories = [
     hoverBorderColor: "group-hover:border-green-300",
     hoverShadow: "hover:shadow-green-100/50",
     icon: <Heart className="w-6 h-6 text-white" />,
-    tagline: "Balance your mind and body",
+    tagline: "Mood & Calm",
+    benefits: ["Anxiety relief", "Better sleep", "Overall wellness"]
   },
   {
     title: "Sport & Recovery",
-    description: "Active formulations to support performance, recovery, and mobility",
-    src: "/images/2.png",
-    href: "/sport",
+    description: "Fast-acting muscle recovery formula for athletes",
+    productName: "Recovery Muscle Balm",
+    price: 49.99,
+    rating: 4.8,
+    reviewCount: 89,
+    src: "/images/tincture2.png",
+    href: "/shop/recovery-balm",
     bgColor: "bg-gradient-to-br from-blue-50 to-blue-100/60",
     iconBg: "bg-blue-600",
     textColor: "text-blue-800",
     borderColor: "border-blue-200",
     hoverBorderColor: "group-hover:border-blue-300",
     hoverShadow: "hover:shadow-blue-100/50",
-    icon: <Activity className="w-6 h-6 text-white" />,
-    tagline: "Enhance performance and recovery",
+    icon: <Droplets className="w-6 h-6 text-white" />,
+    tagline: "Fast Recovery",
+    benefits: ["Muscle relief", "Reduces inflammation", "Joint support"]
   },
   {
     title: "Beauty & Skincare",
-    description: "CBD-infused formulas to enhance your natural glow and skin health",
-    src: "/images/2.png",
-    href: "/beauty",
-    bgColor: "bg-gradient-to-br from-purple-50 to-pink-100/60",
+    description: "Luxurious facial serum for radiant, youthful skin",
+    productName: "Radiance CBD Face Serum",
+    price: 79.99,
+    rating: 4.7,
+    reviewCount: 76,
+    src: "/images/tincture2.png",
+    href: "/shop/face-serum",
+    bgColor: "bg-gradient-to-br from-purple-50 to-purple-100/60",
     iconBg: "bg-purple-600",
     textColor: "text-purple-800",
     borderColor: "border-purple-200",
     hoverBorderColor: "group-hover:border-purple-300",
     hoverShadow: "hover:shadow-purple-100/50",
     icon: <Sparkles className="w-6 h-6 text-white" />,
-    tagline: "Radiant skin from within",
+    tagline: "Youthful Glow",
+    benefits: ["Anti-aging", "Skin hydration", "Reduces inflammation"]
   },
   {
-    title: "Hybrid Solutions",
-    description: "Innovative blends combining CBD with functional mushrooms and botanicals",
-    src: "/images/2.png",
-    href: "/hybrid",
-    bgColor: "bg-gradient-to-br from-amber-800/10 to-amber-700/20",
-    iconBg: "bg-amber-800",
-    textColor: "text-amber-900",
-    borderColor: "border-amber-300",
-    hoverBorderColor: "group-hover:border-amber-400",
+    title: "Hybrid & Mushrooms",
+    description: "Ultimate cognitive support with CBD and functional mushrooms",
+    productName: "Cognitive Support Capsules",
+    price: 69.99,
+    rating: 4.8,
+    reviewCount: 104,
+    src: "/images/tincture2.png",
+    href: "/shop/cognitive-capsules",
+    bgColor: "bg-gradient-to-br from-amber-50 to-amber-100/60",
+    iconBg: "bg-amber-600",
+    textColor: "text-amber-800",
+    borderColor: "border-amber-200",
+    hoverBorderColor: "group-hover:border-amber-300",
     hoverShadow: "hover:shadow-amber-100/50",
-    icon: <Leaf className="w-6 h-6 text-white" />,
-    tagline: "The best of both worlds",
+    icon: <Droplets className="w-6 h-6 text-white" />,
+    tagline: "Mental Clarity",
+    benefits: ["Focus & clarity", "Stress relief", "Immune support"]
+  },
+  {
+    title: "Pet CBD",
+    description: "Calming CBD oil specially formulated for pets",
+    productName: "Pet Calm CBD Oil",
+    price: 44.99,
+    rating: 4.9,
+    reviewCount: 118,
+    src: "/images/tincture2.png",
+    href: "/shop/pet-cbd-oil",
+    bgColor: "bg-gradient-to-br from-orange-50 to-orange-100/60",
+    iconBg: "bg-orange-500",
+    textColor: "text-orange-700",
+    borderColor: "border-orange-200",
+    hoverBorderColor: "group-hover:border-orange-300",
+    hoverShadow: "hover:shadow-orange-100/50",
+    icon: <Star className="w-6 h-6 text-white" />,
+    tagline: "Pet Wellness",
+    benefits: ["Reduces anxiety", "Joint support", "Overall pet wellness"]
   }
 ]
 
@@ -90,7 +129,7 @@ export function FeaturedProducts() {
   };
   
   return (
-    <section className="py-14 md:py-20 bg-gradient-to-b from-green-50 via-white to-white relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-gradient-to-b from-white via-white to-green-50/30 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
       
@@ -103,8 +142,8 @@ export function FeaturedProducts() {
             transition={{ duration: 0.5 }}
           >
             <Badge variant="outline" className="px-4 py-1 text-sm bg-white border-green-200 text-green-700 flex items-center gap-2">
-              <Leaf className="w-4 h-4" />
-              Our Categories
+              <Star className="w-4 h-4" />
+              Best Sellers
             </Badge>
           </motion.div>
           <motion.h2
@@ -114,7 +153,7 @@ export function FeaturedProducts() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl font-bold md:text-5xl max-w-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-600 to-green-700"
           >
-            Find Your Perfect CBD Match
+            Top Products By Category
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -123,13 +162,13 @@ export function FeaturedProducts() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-gray-600 max-w-2xl mt-3 text-lg"
           >
-            Explore our specialized categories to find products perfectly suited to your unique needs
+            Our most popular products from each category, handpicked based on customer reviews
           </motion.p>
         </div>
 
-        {/* Grid of Category Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category, index) => (
+        {/* Grid of Best Seller Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {categoryBestSellers.map((product, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -142,66 +181,113 @@ export function FeaturedProducts() {
                 <Card 
                   className={cn(
                     "group relative overflow-hidden h-full transition-all duration-300 border cursor-pointer",
-                    category.borderColor,
-                    category.bgColor,
+                    product.borderColor,
+                    product.bgColor,
                     "shadow-sm hover:shadow-md"
                   )}
-                  onClick={(e) => handleCardClick(category.href, e)}
+                  onClick={(e) => handleCardClick(product.href, e)}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-white/0 via-white/0 to-white/0 group-hover:from-white/10 group-hover:via-white/5 group-hover:to-white/0 transition-colors duration-500"></div>
                   <div className={cn(
                     "absolute bottom-0 h-1 left-0 w-0 group-hover:w-full transition-all duration-500",
-                    category.iconBg
+                    product.iconBg
                   )}></div>
-                  <div className="p-6 flex flex-col h-full justify-between relative z-20">
-                    {/* Icon and Category - Centered */}
-                    <div className="flex flex-col items-center text-center gap-3 mb-2">
-                      <div className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center shadow-md transition-transform duration-300",
-                        category.iconBg
+                  <div className="p-4 flex flex-col h-full justify-between relative z-20">
+                    {/* Category Badge */}
+                    <div className="flex justify-center mb-2">
+                      <Badge className={cn(
+                        "rounded-full px-3 py-1 text-xs font-medium",
+                        product.iconBg,
+                        "text-white"
                       )}>
-                        {category.icon}
-                      </div>
-                      <h3 className={cn("text-xl md:text-2xl font-bold", category.textColor)}>{category.title}</h3>
+                        {product.title}
+                      </Badge>
                     </div>
                     
+                    {/* Product Name */}
+                    <h3 className={cn(
+                      "text-center font-bold text-base mb-1", 
+                      product.textColor
+                    )}>
+                      {product.productName}
+                    </h3>
+                    
+                    {/* Tagline */}
+                    <p className="text-xs text-center text-gray-600 mb-3">
+                      {product.tagline}
+                    </p>
+                    
                     {/* Product Image */}
-                    <div className="relative w-full h-36 my-4 mx-auto">
+                    <div className="relative w-full h-28 my-2 mx-auto">
                       <Image
-                        src={category.src}
-                        alt={category.title}
+                        src={product.src}
+                        alt={product.productName}
                         fill
                         className="object-contain drop-shadow-md"
                       />
                     </div>
                     
-                    {/* Description */}
-                    <p className="text-sm text-center text-gray-600 mb-5 line-clamp-2">{category.description}</p>
+                    {/* Price and Rating */}
+                    <div className="flex justify-between items-center my-2">
+                      <div className="font-bold text-lg">
+                        ${product.price}
+                      </div>
+                      <div className="flex items-center">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <Star 
+                              key={i} 
+                              className={cn(
+                                "h-3.5 w-3.5", 
+                                i < Math.floor(product.rating) 
+                                  ? "fill-amber-400 text-amber-400" 
+                                  : "fill-gray-200 text-gray-200"
+                              )}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs text-gray-500 ml-1">({product.reviewCount})</span>
+                      </div>
+                    </div>
+                    
+                    {/* Benefits */}
+                    <div className="mt-1 mb-3">
+                      <div className="space-y-1">
+                        {product.benefits.map((benefit, i) => (
+                          <div key={i} className="flex items-center text-xs text-gray-600">
+                            <div className={cn(
+                              "h-1.5 w-1.5 rounded-full mr-1.5", 
+                              product.iconBg
+                            )}></div>
+                            {benefit}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                     
                     {/* CTA Button */}
-                    <div className="mt-4 pt-4 border-t">
-                      <Button 
-                        className={cn(
-                          "w-full rounded-full justify-center gap-1 border",
-                          category.iconBg,
-                          "text-white",
-                          "transition-all duration-300",
-                          {
-                            "hover:bg-white hover:text-green-600 hover:border-green-600": category.title === "Health & Wellness",
-                            "hover:bg-white hover:text-blue-600 hover:border-blue-600": category.title === "Sport & Recovery",
-                            "hover:bg-white hover:text-purple-600 hover:border-purple-600": category.title === "Beauty & Skincare",
-                            "hover:bg-white hover:text-amber-800 hover:border-amber-800": category.title === "Hybrid Solutions"
-                          }
-                        )}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(category.href);
-                        }}
-                      >
-                        <span className="font-medium">Explore</span>
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </Button>
-                    </div>
+                    <Button 
+                      className={cn(
+                        "w-full rounded-full justify-center gap-1 mt-auto border",
+                        product.iconBg,
+                        "text-white",
+                        "transition-all duration-300 hover:bg-white",
+                        {
+                          "hover:text-green-600 hover:border-green-600": product.title === "Health & Wellness",
+                          "hover:text-blue-600 hover:border-blue-600": product.title === "Sport & Recovery",
+                          "hover:text-purple-600 hover:border-purple-600": product.title === "Beauty & Skincare",
+                          "hover:text-amber-600 hover:border-amber-600": product.title === "Hybrid & Mushrooms",
+                          "hover:text-orange-500 hover:border-orange-500": product.title === "Pet CBD"
+                        }
+                      )}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(product.href);
+                      }}
+                    >
+                      <span className="font-medium text-sm">View Product</span>
+                      <ArrowRight className="h-3.5 w-3.5 ml-1" />
+                    </Button>
                   </div>
                 </Card>
               </div>
@@ -231,7 +317,7 @@ export function FeaturedProducts() {
                 />
               </div>
               <Separator orientation="vertical" className="h-4 bg-white/30 group-hover:bg-green-200/50" />
-              <span className="text-base font-medium">View All Products</span>
+              <span className="text-base font-medium">Browse All Products</span>
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>

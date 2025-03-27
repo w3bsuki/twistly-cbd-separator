@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Check, Sparkles, Droplet, Leaf, Sun, Shield, Star, Bot } from 'lucide-react'
+import { ArrowRight, Check, Clock, Leaf, Star, Bot, Sun, Shield, Heart, Sparkles, Droplet } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
@@ -319,7 +319,36 @@ export default function BeautyAndCosmeticsPage() {
               Our beauty collection features CBD-infused skincare designed to enhance your natural beauty and promote healthy skin.
             </p>
           </motion.div>
-
+          
+          {/* Compact Product Slider */}
+          <div className="mb-8">
+            <InfiniteSlider gap={12} className="w-full py-4">
+              {beautyProducts.map((product, index) => (
+                <motion.div 
+                  key={`slider-${index}`} 
+                  className="relative group w-[180px]"
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  <AspectRatio ratio={1} className="bg-white rounded-xl border border-purple-100">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-contain p-4 scale-75"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-purple-900/60 via-purple-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                      <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                      <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
+                        {product.strength}
+                      </Badge>
+                    </div>
+                  </AspectRatio>
+                </motion.div>
+              ))}
+            </InfiniteSlider>
+          </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {beautyProducts.map((product, index) => (
               <motion.div
@@ -635,6 +664,42 @@ export default function BeautyAndCosmeticsPage() {
               </div>
             ))}
           </InfiniteSlider>
+        </div>
+      </section>
+
+      {/* Quality Banner Section */}
+      <section className="py-8 bg-white">
+        <div className="container mx-auto max-w-6xl px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl p-6 text-white"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="md:w-2/3">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                  <Sparkles className="h-5 w-5" />
+                  Premium Beauty-Grade Quality
+                </h3>
+                <p className="text-purple-100 text-sm mb-3">
+                  Our CBD beauty formulations are made with premium ingredients and developed by skincare experts. Each product is dermatologist-tested and verified by third-party labs.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Dermatologist-Tested</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Lab Verified</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Clean Ingredients</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Paraben-Free</Badge>
+                </div>
+              </div>
+              <Button asChild size="sm" className="bg-white text-purple-700 hover:bg-purple-50 px-4 py-2">
+                <Link href="/ingredient-list">
+                  View Ingredients <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
 

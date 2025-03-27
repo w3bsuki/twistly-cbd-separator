@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, User, Search, ChevronDown, Menu, X, Bitcoin } from 'lucide-react'
+import { ShoppingCart, User, Search, ChevronDown, Menu, X, Bitcoin, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { 
   DropdownMenu, 
@@ -158,12 +158,21 @@ const productCategories = [
 
 // Navigation links - removed Home and Shop
 const navLinks = [
-  { name: "Shop", path: "/shop" },
-  { name: "About", path: "/about" },
-  { name: "Blog", path: "/blog" },
-  { name: "Contact", path: "/contact" },
-  { name: "Lab", path: "/lab" }
+  { name: "Shop", path: "/shop", icon: ShoppingCart },
+  { name: "About", path: "/about", icon: User },
+  { name: "Blog", path: "/blog", icon: ArrowRight },
+  { name: "Contact", path: "/contact", icon: ArrowRight },
+  { name: "Lab", path: "/lab", icon: Bitcoin }
 ]
+
+// Add category descriptions for the dropdowns
+const categoryDescriptions = {
+  "Wellness": "Discover premium CBD products designed to promote balance, relaxation, and overall wellbeing.",
+  "Sport": "Enhance your active lifestyle with CBD formulations designed specifically for performance and recovery.",
+  "Beauty": "Elevate your skincare routine with CBD-infused beauty products for radiant, healthy skin.",
+  "Hybrid": "Experience the synergistic benefits of CBD combined with functional mushrooms and botanicals.",
+  "Pet CBD": "Support your furry friend's wellness with specially formulated CBD products for pets."
+};
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
@@ -171,6 +180,21 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { toast } = useToast();
+  const [activeCategory, setActiveCategory] = useState("");
+  
+  // Get current path for active state
+  useEffect(() => {
+    const path = window.location.pathname;
+    const category = productCategories.find(cat => 
+      path.includes(cat.path) || path === cat.path
+    );
+    
+    if (category) {
+      setActiveCategory(category.name);
+    } else {
+      setActiveCategory("");
+    }
+  }, []);
   
   // Detect scroll for header shadow only (no height change)
   useEffect(() => {
@@ -206,7 +230,7 @@ export function Navbar() {
   
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full border-b border-gray-100 bg-white h-20 backdrop-blur-sm bg-white/95",
+      "sticky top-0 z-50 w-full border-b border-gray-100 bg-gradient-to-r from-white via-white to-white/95 backdrop-blur-sm h-20",
       isScrolled ? "shadow-md" : "shadow-sm"
     )}>
       <div className="container mx-auto h-full">
@@ -217,220 +241,232 @@ export function Navbar() {
             className="flex items-center gap-3"
             onClick={cycleLogo}
           >
-            <div className="relative h-12 w-12 overflow-hidden">
+            <div className="relative h-12 w-12 overflow-hidden shadow-sm rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
               <Image
                 src={`/images/${logoIndex}.png`}
                 alt="Twistly"
                 width={48}
                 height={48}
-                className="object-contain"
+                className="object-contain p-1 hover:scale-110 transition-transform duration-300"
               />
             </div>
-            <span className="font-bold text-black text-2xl hidden sm:inline-block tracking-tight">
-              Twistly<span className="text-green-600">.</span>
+            <span className="font-semibold text-gray-900 text-2xl hidden sm:inline-block tracking-tight">
+              Twistly<span className="text-green-600 font-bold">.</span>
             </span>
           </Link>
           
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {/* Product Category Dropdowns with hover trigger */}
-            {productCategories.map((category) => (
-              <div key={category.path} className="group relative">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex items-center justify-center flex-1 mx-6">
+            <nav className="flex items-center space-x-5">
+              {/* Product Category Dropdowns with hover trigger */}
+              {productCategories.map((category) => (
+                <div key={category.path} className="group relative">
+                  <button 
+                    className={cn(
+                      "px-4 py-2.5 text-[15px] font-medium tracking-tight rounded-md flex items-center gap-1.5 transition-all duration-200",
+                      activeCategory === category.name ? "bg-gray-50" : "",
+                      category.color === "green" && "text-green-700 hover:text-green-900 group-hover:bg-green-50/80",
+                      category.color === "blue" && "text-blue-700 hover:text-blue-900 group-hover:bg-blue-50/80",
+                      category.color === "purple" && "text-purple-700 hover:text-purple-900 group-hover:bg-purple-50/80",
+                      category.color === "brown" && "text-amber-900 hover:text-amber-950 group-hover:bg-amber-100/80",
+                      category.color === "amber" && "text-amber-700 hover:text-amber-800 group-hover:bg-amber-50/80",
+                      activeCategory === category.name && category.color === "green" && "bg-green-50",
+                      activeCategory === category.name && category.color === "blue" && "bg-blue-50",
+                      activeCategory === category.name && category.color === "purple" && "bg-purple-50",
+                      activeCategory === category.name && category.color === "brown" && "bg-amber-100",
+                      activeCategory === category.name && category.color === "amber" && "bg-amber-50"
+                    )}
+                    style={{ letterSpacing: '-0.01em' }}
+                  >
+                    {category.name} <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
+                    {activeCategory === category.name && (
+                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-current"></span>
+                    )}
+                  </button>
+                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[400px] z-20 transition-all duration-150 ease-out transform translate-y-1 group-hover:translate-y-0">
+                    <div className={cn(
+                      "rounded-lg border shadow-lg bg-white p-5",
+                      category.color === "green" && "border-green-100",
+                      category.color === "blue" && "border-blue-100",
+                      category.color === "purple" && "border-purple-100",
+                      category.color === "brown" && "border-amber-200",
+                      category.color === "amber" && "border-amber-100"
+                    )}>
+                      {/* Category description */}
+                      <div className="mb-4">
+                        <p className="text-sm text-gray-600 leading-relaxed">{categoryDescriptions[category.name]}</p>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-4">
+                        {category.products.map((product) => (
+                          <Link key={product.path} href={product.path} className="group">
+                            <div className="space-y-2">
+                              <div className="relative w-full pt-[100%] rounded-md overflow-hidden border bg-gray-50/50">
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  fill
+                                  className="object-contain p-2 transition-all duration-200 ease-in-out group-hover:scale-105"
+                                  sizes="(max-width: 768px) 100vw, 33vw"
+                                />
+                              </div>
+                              <div className="space-y-1">
+                                <h4 className={cn(
+                                  "text-sm font-semibold tracking-tight group-hover:underline",
+                                  category.color === "green" && "group-hover:text-green-700",
+                                  category.color === "blue" && "group-hover:text-blue-700",
+                                  category.color === "purple" && "group-hover:text-purple-700",
+                                  category.color === "brown" && "group-hover:text-amber-900",
+                                  category.color === "amber" && "group-hover:text-amber-700"
+                                )}>
+                                  {product.name}
+                                </h4>
+                                <p className="text-xs text-gray-500 line-clamp-2 font-light">
+                                  {product.description}
+                                </p>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="h-px bg-gray-200 my-4"></div>
+                      <div className="flex justify-end">
+                        <Button 
+                          asChild
+                          variant="ghost" 
+                          className={cn(
+                            "gap-1.5 font-medium text-white rounded-full shadow-sm",
+                            category.color === "green" && "bg-green-600 hover:bg-green-700",
+                            category.color === "blue" && "bg-blue-600 hover:bg-blue-700",
+                            category.color === "purple" && "bg-purple-600 hover:bg-purple-700",
+                            category.color === "brown" && "bg-amber-800 hover:bg-amber-900",
+                            category.color === "amber" && "bg-amber-600 hover:bg-amber-700"
+                          )}
+                          size="sm"
+                        >
+                          <Link href={category.path} className="flex items-center">
+                            Explore {category.name}
+                            <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {/* Info Dropdown */}
+              <div className="group relative">
                 <button 
-                  className={cn(
-                    "px-5 py-2.5 text-base font-medium tracking-tight rounded-md flex items-center gap-1.5 transition-colors duration-200",
-                    category.color === "green" && "text-green-700 hover:text-green-900 group-hover:bg-green-50",
-                    category.color === "blue" && "text-blue-700 hover:text-blue-900 group-hover:bg-blue-50",
-                    category.color === "purple" && "text-purple-700 hover:text-purple-900 group-hover:bg-purple-50",
-                    category.color === "brown" && "text-amber-900 hover:text-amber-950 group-hover:bg-amber-100",
-                    category.color === "amber" && "text-amber-700 hover:text-amber-800 group-hover:bg-amber-50"
-                  )}
+                  className="px-4 py-2.5 text-[15px] font-medium tracking-tight rounded-md flex items-center gap-1.5 text-gray-800 hover:text-gray-900 group-hover:bg-gray-50/80 transition-all duration-200"
+                  style={{ letterSpacing: '-0.01em' }}
                 >
-                  {category.name} <ChevronDown className="h-4 w-4 opacity-70" />
+                  Info <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
                 </button>
-                <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[400px] z-20 transition-all duration-200 ease-in-out transform translate-y-1 group-hover:translate-y-0">
-                  <div className={cn(
-                    "rounded-lg border shadow-lg bg-white p-5",
-                    category.color === "green" && "border-green-100",
-                    category.color === "blue" && "border-blue-100",
-                    category.color === "purple" && "border-purple-100",
-                    category.color === "brown" && "border-amber-200",
-                    category.color === "amber" && "border-amber-100"
-                  )}>
-                    <div className="grid grid-cols-3 gap-4">
-                      {category.products.map((product) => (
-                        <Link key={product.path} href={product.path} className="group">
-                          <div className="space-y-2">
-                            <div className="relative w-full pt-[100%] rounded-md overflow-hidden border bg-gray-50/50">
-                              <motion.img
-                                src={product.image}
-                                alt={product.name}
-                                style={{
-                                  position: 'absolute',
-                                  top: 0,
-                                  left: 0,
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'contain',
-                                  padding: '8px'
-                                }}
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.2 }}
-                              />
-                            </div>
-                            <div className="space-y-1">
-                              <h4 className={cn(
-                                "text-sm font-semibold tracking-tight group-hover:underline",
-                                category.color === "green" && "group-hover:text-green-700",
-                                category.color === "blue" && "group-hover:text-blue-700",
-                                category.color === "purple" && "group-hover:text-purple-700",
-                                category.color === "brown" && "group-hover:text-amber-900",
-                                category.color === "amber" && "group-hover:text-amber-700"
-                              )}>
-                                {product.name}
-                              </h4>
-                              <p className="text-xs text-gray-500 line-clamp-2 font-light">
-                                {product.description}
-                              </p>
-                            </div>
-                          </div>
+                <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[220px] z-20 transition-all duration-150 ease-in-out transform translate-y-1 group-hover:translate-y-0">
+                  <div className="rounded-lg border border-gray-200 shadow-lg bg-white p-3">
+                    <div className="flex flex-col space-y-1">
+                      {navLinks.slice(1).map((link) => (
+                        <Link 
+                          key={link.path} 
+                          href={link.path}
+                          className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md flex items-center gap-2 transition-all duration-150"
+                        >
+                          <link.icon className="h-4 w-4 text-gray-500" />
+                          {link.name}
                         </Link>
                       ))}
                     </div>
-                    <div className="h-px bg-gray-200 my-4"></div>
-                    <Link 
-                      href={category.path} 
-                      className={cn(
-                        "text-sm font-medium flex justify-end hover:underline tracking-tight",
-                        category.color === "green" && "text-green-700",
-                        category.color === "blue" && "text-blue-700",
-                        category.color === "purple" && "text-purple-700",
-                        category.color === "brown" && "text-amber-900",
-                        category.color === "amber" && "text-amber-700"
-                      )}
-                    >
-                      View all {category.name} products
-                    </Link>
                   </div>
                 </div>
               </div>
-            ))}
-            
-            {/* Info Dropdown */}
-            <div className="group relative">
-              <button 
-                className="px-5 py-2.5 text-base font-medium tracking-tight rounded-md flex items-center gap-1.5 text-gray-800 hover:text-gray-900 group-hover:bg-gray-50 transition-colors duration-200"
-              >
-                Info <ChevronDown className="h-4 w-4 opacity-70" />
-              </button>
-              <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[200px] z-20 transition-all duration-200 ease-in-out transform translate-y-1 group-hover:translate-y-0">
-                <div className="rounded-lg border shadow-lg bg-white p-3">
-                  <div className="flex flex-col space-y-1">
-                    {navLinks.slice(1).map((link) => (
-                      <motion.div key={link.path} whileHover={{ x: 2 }} transition={{ duration: 0.2 }}>
-                        <Link 
-                          href={link.path}
-                          className="w-full text-left px-3 py-2 text-sm font-medium hover:bg-gray-50 rounded-md block transition-colors duration-150"
-                        >
-                          {link.name}
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav>
-          
-          {/* Desktop Right Side Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            {/* Shop Button */}
-            <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-              <Button asChild variant="default" className="bg-green-600 hover:bg-green-700 text-white rounded-full h-10 px-5 text-sm font-medium shadow-sm">
-                <Link href="/shop" className="flex items-center gap-2">
-                  <div className="relative w-5 h-5">
-                    <Image 
-                      src="/images/2.png"
-                      alt="Twistly Icon" 
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <Separator orientation="vertical" className="h-4 bg-white/30" />
-                  Shop
-                </Link>
-              </Button>
-            </motion.div>
-            
-            {/* Desktop Search Button */}
-            <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              
+              {/* Search Button - Now next to Info */}
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10 hover:scale-110 transition-transform"
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Search"
               >
                 <Search className="h-[18px] w-[18px]" />
               </Button>
-            </motion.div>
-            
-            {/* User Menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <motion.div whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+            </nav>
+          </div>
+          
+          {/* Desktop Right Side Actions - Rearranged */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Cart and Account (Left Side) */}
+            <div className="flex items-center space-x-3">
+              {/* Cart */}
+              <CartDrawer />
+              
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                    className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10 hover:scale-110 transition-transform"
                     aria-label="User account"
                   >
                     <User className="h-[18px] w-[18px]" />
                   </Button>
-                </motion.div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 rounded-lg p-1 border border-gray-200">
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link href="/account" className="font-medium text-sm">My Account</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link href="/orders" className="font-medium text-sm">Orders</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="rounded-md">
-                  <button
-                    onClick={handleWalletConnect}
-                    className="font-medium text-sm w-full text-left flex items-center"
-                  >
-                    <Bitcoin className="h-4 w-4 mr-2" />
-                    Connect Wallet
-                  </button>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="rounded-md">
-                  <Link href="/signin" className="font-medium text-sm">Sign In</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 rounded-lg p-1 border border-gray-200">
+                  <DropdownMenuItem asChild className="rounded-md">
+                    <Link href="/account" className="font-medium text-sm">My Account</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="rounded-md">
+                    <Link href="/orders" className="font-medium text-sm">Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="rounded-md">
+                    <button
+                      onClick={handleWalletConnect}
+                      className="font-medium text-sm w-full text-left flex items-center"
+                    >
+                      <Bitcoin className="h-4 w-4 mr-2" />
+                      Connect Wallet
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild className="rounded-md">
+                    <Link href="/signin" className="font-medium text-sm">Sign In</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             
-            {/* Cart */}
-            <CartDrawer />
+            {/* Shop Button (Right Side) */}
+            <Button asChild variant="default" className="bg-green-600 hover:bg-green-700 text-white rounded-full h-10 px-5 text-sm font-medium shadow-sm hover:scale-105 transition-transform">
+              <Link href="/shop" className="flex items-center gap-2">
+                <div className="relative w-5 h-5">
+                  <Image 
+                    src="/images/2.png"
+                    alt="Twistly Icon" 
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </div>
+                <Separator orientation="vertical" className="h-4 bg-white/30" />
+                Shop
+              </Link>
+            </Button>
           </div>
           
           {/* Mobile Menu and Cart */}
           <div className="flex md:hidden items-center space-x-2">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
-                onClick={() => setIsSearchOpen(true)}
-                aria-label="Search"
-              >
-                <Search className="h-[18px] w-[18px]" />
-              </Button>
-            </motion.div>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10 hover:scale-110 active:scale-95 transition-transform"
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Search"
+            >
+              <Search className="h-[18px] w-[18px]" />
+            </Button>
             
             {/* Mobile Cart */}
             <CartDrawer />
@@ -438,11 +474,14 @@ export function Navbar() {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
-                  <Button variant="ghost" size="icon" aria-label="Menu" className="relative text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full h-10 w-10">
-                    <Menu className="h-[18px] w-[18px]" />
-                  </Button>
-                </motion.div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  aria-label="Menu" 
+                  className="relative text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full h-10 w-10 hover:scale-110 active:scale-95 transition-transform"
+                >
+                  <Menu className="h-[18px] w-[18px]" />
+                </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-full sm:w-80 p-0">
                 <div className="flex flex-col h-full">
@@ -450,12 +489,10 @@ export function Navbar() {
                     <div className="flex items-center justify-between">
                       <SheetTitle className="text-left font-semibold tracking-tight">Menu</SheetTitle>
                       <SheetClose asChild>
-                        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
-                          <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
-                            <X className="h-4 w-4" />
-                            <span className="sr-only">Close menu</span>
-                          </Button>
-                        </motion.div>
+                        <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">Close menu</span>
+                        </Button>
                       </SheetClose>
                     </div>
                   </SheetHeader>

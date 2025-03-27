@@ -426,6 +426,35 @@ export default function HybridAndMushroomsPage() {
             </p>
           </motion.div>
           
+          {/* Product Slider */}
+          <div className="mb-8">
+            <InfiniteSlider gap={12} className="w-full py-4">
+              {hybridProducts.map((product, index) => (
+                <motion.div 
+                  key={`slider-${index}`} 
+                  className="relative group w-[180px]"
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  <AspectRatio ratio={1} className="bg-white rounded-xl border border-amber-200">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-contain p-4 scale-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-amber-950 via-amber-900/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                      <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                      <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
+                        {product.strength}
+                      </Badge>
+                    </div>
+                  </AspectRatio>
+                </motion.div>
+              ))}
+            </InfiniteSlider>
+          </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {hybridProducts.map((product, index) => (
               <motion.div
@@ -712,6 +741,42 @@ export default function HybridAndMushroomsPage() {
               </div>
             ))}
           </InfiniteSlider>
+        </div>
+      </section>
+
+      {/* Quality Banner Section */}
+      <section className="py-8 bg-white">
+        <div className="container mx-auto max-w-6xl px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="bg-gradient-to-r from-amber-800 to-amber-900 rounded-xl p-6 text-white"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="md:w-2/3">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                  <Sparkles className="h-5 w-5" />
+                  Premium Mushroom-CBD Quality
+                </h3>
+                <p className="text-amber-100 text-sm mb-3">
+                  Our hybrid formulations are created using dual-extraction methods to preserve both the water-soluble and fat-soluble compounds from mushrooms and CBD. Each batch is tested for potency, purity, and bioactive compounds.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Dual-Extraction</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Lab Verified</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Organic Ingredients</Badge>
+                  <Badge variant="outline" className="bg-white/10 border-white/20 text-white text-xs">Full-Spectrum</Badge>
+                </div>
+              </div>
+              <Button asChild size="sm" className="bg-white text-amber-800 hover:bg-amber-50 px-4 py-2">
+                <Link href="/extraction-process">
+                  Our Process <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
         </div>
       </section>
 

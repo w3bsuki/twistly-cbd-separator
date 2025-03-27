@@ -15,6 +15,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { InfiniteSlider } from '@/components/common/ui/infinite-slider'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog'
+import { HealthAndWellness } from '@/components/features/home/health-section'
 
 // Health products
 const healthProducts = [
@@ -198,7 +199,7 @@ const healthConcerns = [
   {
     title: "Stress & Anxiety",
     description: "Formulas designed to promote calm and balance",
-    icon: <Brain className="h-6 w-6 text-white" />,
+    icon: <Heart className="h-6 w-6 text-white" />,
     color: "bg-blue-600",
     textColor: "text-blue-700",
     bgColor: "bg-blue-50",
@@ -331,6 +332,9 @@ export default function HealthAndWellnessPage() {
           </div>
         </div>
       </section>
+
+      {/* Featured Health and Wellness Section from Home Page */}
+      <HealthAndWellness />
 
       {/* Shop by Concern Section */}
       <section className="py-12 bg-white">

@@ -4,7 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowRight, Check, Activity, Timer, Clock, Zap, Star, RotateCcw, Flame, Bot } from 'lucide-react'
+import { ArrowRight, Check, Activity, Timer, Clock, Zap, Star, RotateCcw, Flame, Bot, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
@@ -354,6 +354,35 @@ export default function SportAndRecoveryPage() {
             </p>
           </motion.div>
           
+          {/* Compact Product Slider */}
+          <div className="mb-8">
+            <InfiniteSlider gap={12} className="w-full py-4">
+              {sportProducts.map((product, index) => (
+                <motion.div 
+                  key={`slider-${index}`} 
+                  className="relative group w-[180px]"
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  <AspectRatio ratio={1} className="bg-white rounded-xl border border-blue-100">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-contain p-4 scale-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-blue-800/20 to-transparent rounded-xl opacity-80 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-2 text-left">
+                      <p className="text-white text-xs font-medium leading-tight">{product.name}</p>
+                      <Badge variant="outline" className="mt-1 text-[8px] bg-white/10 text-white border-white/20">
+                        {product.strength}
+                      </Badge>
+                    </div>
+                  </AspectRatio>
+                </motion.div>
+              ))}
+            </InfiniteSlider>
+          </div>
+          
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {sportProducts.map((product, index) => (
               <motion.div
@@ -546,21 +575,57 @@ export default function SportAndRecoveryPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-gradient-to-b from-white to-blue-50">
+      {/* Quality Banner Section */}
+      <section className="py-8 bg-white">
         <div className="container mx-auto max-w-6xl px-4">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 md:p-10 shadow-lg">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="bg-gradient-to-r from-green-50 to-white rounded-xl p-6 border border-green-100 shadow-sm"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="md:w-2/3">
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2 text-green-800">
+                  <Sparkles className="h-5 w-5 text-green-600" />
+                  Performance-Grade Quality
+                </h3>
+                <p className="text-gray-600 text-sm mb-3">
+                  Our sport CBD formulations are designed specifically for athletes and active individuals. Each batch is tested for banned substances and verified by third-party labs.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="outline" className="bg-white border-green-200 text-green-700 text-xs">Athlete-Approved</Badge>
+                  <Badge variant="outline" className="bg-white border-green-200 text-green-700 text-xs">Lab Tested</Badge>
+                  <Badge variant="outline" className="bg-white border-green-200 text-green-700 text-xs">No Banned Substances</Badge>
+                  <Badge variant="outline" className="bg-white border-green-200 text-green-700 text-xs">Fast-Acting</Badge>
+                </div>
+              </div>
+              <Button asChild size="sm" className="bg-green-600 text-white hover:bg-green-700 px-4 py-2">
+                <Link href="/lab-results">
+                  View Lab Tests <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-white to-green-50">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="bg-gradient-to-r from-green-50 to-white rounded-lg p-6 md:p-10 shadow-sm border border-green-100">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Level Up Your Training Today</h2>
-                <p className="text-blue-100 text-base mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-green-800 mb-4">Level Up Your Training Today</h2>
+                <p className="text-gray-600 text-base mb-6">
                   Enhance your performance and recovery with our premium CBD products designed specifically for athletes.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                  <Button className="bg-white text-blue-800 hover:bg-blue-50 text-base py-2 px-6">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white text-base py-2 px-6">
                     Shop Sport Collection
                   </Button>
-                  <Button variant="outline" className="border-white text-white hover:bg-blue-700 text-base">
+                  <Button variant="outline" className="border-green-200 text-green-700 hover:bg-green-50 text-base">
                     Ask AI
                     <Bot className="ml-2 h-4 w-4" />
                   </Button>
