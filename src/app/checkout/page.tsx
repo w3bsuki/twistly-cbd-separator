@@ -33,7 +33,7 @@ const CRYPTO_ADDRESSES = {
 };
 
 export default function CheckoutPage() {
-  const { state, clearCart } = useCart();
+  const { items, totalItems, totalPrice, clearCart } = useCart();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('credit-card');
@@ -67,7 +67,12 @@ export default function CheckoutPage() {
     setFormData(prev => ({ ...prev, [name]: checked }));
   };
   
-  const { items = [], subtotal = 0, tax = 0, shipping = 0, discount = 0, total = 0 } = state || {};
+  // Calculate cart values
+  const subtotal = totalPrice;
+  const shipping = subtotal > 50 ? 0 : 4.99;
+  const tax = subtotal * 0.08; // Assuming 8% tax rate
+  const discount = 0; // Placeholder for discount logic
+  const total = subtotal + shipping + tax - discount;
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -414,6 +414,7 @@ export function DrTwistly({ category = 'health', variant = 'dialog', className }
             "text-white",
             className
           )}
+          data-dr-twistly-trigger
         >
           <Bot className="h-4 w-4" />
           Ask Dr. Twistly

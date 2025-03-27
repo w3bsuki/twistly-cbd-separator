@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Navbar } from "@/components/common/layout/navbar";
 import { Footer } from "@/components/common/layout/footer";
 import { Providers } from "@/components/providers";
+import { CartProvider } from "@/context/cart-context";
 
 // Define the Inter font
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -48,13 +49,15 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased min-h-screen bg-background">
         <Providers>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <CartProvider>
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </CartProvider>
         </Providers>
       </body>
     </html>

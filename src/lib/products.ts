@@ -21,6 +21,10 @@ export interface Product {
     ingredients: string[];
     usage: string;
     benefits: string[];
+    forWho?: string;
+    dosage?: string;
+    usageTime?: string;
+    additionalInfo?: string;
   };
 }
 
@@ -40,6 +44,8 @@ export const products: Product[] = [
     stock: 50,
     featured: true,
     bestSeller: true,
+    new: true,
+    discount: 10,
     details: {
       size: "30ml",
       concentration: "1000mg CBD",
@@ -50,7 +56,11 @@ export const products: Product[] = [
         "Supports healthy sleep cycles",
         "Helps manage everyday stress",
         "Supports joint and muscle comfort"
-      ]
+      ],
+      forWho: "Ideal for adults seeking natural support for everyday stress, sleep issues, or general wellness. Perfect for CBD beginners and experienced users alike.",
+      dosage: "Start with 0.5ml (16.7mg CBD) and adjust as needed. Most users find 0.5-1ml (16.7-33.3mg CBD) per dose effective. Maximum daily recommendation: 3ml (100mg CBD).",
+      usageTime: "Morning dose for daytime calm, evening dose for sleep support. Can be taken with or without food, though absorption may be enhanced when taken with fatty foods.",
+      additionalInfo: "Full-spectrum formula contains <0.3% THC along with beneficial cannabinoids and terpenes for enhanced entourage effect. Third-party tested for purity and potency."
     }
   },
   {
@@ -77,7 +87,11 @@ export const products: Product[] = [
         "Enhanced vitality",
         "Natural balance",
         "Stress management"
-      ]
+      ],
+      forWho: "Perfect for health-conscious individuals seeking daily wellness support. Ideal for those with active lifestyles or anyone experiencing daily stress.",
+      dosage: "Standard dose is 1ml (25mg CBD) daily. Can be increased to 2ml for enhanced effects. Start with lower doses if new to CBD products.",
+      usageTime: "Best taken in the morning to support energy and vitality throughout the day. Can also be divided into morning and evening doses.",
+      additionalInfo: "Features our unique adaptogenic blend including ashwagandha, rhodiola, and holy basil to complement CBD's effects. THC-free formula suitable for those concerned about THC exposure."
     }
   },
   {

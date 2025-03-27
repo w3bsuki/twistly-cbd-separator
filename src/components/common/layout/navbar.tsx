@@ -26,6 +26,7 @@ import { Input } from '@/components/ui/input'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/hooks/use-toast"
+import { useCart } from '@/context/cart-context'
 
 // Product categories data
 const productCategories = [
@@ -43,13 +44,13 @@ const productCategories = [
       {
         name: "Softgels",
         description: "Easy-to-take CBD capsules for consistent dosing",
-        image: "/images/softgel.png",
+        image: "/images/tincture2.png",
         path: "/wellness/softgels"
       },
       {
         name: "Capsules",
         description: "Specialized formulas for targeted wellness benefits",
-        image: "/images/3.png",
+        image: "/images/tincture2.png",
         path: "/wellness/capsules"
       }
     ]
@@ -68,13 +69,13 @@ const productCategories = [
       {
         name: "Softgels",
         description: "Pre and post-workout supplements for recovery",
-        image: "/images/softgel.png",
+        image: "/images/tincture2.png",
         path: "/sport/softgels"
       },
       {
         name: "Bandages",
         description: "Targeted relief for muscles and joints",
-        image: "/images/4.png",
+        image: "/images/tincture2.png",
         path: "/sport/bandages"
       }
     ]
@@ -93,13 +94,13 @@ const productCategories = [
       {
         name: "Serums",
         description: "Concentrated CBD treatments for targeted concerns",
-        image: "/images/5.png",
+        image: "/images/tincture2.png",
         path: "/beauty/serums"
       },
       {
         name: "Oils",
         description: "Nourishing oils for face and body",
-        image: "/images/5.png",
+        image: "/images/tincture2.png",
         path: "/beauty/oils"
       }
     ]
@@ -118,13 +119,13 @@ const productCategories = [
       {
         name: "Capsules",
         description: "Functional mushroom supplements with CBD",
-        image: "/images/3.png",
+        image: "/images/tincture2.png",
         path: "/hybrid/capsules"
       },
       {
         name: "Gummies",
         description: "Tasty CBD-mushroom edibles for daily wellness",
-        image: "/images/4.png",
+        image: "/images/tincture2.png",
         path: "/hybrid/gummies"
       }
     ]
@@ -143,13 +144,13 @@ const productCategories = [
       {
         name: "Cat Drops",
         description: "Gentle CBD formulas for feline wellness",
-        image: "/images/4.png",
+        image: "/images/tincture2.png",
         path: "/pet-cbd/cat-drops"
       },
       {
         name: "Treats",
         description: "CBD-infused treats for joint support and anxiety relief",
-        image: "/images/5.png",
+        image: "/images/tincture2.png",
         path: "/pet-cbd/treats"
       }
     ]
@@ -181,6 +182,7 @@ export function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const { toast } = useToast();
   const [activeCategory, setActiveCategory] = useState("");
+  const { totalItems } = useCart();
   
   // Get current path for active state
   useEffect(() => {
@@ -196,7 +198,7 @@ export function Navbar() {
     }
   }, []);
   
-  // Detect scroll for header shadow only (no height change)
+  // Detect scroll for header style changes
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -230,34 +232,36 @@ export function Navbar() {
   
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full border-b border-gray-100 bg-gradient-to-r from-white via-white to-white/95 backdrop-blur-sm h-20",
-      isScrolled ? "shadow-md" : "shadow-sm"
+      "sticky top-0 z-50 w-full border-b transition-all duration-200",
+      isScrolled 
+        ? "h-16 shadow-md bg-white/95 backdrop-blur-lg border-gray-200" 
+        : "h-20 border-b-0 bg-gradient-to-r from-white via-white to-white/95 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-green-200 after:to-transparent"
     )}>
       <div className="container mx-auto h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
           <Link 
             href="/" 
-            className="flex items-center gap-3"
+            className="flex items-center gap-3 group"
             onClick={cycleLogo}
           >
-            <div className="relative h-12 w-12 overflow-hidden shadow-sm rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100">
+            <div className="relative h-12 w-12 overflow-hidden shadow-sm rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100 group-hover:shadow-md transition-all duration-300">
               <Image
                 src={`/images/${logoIndex}.png`}
                 alt="Twistly"
                 width={48}
                 height={48}
-                className="object-contain p-1 hover:scale-110 transition-transform duration-300"
+                className="object-contain p-1 group-hover:scale-110 transition-transform duration-300"
               />
             </div>
-            <span className="font-semibold text-gray-900 text-2xl hidden sm:inline-block tracking-tight">
+            <span className="font-semibold text-gray-900 text-2xl hidden sm:inline-block tracking-tight group-hover:text-gray-800">
               Twistly<span className="text-green-600 font-bold">.</span>
             </span>
           </Link>
           
           {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex items-center justify-center flex-1 mx-6">
-            <nav className="flex items-center space-x-5">
+            <nav className="flex items-center space-x-5" aria-label="Main Navigation">
               {/* Product Category Dropdowns with hover trigger */}
               {productCategories.map((category) => (
                 <div key={category.path} className="group relative">
@@ -277,15 +281,17 @@ export function Navbar() {
                       activeCategory === category.name && category.color === "amber" && "bg-amber-50"
                     )}
                     style={{ letterSpacing: '-0.01em' }}
+                    aria-expanded="false"
+                    aria-haspopup="true"
                   >
                     {category.name} <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
                     {activeCategory === category.name && (
                       <span className="absolute bottom-0 left-0 w-full h-0.5 bg-current"></span>
                     )}
                   </button>
-                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[400px] z-20 transition-all duration-150 ease-out transform translate-y-1 group-hover:translate-y-0">
+                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[420px] z-20 transition-all duration-200 ease-out transform translate-y-1 group-hover:translate-y-0">
                     <div className={cn(
-                      "rounded-lg border shadow-lg bg-white p-5",
+                      "rounded-lg border shadow-lg bg-white p-6",
                       category.color === "green" && "border-green-100",
                       category.color === "blue" && "border-blue-100",
                       category.color === "purple" && "border-purple-100",
@@ -297,16 +303,23 @@ export function Navbar() {
                         <p className="text-sm text-gray-600 leading-relaxed">{categoryDescriptions[category.name]}</p>
                       </div>
                       
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="grid grid-cols-3 gap-5">
                         {category.products.map((product) => (
                           <Link key={product.path} href={product.path} className="group">
                             <div className="space-y-2">
-                              <div className="relative w-full pt-[100%] rounded-md overflow-hidden border bg-gray-50/50">
+                              <div className={cn(
+                                "relative w-full pt-[100%] rounded-lg overflow-hidden border bg-gray-50/50 transition-all duration-200",
+                                category.color === "green" && "group-hover:border-green-300 border-green-100 bg-green-50/50",
+                                category.color === "blue" && "group-hover:border-blue-300 border-blue-100 bg-blue-50/50",
+                                category.color === "purple" && "group-hover:border-purple-300 border-purple-100 bg-purple-50/50",
+                                category.color === "brown" && "group-hover:border-amber-400 border-amber-200 bg-amber-50/50",
+                                category.color === "amber" && "group-hover:border-amber-300 border-amber-100 bg-amber-50/50"
+                              )}>
                                 <Image
-                                  src={product.image}
+                                  src="/images/tincture2.png"
                                   alt={product.name}
                                   fill
-                                  className="object-contain p-2 transition-all duration-200 ease-in-out group-hover:scale-105"
+                                  className="object-contain p-2 transition-all duration-300 ease-in-out group-hover:scale-110"
                                   sizes="(max-width: 768px) 100vw, 33vw"
                                 />
                               </div>
@@ -330,23 +343,23 @@ export function Navbar() {
                         ))}
                       </div>
                       <div className="h-px bg-gray-200 my-4"></div>
-                      <div className="flex justify-end">
+                      <div className="flex justify-center">
                         <Button 
                           asChild
                           variant="ghost" 
                           className={cn(
-                            "gap-1.5 font-medium text-white rounded-full shadow-sm",
+                            "gap-1.5 font-medium text-white rounded-full shadow-sm px-5",
                             category.color === "green" && "bg-green-600 hover:bg-green-700",
                             category.color === "blue" && "bg-blue-600 hover:bg-blue-700",
                             category.color === "purple" && "bg-purple-600 hover:bg-purple-700",
                             category.color === "brown" && "bg-amber-800 hover:bg-amber-900",
                             category.color === "amber" && "bg-amber-600 hover:bg-amber-700"
                           )}
-                          size="sm"
+                          size="default"
                         >
                           <Link href={category.path} className="flex items-center">
                             Explore {category.name}
-                            <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
+                            <ArrowRight className="h-4 w-4 ml-2" />
                           </Link>
                         </Button>
                       </div>
@@ -358,19 +371,21 @@ export function Navbar() {
               {/* Info Dropdown */}
               <div className="group relative">
                 <button 
-                  className="px-4 py-2.5 text-[15px] font-medium tracking-tight rounded-md flex items-center gap-1.5 text-gray-800 hover:text-gray-900 group-hover:bg-gray-50/80 transition-all duration-200"
+                  className="px-4 py-2.5 text-[15px] font-medium tracking-tight rounded-md flex items-center gap-1.5 text-gray-800 hover:text-gray-900 group-hover:bg-green-50/50 transition-all duration-200"
                   style={{ letterSpacing: '-0.01em' }}
+                  aria-expanded="false"
+                  aria-haspopup="true"
                 >
                   Info <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
                 </button>
-                <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[220px] z-20 transition-all duration-150 ease-in-out transform translate-y-1 group-hover:translate-y-0">
-                  <div className="rounded-lg border border-gray-200 shadow-lg bg-white p-3">
+                <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[220px] z-20 transition-all duration-200 ease-in-out transform translate-y-1 group-hover:translate-y-0">
+                  <div className="rounded-lg border border-green-100 shadow-lg bg-white p-3">
                     <div className="flex flex-col space-y-1">
                       {navLinks.slice(1).map((link) => (
                         <Link 
                           key={link.path} 
                           href={link.path}
-                          className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md flex items-center gap-2 transition-all duration-150"
+                          className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-green-50/70 rounded-md flex items-center gap-2 transition-all duration-150"
                         >
                           <link.icon className="h-4 w-4 text-gray-500" />
                           {link.name}
@@ -382,15 +397,17 @@ export function Navbar() {
               </div>
               
               {/* Search Button - Now next to Info */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10 hover:scale-110 transition-transform"
-                onClick={() => setIsSearchOpen(true)}
-                aria-label="Search"
-              >
-                <Search className="h-[18px] w-[18px]" />
-              </Button>
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                  onClick={() => setIsSearchOpen(true)}
+                  aria-label="Search"
+                >
+                  <Search className="h-[18px] w-[18px]" />
+                </Button>
+              </motion.div>
             </nav>
           </div>
           
@@ -398,20 +415,31 @@ export function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             {/* Cart and Account (Left Side) */}
             <div className="flex items-center space-x-3">
-              {/* Cart */}
-              <CartDrawer />
+              {/* Cart with notification badge */}
+              <div className="relative">
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <CartDrawer />
+                </motion.div>
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-medium text-white">
+                    {totalItems}
+                  </span>
+                )}
+              </div>
               
               {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10 hover:scale-110 transition-transform"
-                    aria-label="User account"
-                  >
-                    <User className="h-[18px] w-[18px]" />
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                      aria-label="User account"
+                    >
+                      <User className="h-[18px] w-[18px]" />
+                    </Button>
+                  </motion.div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 rounded-lg p-1 border border-gray-200">
                   <DropdownMenuItem asChild className="rounded-md">
@@ -439,49 +467,67 @@ export function Navbar() {
             </div>
             
             {/* Shop Button (Right Side) */}
-            <Button asChild variant="default" className="bg-green-600 hover:bg-green-700 text-white rounded-full h-10 px-5 text-sm font-medium shadow-sm hover:scale-105 transition-transform">
-              <Link href="/shop" className="flex items-center gap-2">
-                <div className="relative w-5 h-5">
-                  <Image 
-                    src="/images/2.png"
-                    alt="Twistly Icon" 
-                    width={20}
-                    height={20}
-                    className="object-contain"
-                  />
-                </div>
-                <Separator orientation="vertical" className="h-4 bg-white/30" />
-                Shop
-              </Link>
-            </Button>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button asChild variant="default" className="bg-green-600 hover:bg-green-700 text-white rounded-full h-10 px-5 text-sm font-medium shadow-sm hover:shadow-md">
+                <Link href="/shop" className="flex items-center gap-2">
+                  <div className="relative w-5 h-5">
+                    <Image 
+                      src="/images/2.png"
+                      alt="Twistly Icon" 
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                    />
+                  </div>
+                  <Separator orientation="vertical" className="h-4 bg-white/30" />
+                  Shop
+                </Link>
+              </Button>
+            </motion.div>
           </div>
           
           {/* Mobile Menu and Cart */}
           <div className="flex md:hidden items-center space-x-2">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10 hover:scale-110 active:scale-95 transition-transform"
-              onClick={() => setIsSearchOpen(true)}
-              aria-label="Search"
-            >
-              <Search className="h-[18px] w-[18px]" />
-            </Button>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Search"
+              >
+                <Search className="h-[18px] w-[18px]" />
+              </Button>
+            </motion.div>
             
-            {/* Mobile Cart */}
-            <CartDrawer />
+            {/* Mobile Cart with badge */}
+            <div className="relative">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <CartDrawer />
+              </motion.div>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-medium text-white">
+                  {totalItems}
+                </span>
+              )}
+            </div>
             
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  aria-label="Menu" 
-                  className="relative text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full h-10 w-10 hover:scale-110 active:scale-95 transition-transform"
-                >
-                  <Menu className="h-[18px] w-[18px]" />
-                </Button>
+                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    aria-label="Menu" 
+                    className="relative text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full h-10 w-10"
+                  >
+                    <Menu className="h-[18px] w-[18px]" />
+                  </Button>
+                </motion.div>
               </SheetTrigger>
               <SheetContent side="right" className="w-full sm:w-80 p-0">
                 <div className="flex flex-col h-full">
@@ -499,13 +545,16 @@ export function Navbar() {
                   
                   <div className="flex-1 overflow-auto py-2">
                     {/* Mobile Navigation Links */}
-                    <div className="flex flex-col space-y-4 mt-6 px-4">
+                    <div className="flex flex-col space-y-1 mt-4 px-4">
                       <Link 
                         href="/shop" 
-                        className="flex items-center justify-between py-2 text-base font-medium text-gray-900"
+                        className="flex items-center justify-between p-3 text-base font-medium text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Shop
+                        <div className="flex items-center">
+                          <ShoppingCart className="h-5 w-5 mr-3 text-gray-500" />
+                          Shop
+                        </div>
                       </Link>
                       
                       {/* Category links */}
@@ -514,7 +563,7 @@ export function Navbar() {
                           key={category.name} 
                           href={category.path}
                           className={cn(
-                            "flex items-center justify-between py-2 text-base font-medium",
+                            "flex items-center justify-between p-3 text-base font-medium hover:bg-gray-50 rounded-md transition-colors",
                             category.color === "green" && "text-green-700",
                             category.color === "blue" && "text-blue-700",
                             category.color === "purple" && "text-purple-700",
@@ -533,9 +582,10 @@ export function Navbar() {
                         <Link 
                           key={link.name} 
                           href={link.path}
-                          className="flex items-center justify-between py-2 text-base font-medium text-gray-900"
+                          className="flex items-center p-3 text-base font-medium text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
+                          <link.icon className="h-5 w-5 mr-3 text-gray-500" />
                           {link.name}
                         </Link>
                       ))}
@@ -564,7 +614,7 @@ export function Navbar() {
                             className="w-full gap-1 text-sm bg-green-600 hover:bg-green-700 rounded-full"
                           >
                             <ShoppingCart className="h-4 w-4" />
-                            Cart
+                            Cart {totalItems > 0 && `(${totalItems})`}
                           </Button>
                         </Link>
                       </SheetClose>
@@ -575,7 +625,7 @@ export function Navbar() {
                   <div className="border-t p-4">
                     <div className="flex flex-col space-y-2">
                       <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-                        <Button asChild variant="outline" size="lg" className="font-medium text-sm rounded-full">
+                        <Button asChild variant="outline" size="lg" className="font-medium text-sm rounded-full w-full">
                           <Link href="/account">My Account</Link>
                         </Button>
                       </motion.div>
@@ -583,7 +633,7 @@ export function Navbar() {
                         <Button 
                           size="lg" 
                           variant="outline"
-                          className="font-medium text-sm flex items-center gap-2 rounded-full"
+                          className="font-medium text-sm flex items-center gap-2 rounded-full w-full"
                           onClick={handleWalletConnect}
                         >
                           <Bitcoin className="h-4 w-4" />
@@ -591,7 +641,7 @@ export function Navbar() {
                         </Button>
                       </motion.div>
                       <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-                        <Button asChild size="lg" className="font-medium text-sm bg-green-600 hover:bg-green-700 rounded-full">
+                        <Button asChild size="lg" className="font-medium text-sm bg-green-600 hover:bg-green-700 rounded-full w-full">
                           <Link href="/signin">Sign In</Link>
                         </Button>
                       </motion.div>
@@ -606,20 +656,20 @@ export function Navbar() {
       
       {/* Search Overlay */}
       <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-        <SheetContent side="top" className="h-auto max-h-[300px]">
+        <SheetContent side="top" className="h-auto max-h-[350px]">
           <div className="flex flex-col space-y-4 pt-8 pb-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4.5 w-4.5 text-gray-400" />
               <Input 
                 placeholder="Search products..." 
-                className="pl-10 h-11 text-base rounded-full border-gray-200 focus-visible:ring-green-600"
+                className="pl-10 h-12 text-base rounded-full border-gray-200 focus-visible:ring-green-600 focus-visible:border-green-200 shadow-sm"
                 autoFocus
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="text-xs uppercase font-semibold tracking-wide text-gray-500 px-2">Popular Searches</div>
               <div className="flex flex-wrap gap-2">
-                {["CBD Oil", "Softgels", "Sleep Aid", "Pain Relief", "Mushroom Extract"].map((term) => (
+                {["CBD Oil", "Softgels", "Sleep Aid", "Pain Relief", "Mushroom Extract", "Pet CBD", "Gummies"].map((term) => (
                   <motion.div key={term} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
                     <Button 
                       variant="outline" 

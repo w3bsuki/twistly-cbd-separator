@@ -1,12 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowRight, ShoppingBag } from 'lucide-react';
 
 export default function OrderSuccessPage() {
+  // Use useState to store the order number and date
+  const [orderNumber, setOrderNumber] = useState('------');
+  const [orderDate, setOrderDate] = useState('--/--/----');
+  
+  // Use useEffect to set these values client-side only to avoid hydration mismatches
+  useEffect(() => {
+    setOrderNumber(`ORD-${Math.floor(100000 + Math.random() * 900000)}`);
+    setOrderDate(new Date().toLocaleDateString());
+  }, []);
+
   return (
     <div className="bg-gray-50 py-20">
       <div className="container mx-auto px-4">
@@ -35,11 +45,11 @@ export default function OrderSuccessPage() {
             <div className="bg-gray-50 rounded-md p-4 mb-6">
               <div className="flex justify-between mb-2">
                 <span className="text-sm text-gray-500">Order Number:</span>
-                <span className="text-sm font-medium">#ORD-{Math.floor(100000 + Math.random() * 900000)}</span>
+                <span className="text-sm font-medium">#{orderNumber}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Order Date:</span>
-                <span className="text-sm font-medium">{new Date().toLocaleDateString()}</span>
+                <span className="text-sm font-medium">{orderDate}</span>
               </div>
             </div>
             
