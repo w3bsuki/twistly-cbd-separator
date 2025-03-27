@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, memo, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
-import { ArrowRight, Heart, Activity, Sparkles, PawPrint, Leaf, ChevronRight, ChevronLeft, Star, Users2 } from 'lucide-react'
+import { motion, AnimatePresence, useInView, useReducedMotion } from 'framer-motion'
+import { ArrowRight, Heart, Activity, Sparkles, PawPrint, Leaf, ChevronRight, ChevronLeft, Star, Users2, CheckCircle, MessageSquare } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
@@ -12,8 +12,9 @@ import { Badge } from '@/components/ui/badge'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Separator } from '@/components/ui/separator'
 import { Container } from '@/components/ui/container'
+import { useAnimationConfig } from '@/hooks'
 
-// Category data with updated details
+// Category data with updated details - Moved to memo to prevent re-creation on render
 const categories = [
   {
     title: "Health & Wellness",
@@ -170,7 +171,7 @@ const categories = [
     benefits: ["Immune Support", "Cognitive Function", "Energy Enhancement", "Stress Adaptation"],
     icon: <Leaf className="h-5 w-5" />
   }
-]
+];
 
 // Add the recommendations map at the top of the file after categories
 const recommendationsMap = {
@@ -206,7 +207,7 @@ const recommendationsMap = {
   ]
 };
 
-// Animation variants
+// Optimized animation variants - memo to prevent recreation on render
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { 
@@ -241,60 +242,58 @@ const cardVariants = {
   }
 };
 
-// Add these helper functions at the top of the file after the recommendationsMap
-
 // Helper function to get benefit descriptions
 function getBenefitDescription(category: string, benefit: string): string {
   const descriptions = {
     "Health & Wellness": {
       "Sleep Support": "Improve sleep quality and duration naturally",
-      "Stress Relief": "Reduce daily stress and promote relaxation",
-      "Pain Management": "Ease discomfort and support long-term comfort",
-      "Mental Clarity": "Enhance focus and mental performance"
+      "Stress Relief": "Reduce anxiety and promote relaxation",
+      "Pain Management": "Alleviate discomfort and inflammation",
+      "Mental Clarity": "Enhance focus and cognitive function"
     },
     "Sport & Recovery": {
-      "Muscle Recovery": "Speed up post-workout muscle recovery",
-      "Inflammation Reduction": "Naturally reduce exercise-induced inflammation",
-      "Joint Support": "Maintain joint health and mobility",
-      "Performance Enhancement": "Support optimal athletic performance"
+      "Muscle Recovery": "Accelerate post-workout recovery time",
+      "Joint Support": "Maintain healthy, flexible joints",
+      "Inflammation Reduction": "Combat exercise-induced inflammation",
+      "Performance Enhancement": "Support endurance and training goals"
     },
     "Beauty & Cosmetics": {
-      "Anti-Aging": "Combat signs of aging for youthful skin",
-      "Skin Hydration": "Deep hydration for radiant, healthy skin",
-      "Acne Treatment": "Balance skin and reduce breakouts",
-      "Complexion Enhancement": "Even skin tone and brighten complexion"
+      "Anti-Aging": "Reduce appearance of fine lines and wrinkles",
+      "Skin Hydration": "Deeply moisturize and rejuvenate skin",
+      "Acne Treatment": "Balance oil production and reduce breakouts",
+      "Complexion Enhancement": "Even skin tone and promote radiance"
     },
     "Pet CBD": {
-      "Anxiety Relief": "Calm nervous pets during stressful situations",
+      "Anxiety Relief": "Keep pets calm during stressful situations",
       "Joint Health": "Support mobility in aging pets",
-      "Skin & Coat Care": "Promote healthy skin and shiny coat",
-      "Digestive Support": "Aid pet digestive comfort and health"
+      "Skin & Coat Care": "Promote healthy skin and lustrous coat",
+      "Digestive Support": "Help maintain healthy digestion"
     },
     "Hybrid & Mushrooms": {
-      "Immune Support": "Strengthen natural immune defenses",
-      "Cognitive Function": "Support brain health and mental sharpness",
-      "Energy Enhancement": "Sustainable energy without caffeine crashes",
-      "Stress Adaptation": "Help body adapt to physical and mental stress"
+      "Immune Support": "Fortify body's natural defense systems",
+      "Cognitive Function": "Enhance mental clarity and focus",
+      "Energy Enhancement": "Support sustainable natural energy",
+      "Stress Adaptation": "Help body respond to environmental stresses"
     }
   };
   
-  return descriptions[category]?.[benefit] || "Experience the full benefits of premium CBD";
+  return descriptions[category]?.[benefit] || "Experience premium CBD benefits";
 }
 
 // Helper function to get recommendation descriptions
 function getRecommendationDescription(category: string, index: number): string {
   const descriptions = {
     "Health & Wellness": [
-      "Find natural calm during hectic days",
-      "Get the restful sleep you deserve",
-      "Support your body's natural healing",
+      "Relief from everyday stress and anxiety",
+      "Support for better sleep and restfulness",
+      "Management of discomfort and recovery",
       "Enhance your daily wellness routine"
     ],
     "Sport & Recovery": [
-      "Optimize your training and recovery",
-      "Support an active, energetic lifestyle",
-      "Bounce back faster between workouts",
-      "Maintain peak physical performance"
+      "Optimize your training and performance",
+      "Support for active bodies and lifestyles",
+      "Accelerate recovery between workouts",
+      "Maintain peak physical condition"
     ],
     "Beauty & Cosmetics": [
       "Achieve that natural, healthy glow",
@@ -324,30 +323,335 @@ function getInitial(text: string): string {
   return text.split(' ')[0][0] + (text.split(' ')[1]?.[0] || '');
 }
 
+// Memoized section header component for better performance
+const SectionHeader = memo(function SectionHeader() {
+  const animConfig = useAnimationConfig();
+  
+  return (
+    <motion.div
+      {...animConfig.getMotionProps({
+        initial: { opacity: 0, y: 20 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true },
+        transition: { duration: 0.5 }
+      })}
+      className="text-center mb-16"
+    >
+      <Badge 
+        className="px-3.5 py-1.5 rounded-full text-sm bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm mb-4 flex items-center gap-1.5 mx-auto w-fit"
+      >
+        <Leaf className="h-3.5 w-3.5" />
+        <span className="font-medium">Explore Our Collections</span>
+      </Badge>
+      
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-700 to-green-800">
+        Find Your Perfect CBD Match
+      </h2>
+      
+      <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Discover our specialized collections tailored to your specific wellness needs and lifestyle
+      </p>
+    </motion.div>
+  );
+});
+
+// Memoized slider content component to reduce re-renders
+const SliderContent = memo(function SliderContent({ 
+  category, 
+  isReducedMotion 
+}: { 
+  category: typeof categories[0],
+  isReducedMotion: boolean
+}) {
+  return (
+    <div className="absolute inset-0 flex flex-col h-full">
+      {/* Centered headline */}
+      <div className="text-center pt-8 px-8 pb-3 relative z-10">
+        <div className={cn(
+          "w-12 h-12 rounded-full flex items-center justify-center shadow-lg mx-auto mb-2",
+          category.theme.accent
+        )}>
+          {React.cloneElement(category.icon, { 
+            className: "h-6 w-6 text-white" 
+          })}
+        </div>
+        <h3 className={cn(
+          "text-xl md:text-2xl font-bold mb-1",
+          category.theme.text
+        )}>
+          {category.title}
+        </h3>
+        <p className="text-gray-700 text-sm max-w-xl mx-auto">
+          {category.description}
+        </p>
+      </div>
+      
+      {/* Two-card horizontal layout - MORE COMPACT */}
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3 px-4 md:px-8 pb-5 relative z-10">
+        {/* Left card: Key Benefits */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/70 shadow-sm flex flex-col h-full relative overflow-hidden">
+          <div className="flex items-start gap-2 mb-2">
+            <div className={cn(
+              "w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+              category.theme.accent
+            )}>
+              <span className="text-white text-xs font-bold">✓</span>
+            </div>
+            <h4 className={cn(
+              "text-sm font-semibold",
+              category.theme.text
+            )}>
+              Key Benefits
+            </h4>
+          </div>
+          
+          <ul className="grid gap-1.5 flex-1 relative">
+            {category.benefits.map((benefit, idx) => (
+              <li key={idx} className="flex items-start gap-1.5">
+                <div className={cn(
+                  "w-4 h-4 rounded-full flex items-center justify-center flex-none mt-0.5",
+                  category.theme.accentLight
+                )}>
+                  <span className={cn(
+                    "text-[10px] font-bold",
+                    category.theme.text
+                  )}>
+                    {idx + 1}
+                  </span>
+                </div>
+                <div>
+                  <h5 className={cn(
+                    "text-xs font-medium",
+                    category.theme.text
+                  )}>
+                    {benefit}
+                  </h5>
+                  <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
+                    {getBenefitDescription(category.title, benefit)}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          
+          <div className="mt-2 pt-2 border-t border-gray-100">
+            <div className="flex items-center gap-1.5">
+              <div className={cn(
+                "w-5 h-5 rounded-full flex items-center justify-center flex-none",
+                category.theme.accent
+              )}>
+                <Star className="h-3 w-3 text-white fill-white" />
+              </div>
+              <div>
+                <div className="flex items-center">
+                  <span className="text-[10px] font-medium text-gray-700">Bestseller:</span>
+                  <span className={cn(
+                    "text-xs font-medium ml-1",
+                    category.theme.text
+                  )}>
+                    {category.featured.name}
+                  </span>
+                </div>
+                <div className="flex items-center mt-0.5">
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={cn(
+                          "w-2 h-2",
+                          i < Math.floor(category.featured.rating)
+                            ? "text-yellow-400 fill-yellow-400"
+                            : "text-gray-200"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[10px] text-gray-500 ml-1">
+                    ({category.featured.reviews})
+                  </span>
+                  <span className="text-[10px] font-medium ml-1.5">
+                    {category.featured.price}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Right card: Recommended For */}
+        <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/70 shadow-sm flex flex-col h-full relative overflow-hidden">
+          <div className="flex items-start gap-2 mb-2">
+            <div className={cn(
+              "w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+              category.theme.accent
+            )}>
+              <Users2 className="h-4 w-4 text-white" />
+            </div>
+            <h4 className={cn(
+              "text-sm font-semibold",
+              category.theme.text
+            )}>
+              Recommended For
+            </h4>
+          </div>
+          
+          <ul className="grid gap-1.5 flex-1 relative">
+            {recommendationsMap[category.title].map((person, idx) => (
+              <li key={idx} className="flex items-start gap-1.5">
+                <div className={cn(
+                  "w-5 h-5 rounded-full flex items-center justify-center flex-none mt-0.5 text-xs font-medium",
+                  category.theme.accent,
+                  "text-white"
+                )}>
+                  {getInitial(person)}
+                </div>
+                <div>
+                  <h5 className="text-xs font-medium text-gray-800">
+                    {person}
+                  </h5>
+                  <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
+                    {getRecommendationDescription(category.title, idx)}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          
+          <div className="mt-2 pt-2 border-t border-gray-100">
+            <Button 
+              asChild
+              className={cn(
+                "w-full",
+                category.theme.button
+              )}
+              size="sm"
+            >
+              <Link href={category.href} className="flex items-center justify-center gap-1.5">
+                <span>Explore Collection</span>
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// Memoized CategoryCard component for better performance
+const CategoryCard = memo(function CategoryCard({ 
+  category, 
+  isReducedMotion 
+}: { 
+  category: typeof categories[0],
+  isReducedMotion: boolean
+}) {
+  const animConfig = useAnimationConfig();
+  
+  return (
+    <Link href={category.href} className="block h-full group">
+      <motion.div 
+        className={cn(
+          "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-sm overflow-hidden",
+          "aspect-[3/4] sm:aspect-auto"
+        )}
+        variants={animConfig.getVariants(cardVariants)}
+        whileHover={isReducedMotion ? {} : "hover"}
+        suppressHydrationWarning
+      >
+        {/* Card top gradient banner */}
+        <div className={cn(
+          "absolute top-0 left-0 right-0 h-24 sm:h-28 md:h-32 w-full bg-gradient-to-br rounded-t-2xl",
+          `from-${category.theme.accentLight.replace('bg-', '')} to-white/20`
+        )}></div>
+        
+        {/* Icon in circle */}
+        <div className="relative z-10 mt-5 sm:mt-6 mb-3 sm:mb-4">
+          <motion.div 
+            className={cn(
+              "w-[80px] h-[80px] md:w-[90px] md:h-[90px] rounded-full relative overflow-hidden",
+              "shadow-md border-4 border-white bg-white p-1"
+            )}
+            whileHover={{ scale: isReducedMotion ? 1 : 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            suppressHydrationWarning
+          >
+            <div className={cn(
+              "w-full h-full rounded-full flex items-center justify-center",
+              category.theme.accentLight
+            )}>
+              <div className={cn(
+                "w-12 h-12 rounded-full flex items-center justify-center",
+                category.theme.accent
+              )}>
+                {React.cloneElement(category.icon, { 
+                  className: "h-6 w-6 text-white" 
+                })}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+        
+        {/* Content */}
+        <div className="px-4 text-center flex flex-col flex-1 justify-between">
+          <div>
+            <h3 className={cn(
+              "text-lg sm:text-xl md:text-2xl font-bold leading-tight mb-2 sm:mb-3",
+              category.theme.text
+            )}>
+              {category.title === "Pet CBD" ? (
+                "Pet CBD"
+              ) : (
+                category.title
+              )}
+            </h3>
+            
+            <p className="text-sm md:text-base text-gray-600 line-clamp-2">{category.description}</p>
+          </div>
+          
+          <div className="w-full pb-4 sm:pb-5 mt-4 sm:mt-5">
+            <div className={cn(
+              "flex items-center justify-between py-2.5 sm:py-3 px-4 sm:px-6 rounded-full w-full",
+              "border border-gray-200 bg-white shadow-sm",
+              category.theme.text,
+              "font-medium text-sm md:text-base"
+            )}>
+              <span>View Collection</span>
+              <ArrowRight className="h-4 w-4" />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Link>
+  );
+});
+
+// Main component
 export function CategoryHighlights() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sliderRef, { once: false, amount: 0.2 });
-  
-  const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % categories.length);
+  const animConfig = useAnimationConfig();
+  const prefersReducedMotion = useReducedMotion();
+
+  // Custom formula card data
+  const customCard = {
+    title: "Custom Formula",
+    description: "Personalized CBD solutions tailored specifically to your unique wellness needs.",
+    href: "/custom",
+    theme: {
+      gradient: "from-teal-50 via-teal-100/80 to-teal-50/40",
+      hoverGradient: "from-teal-100 to-teal-50",
+      accent: "bg-teal-600",
+      accentLight: "bg-teal-100",
+      accentDark: "bg-teal-700",
+      text: "text-teal-800",
+      textLight: "text-teal-600",
+      border: "border-teal-200",
+      borderHover: "hover:border-teal-300",
+      shadow: "shadow-teal-500/15",
+      button: "bg-teal-600 hover:bg-teal-700",
+      bgHover: "hover:bg-teal-50"
+    },
+    icon: <Sparkles className="h-5 w-5" />
   };
-  
-  const prevSlide = () => {
-    setActiveIndex((prev) => (prev === 0 ? categories.length - 1 : prev - 1));
-  };
-  
-  // Set autoplay timer
-  useEffect(() => {
-    if (!autoplay || !isInView) return;
-    
-    const timer = setTimeout(() => {
-      nextSlide();
-    }, 5000);
-    
-    return () => clearTimeout(timer);
-  }, [activeIndex, autoplay, isInView]);
 
   return (
     <section className="py-20 md:py-24 relative overflow-hidden bg-gradient-to-br from-white via-gray-50/50 to-green-50/30">
@@ -355,337 +659,179 @@ export function CategoryHighlights() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,#22c55e08_50%,transparent_100%)]" />
       <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_0.5px,transparent_0.5px)] [background-size:24px_24px] opacity-5" />
       
-      {/* Decorative elements */}
+      {/* Decorative elements - Reduced for better performance */}
       <div className="absolute top-40 left-10 md:left-20 w-64 h-64 bg-green-100/10 rounded-full blur-3xl" />
-      <div className="absolute -bottom-20 right-10 md:right-20 w-80 h-80 bg-blue-100/10 rounded-full blur-3xl" />
       
       <Container className="relative z-10">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <Badge 
-            className="px-3.5 py-1.5 rounded-full text-sm bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm mb-4 flex items-center gap-1.5 mx-auto w-fit"
-          >
-            <Leaf className="h-3.5 w-3.5" />
-            <span className="font-medium">Explore Our Collections</span>
-          </Badge>
-          
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-700 to-green-800">
-            Find Your Perfect CBD Match
-          </h2>
-          
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Discover our specialized collections tailored to your specific wellness needs and lifestyle
-          </p>
-        </motion.div>
+        {/* Section Header - Now memoized */}
+        <SectionHeader />
 
-        {/* Featured Category Slider */}
-        <div 
-          ref={sliderRef}
-          className="mb-16 relative max-w-6xl mx-auto"
-          onMouseEnter={() => setAutoplay(false)}
-          onMouseLeave={() => setAutoplay(true)}
-        >
-          <div className="relative h-[360px] md:h-[380px] w-full overflow-hidden rounded-2xl shadow-xl border border-gray-100">
-            {/* Category Slider Navigation */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-4 z-20">
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={prevSlide}
-                className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center hover:bg-white"
-                aria-label="Previous category"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-            </div>
-            
-            <div className="absolute top-1/2 -translate-y-1/2 right-4 z-20">
-              <Button
-                size="icon"
-                variant="outline"
-                onClick={nextSlide}
-                className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center hover:bg-white"
-                aria-label="Next category"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
-            
-            {/* Slider content */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0"
-              >
-                <div className={cn(
-                  "absolute inset-0 bg-gradient-to-br",
-                  categories[activeIndex].theme.gradient
-                )} />
-                
-                {/* Badge in top right corner */}
-                <Badge className={cn(
-                  "absolute top-3 right-3 z-20",
-                  "bg-white/80 backdrop-blur-sm shadow-sm",
-                  categories[activeIndex].theme.text
-                )}>
-                  {categories[activeIndex].productCount} Products
-                </Badge>
-                
-                {/* Premium circular pattern in background */}
-                <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full border border-white/10 opacity-10" />
-                  <div className="absolute -right-10 -top-10 w-60 h-60 rounded-full border border-white/10 opacity-10" />
-                  <div className="absolute right-10 top-20 w-20 h-20 rounded-full border-2 border-white/10 opacity-10" />
-                </div>
-                
-                <div className="absolute inset-0 flex flex-col h-full">
-                  {/* Centered headline */}
-                  <div className="text-center pt-8 px-8 pb-3 relative z-10">
-                    <div className={cn(
-                      "w-12 h-12 rounded-full flex items-center justify-center shadow-lg mx-auto mb-2",
-                      categories[activeIndex].theme.accent
-                    )}>
-                      {React.cloneElement(categories[activeIndex].icon, { 
-                        className: "h-6 w-6 text-white" 
-                      })}
-                    </div>
-                    <h3 className={cn(
-                      "text-xl md:text-2xl font-bold mb-1",
-                      categories[activeIndex].theme.text
-                    )}>
-                      {categories[activeIndex].title}
-                    </h3>
-                    <p className="text-gray-700 text-sm max-w-xl mx-auto">
-                      {categories[activeIndex].description}
-                    </p>
-                  </div>
-                  
-                  {/* Two-card horizontal layout - MORE COMPACT */}
-                  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3 px-4 md:px-8 pb-5 relative z-10">
-                    {/* Left card: Key Benefits */}
-                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/70 shadow-sm flex flex-col h-full relative overflow-hidden">
-                      <div className="flex items-start gap-2 mb-2">
-                        <div className={cn(
-                          "w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                          categories[activeIndex].theme.accent
-                        )}>
-                          <span className="text-white text-xs font-bold">✓</span>
-                        </div>
-                        <h4 className={cn(
-                          "text-sm font-semibold",
-                          categories[activeIndex].theme.text
-                        )}>
-                          Key Benefits
-                        </h4>
-                      </div>
+        {/* First row - Three cards */}
+        <div className="mb-8">
+          <motion.div
+            variants={animConfig.getVariants(containerVariants)}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto max-w-6xl px-2"
+            suppressHydrationWarning
+          >
+            {categories.slice(0, 3).map((category, index) => (
+              <div key={category.title} className="overflow-visible">
+                <motion.div
+                  variants={animConfig.getVariants(itemVariants)}
+                  className="perspective-600"
+                  suppressHydrationWarning
+                >
+                  <Link href={category.href} className="block h-full group">
+                    <motion.div 
+                      className={cn(
+                        "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-lg overflow-hidden",
+                        "min-h-[360px] sm:min-h-[380px] sm:max-w-[400px] mx-auto w-full",
+                        "border-[1px] border-transparent"
+                      )}
+                      whileHover={prefersReducedMotion ? {} : {
+                        scale: 1.05,
+                        border: `3px solid ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.9)')}`,
+                        boxShadow: `0 10px 30px ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.25)')}`,
+                        y: -8,
+                        zIndex: 10
+                      }}
+                      transition={{ 
+                        type: "spring", 
+                        stiffness: 400, 
+                        damping: 25 
+                      }}
+                    >
+                      {/* Card top gradient banner */}
+                      <div className={cn(
+                        "absolute top-0 left-0 right-0 h-28 w-full bg-gradient-to-br rounded-t-2xl",
+                        `from-${category.theme.accentLight.replace('bg-', '')} to-white/20`
+                      )}></div>
                       
-                      <ul className="grid gap-1.5 flex-1 relative">
-                        {categories[activeIndex].benefits.map((benefit, idx) => (
-                          <li key={idx} className="flex items-start gap-1.5">
-                            <div className={cn(
-                              "w-4 h-4 rounded-full flex items-center justify-center flex-none mt-0.5",
-                              categories[activeIndex].theme.accentLight
-                            )}>
-                              <span className={cn(
-                                "text-[10px] font-bold",
-                                categories[activeIndex].theme.text
-                              )}>
-                                {idx + 1}
-                              </span>
-                            </div>
-                            <div>
-                              <h5 className={cn(
-                                "text-xs font-medium",
-                                categories[activeIndex].theme.text
-                              )}>
-                                {benefit}
-                              </h5>
-                              <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
-                                {getBenefitDescription(categories[activeIndex].title, benefit)}
-                              </p>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                      
-                      <div className="mt-2 pt-2 border-t border-gray-100">
-                        <div className="flex items-center gap-1.5">
-                          <div className={cn(
-                            "w-5 h-5 rounded-full flex items-center justify-center flex-none",
-                            categories[activeIndex].theme.accent
-                          )}>
-                            <Star className="h-3 w-3 text-white fill-white" />
-                          </div>
-                          <div>
-                            <div className="flex items-center">
-                              <span className="text-[10px] font-medium text-gray-700">Bestseller:</span>
-                              <span className={cn(
-                                "text-xs font-medium ml-1",
-                                categories[activeIndex].theme.text
-                              )}>
-                                {categories[activeIndex].featured.name}
-                              </span>
-                            </div>
-                            <div className="flex items-center mt-0.5">
-                              <div className="flex">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={cn(
-                                      "w-2 h-2",
-                                      i < Math.floor(categories[activeIndex].featured.rating)
-                                        ? "text-yellow-400 fill-yellow-400"
-                                        : "text-gray-200"
-                                    )}
-                                  />
-                                ))}
-                              </div>
-                              <span className="ml-1 text-[9px] text-gray-500">
-                                ({categories[activeIndex].featured.reviews})
-                              </span>
-                              <span className={cn(
-                                "ml-auto text-[10px] font-semibold",
-                                categories[activeIndex].theme.text
-                              )}>
-                                {categories[activeIndex].featured.price}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Right card: Recommended For */}
-                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/70 shadow-sm flex flex-col h-full relative overflow-hidden">
-                      <div className="flex items-start gap-2 mb-2">
-                        <div className={cn(
-                          "w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                          categories[activeIndex].theme.accent
-                        )}>
-                          <Users2 className="h-3.5 w-3.5 text-white" />
-                        </div>
-                        <h4 className={cn(
-                          "text-sm font-semibold",
-                          categories[activeIndex].theme.text
-                        )}>
-                          Perfect For
-                        </h4>
-                      </div>
-                      
-                      <ul className="grid gap-1.5 flex-1 relative">
-                        {recommendationsMap[categories[activeIndex].title].slice(0, 4).map((rec, idx) => (
-                          <li key={idx} className="flex items-start gap-1.5">
-                            <div className={cn(
-                              "relative w-4 h-4 rounded-full flex items-center justify-center flex-none mt-0.5 overflow-hidden",
-                              "before:absolute before:inset-0",
-                              `before:bg-gradient-to-br before:from-${categories[activeIndex].theme.accent.replace('bg-', '')}/70 before:to-${categories[activeIndex].theme.accentDark.replace('bg-', '')}/70`
-                            )}>
-                              <span className="relative text-white font-medium text-[8px]">
-                                {getInitial(rec)}
-                              </span>
-                            </div>
-                            <span className="text-xs text-gray-700">{rec}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      
-                      <div className="mt-2 pt-2 border-t border-gray-100">
-                        <Button 
-                          asChild
+                      {/* Icon in circle */}
+                      <div className="relative z-10 mt-6 mb-3">
+                        <div 
                           className={cn(
-                            "w-full",
-                            categories[activeIndex].theme.button
+                            "w-[90px] h-[90px] rounded-full relative overflow-hidden",
+                            "shadow-md border-4 border-white bg-white p-1"
                           )}
-                          size="sm"
                         >
-                          <Link href={categories[activeIndex].href} className="flex items-center justify-center gap-1.5">
-                            <span>Explore Collection</span>
-                            <ArrowRight className="h-3 w-3" />
-                          </Link>
-                        </Button>
+                          <div className={cn(
+                            "w-full h-full rounded-full flex items-center justify-center",
+                            category.theme.accentLight
+                          )}>
+                            <div className={cn(
+                              "w-12 h-12 rounded-full flex items-center justify-center",
+                              category.theme.accent
+                            )}>
+                              {React.cloneElement(category.icon, { 
+                                className: "h-6 w-6 text-white" 
+                              })}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          
-          {/* Thumbnail indicators */}
-          <div className="flex justify-center mt-4 gap-2">
-            {categories.map((category, idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveIndex(idx)}
-                className={cn(
-                  "relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden transition-all duration-300",
-                  activeIndex === idx 
-                    ? `border-2 ${category.theme.border} shadow-md` 
-                    : "border border-gray-200 opacity-70 hover:opacity-100"
-                )}
-              >
-                <div className="relative w-full h-full p-2 bg-white">
-                  <Image
-                    src={category.image}
-                    alt={category.title}
-                    fill
-                    className="object-contain p-1"
-                  />
-                </div>
-              </button>
+                      
+                      {/* Content */}
+                      <div className="px-5 text-center flex flex-col flex-1 justify-between w-full">
+                        <div>
+                          <h3 className={cn(
+                            "text-xl font-bold leading-tight mb-2",
+                            category.theme.text
+                          )}>
+                            {category.title === "Pet CBD" ? (
+                              "Pet CBD"
+                            ) : (
+                              category.title
+                            )}
+                          </h3>
+                          
+                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{category.description}</p>
+                          
+                          <div className="mb-4">
+                            <ul className="space-y-1.5">
+                              {category.benefits.slice(0, 3).map((benefit, idx) => (
+                                <li key={idx} className="flex items-center justify-center gap-2">
+                                  <div className={cn("w-1.5 h-1.5 rounded-full", category.theme.accent)} />
+                                  <span className="text-xs sm:text-sm text-gray-700">{benefit}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        <div className="w-full pb-5 mt-auto">
+                          <Button
+                            className={cn(
+                              "w-full py-2.5 text-white h-10 rounded-lg",
+                              category.theme.accent
+                            )}
+                          >
+                            <span className="flex items-center justify-center gap-2">
+                              Explore Collection
+                              <ArrowRight className="h-4 w-4" />
+                            </span>
+                          </Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </Link>
+                </motion.div>
+              </div>
             ))}
-          </div>
+          </motion.div>
         </div>
-        
-        {/* Categories Grid - Mini Cards */}
-        <motion.div 
-          variants={containerVariants}
+
+        {/* Second row - Two category cards + Custom Formula */}
+        <motion.div
+          variants={animConfig.getVariants(containerVariants)}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 mx-auto max-w-6xl overflow-x-auto px-2"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto max-w-6xl px-2"
+          suppressHydrationWarning
         >
-          {categories.map((category, index) => (
-            <div key={category.title} className="h-full overflow-visible py-3 px-1">
+          {categories.slice(3, 5).map((category, index) => (
+            <div key={category.title} className="overflow-visible">
               <motion.div
-                variants={itemVariants}
-                initial="initial"
-                animate="visible"
-                whileHover="hover"
-                className="h-full perspective-600"
+                variants={animConfig.getVariants(itemVariants)}
+                className="perspective-600"
+                suppressHydrationWarning
               >
-                <Link href={category.href} className="block h-full">
+                <Link href={category.href} className="block h-full group">
                   <motion.div 
                     className={cn(
-                      "relative flex flex-col items-center h-full min-h-[260px] md:min-h-[280px] rounded-2xl bg-white shadow-sm overflow-hidden",
+                      "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-lg overflow-hidden",
+                      "min-h-[360px] sm:min-h-[380px] sm:max-w-[400px] mx-auto w-full",
+                      "border-[1px] border-transparent"
                     )}
-                    variants={cardVariants}
+                    whileHover={prefersReducedMotion ? {} : {
+                      scale: 1.05,
+                      border: `3px solid ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.9)')}`,
+                      boxShadow: `0 10px 30px ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.25)')}`,
+                      y: -8,
+                      zIndex: 10
+                    }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 400, 
+                      damping: 25 
+                    }}
                   >
                     {/* Card top gradient banner */}
                     <div className={cn(
-                      "absolute top-0 left-0 right-0 h-24 w-full bg-gradient-to-br rounded-t-2xl",
+                      "absolute top-0 left-0 right-0 h-28 w-full bg-gradient-to-br rounded-t-2xl",
                       `from-${category.theme.accentLight.replace('bg-', '')} to-white/20`
                     )}></div>
                     
                     {/* Icon in circle */}
-                    <div className="relative z-10 mt-5 mb-3">
-                      <motion.div 
+                    <div className="relative z-10 mt-6 mb-3">
+                      <div 
                         className={cn(
-                          "w-[80px] h-[80px] md:w-[90px] md:h-[90px] rounded-full relative overflow-hidden",
+                          "w-[90px] h-[90px] rounded-full relative overflow-hidden",
                           "shadow-md border-4 border-white bg-white p-1"
                         )}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       >
                         <div className={cn(
                           "w-full h-full rounded-full flex items-center justify-center",
@@ -700,40 +846,49 @@ export function CategoryHighlights() {
                             })}
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
                     
                     {/* Content */}
-                    <div className="relative z-10 flex flex-col items-center px-5 text-center">
-                      <h3 className={cn(
-                        "text-lg md:text-xl font-bold leading-tight mb-2",
-                        category.theme.text
-                      )}>
-                        {category.title === "Pet CBD" ? (
-                          <>
-                            <Heart className="inline-block h-4 w-4 mr-1 text-red-500 fill-red-500" /> 
-                            PET
-                            <Heart className="inline-block h-4 w-4 ml-1 text-red-500 fill-red-500" />
-                            <br/>
-                            CBD
-                          </>
-                        ) : (
-                          category.title
-                        )}
-                      </h3>
-                      
-                      <p className="text-sm text-gray-600 mb-auto">{category.description.split('.')[0] + '.'}</p>
-                      
-                      <div className="mt-auto pt-5 w-full pb-4">
-                        <div className={cn(
-                          "flex items-center justify-between py-2.5 px-5 rounded-full w-full",
-                          "border border-gray-200 bg-white shadow-sm",
-                          category.theme.text,
-                          "font-medium text-sm"
+                    <div className="px-5 text-center flex flex-col flex-1 justify-between w-full">
+                      <div>
+                        <h3 className={cn(
+                          "text-xl font-bold leading-tight mb-2",
+                          category.theme.text
                         )}>
-                          <span>View</span>
-                          <ArrowRight className="h-4 w-4" />
+                          {category.title === "Pet CBD" ? (
+                            "Pet CBD"
+                          ) : (
+                            category.title
+                          )}
+                        </h3>
+                        
+                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{category.description}</p>
+                        
+                        <div className="mb-4">
+                          <ul className="space-y-1.5">
+                            {category.benefits.slice(0, 3).map((benefit, idx) => (
+                              <li key={idx} className="flex items-center justify-center gap-2">
+                                <div className={cn("w-1.5 h-1.5 rounded-full", category.theme.accent)} />
+                                <span className="text-xs sm:text-sm text-gray-700">{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
+                      </div>
+                      
+                      <div className="w-full pb-5 mt-auto">
+                        <Button
+                          className={cn(
+                            "w-full py-2.5 text-white h-10 rounded-lg",
+                            category.theme.accent
+                          )}
+                        >
+                          <span className="flex items-center justify-center gap-2">
+                            Explore Collection
+                            <ArrowRight className="h-4 w-4" />
+                          </span>
+                        </Button>
                       </div>
                     </div>
                   </motion.div>
@@ -741,31 +896,166 @@ export function CategoryHighlights() {
               </motion.div>
             </div>
           ))}
+
+          {/* Custom Formula Card */}
+          <div className="overflow-visible">
+            <motion.div
+              variants={animConfig.getVariants(itemVariants)}
+              className="perspective-600"
+              suppressHydrationWarning
+            >
+              <Link href={customCard.href} className="block h-full group">
+                <motion.div 
+                  className={cn(
+                    "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-lg overflow-hidden",
+                    "min-h-[360px] sm:min-h-[380px] sm:max-w-[400px] mx-auto w-full",
+                    "border-2 border-dashed border-teal-200/40"
+                  )}
+                  whileHover={prefersReducedMotion ? {} : {
+                    scale: 1.05,
+                    borderColor: "rgba(20, 184, 166, 0.9)",
+                    borderStyle: "solid",
+                    borderWidth: "3px",
+                    boxShadow: "0 10px 30px rgba(20, 184, 166, 0.25)",
+                    y: -8,
+                    zIndex: 10
+                  }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 400, 
+                    damping: 25 
+                  }}
+                >
+                  {/* Card top gradient banner */}
+                  <div className={cn(
+                    "absolute top-0 left-0 right-0 h-28 w-full bg-gradient-to-br rounded-t-2xl",
+                    "from-teal-100 to-white/20"
+                  )}></div>
+                  
+                  {/* Icon in circle */}
+                  <div className="relative z-10 mt-6 mb-3">
+                    <div 
+                      className={cn(
+                        "w-[90px] h-[90px] rounded-full relative overflow-hidden",
+                        "shadow-md border-4 border-white bg-white p-1"
+                      )}
+                    >
+                      <div className="w-full h-full rounded-full flex items-center justify-center bg-teal-100">
+                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-teal-600">
+                          <Sparkles className="h-6 w-6 text-white" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="px-5 text-center flex flex-col flex-1 justify-between w-full">
+                    <div>
+                      <h3 className="text-xl font-bold leading-tight mb-2 text-teal-800">
+                        {customCard.title}
+                      </h3>
+                      
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{customCard.description}</p>
+                      
+                      <div className="mb-4">
+                        <ul className="space-y-1.5 text-left">
+                          <li className="flex items-start gap-2">
+                            <CheckCircle className="h-4 w-4 text-teal-600 mt-0.5 flex-shrink-0" />
+                            <span className="text-xs sm:text-sm text-gray-700">Tailored to your specific needs</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle className="h-4 w-4 text-teal-600 mt-0.5 flex-shrink-0" />
+                            <span className="text-xs sm:text-sm text-gray-700">Expert consultation included</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <CheckCircle className="h-4 w-4 text-teal-600 mt-0.5 flex-shrink-0" />
+                            <span className="text-xs sm:text-sm text-gray-700">Unique blend just for you</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div className="w-full pb-5 mt-auto">
+                      <Button
+                        className="w-full py-2.5 text-white bg-teal-600 hover:bg-teal-700 h-10 rounded-lg"
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          Create Your Formula
+                          <ArrowRight className="h-4 w-4" />
+                        </span>
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            </motion.div>
+          </div>
         </motion.div>
         
         {/* View all categories link */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex justify-center mt-16"
+          {...animConfig.getMotionProps({
+            initial: { opacity: 0, y: 20 },
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true },
+            transition: { duration: 0.5, delay: 0.4 }
+          })}
+          className="flex flex-col items-center mt-16 space-y-3"
         >
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Button
-              variant="outlineGreen"
-              rounded="full"
-              asChild
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
+            <motion.div
+              whileHover={{ scale: prefersReducedMotion ? 1 : 1.02 }}
+              whileTap={{ scale: prefersReducedMotion ? 1 : 0.98 }}
+              suppressHydrationWarning
             >
-              <Link href="/shop" className="flex items-center gap-2 px-6 py-3">
-                View All Categories
-                <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </Button>
-          </motion.div>
+              <Button
+                variant="primary"
+                rounded="full"
+                asChild
+                className="px-8 py-3 text-base"
+              >
+                <Link href="/shop" className="flex items-center gap-2 h-12">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ 
+                      duration: 3, 
+                      repeat: Infinity, 
+                      ease: "linear",
+                      repeatType: "loop"
+                    }}
+                    className="w-6 h-6 mr-1"
+                  >
+                    <Image 
+                      src="/images/2.png" 
+                      alt="Twistly" 
+                      width={24} 
+                      height={24} 
+                      className="object-contain"
+                    />
+                  </motion.div>
+                  Shop All Products
+                </Link>
+              </Button>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ scale: prefersReducedMotion ? 1 : 1.02 }}
+              whileTap={{ scale: prefersReducedMotion ? 1 : 0.98 }}
+              suppressHydrationWarning
+            >
+              <Button
+                variant="outlineGreen"
+                rounded="full"
+                asChild
+                className="px-8 py-3 text-base"
+              >
+                <Link href="/chat" className="flex items-center gap-2 h-12">
+                  <MessageSquare className="w-6 h-6 mr-1" />
+                  Chat with Dr. Twistly
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
         </motion.div>
       </Container>
     </section>

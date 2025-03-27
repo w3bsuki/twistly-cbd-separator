@@ -231,12 +231,22 @@ export function Navbar() {
   };
   
   return (
-    <header className={cn(
-      "sticky top-0 z-50 w-full border-b transition-all duration-200",
-      isScrolled 
-        ? "h-16 shadow-md bg-white/95 backdrop-blur-lg border-gray-200" 
-        : "h-20 border-b-0 bg-gradient-to-r from-white via-white to-white/95 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-green-200 after:to-transparent"
-    )}>
+    <motion.div 
+      className={cn(
+        "sticky top-0 z-[100] w-full border-b",
+        isScrolled 
+          ? "h-16 shadow-md bg-white/95 backdrop-blur-lg border-gray-200" 
+          : "h-20 border-b-0 bg-gradient-to-r from-white via-white to-white/95 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1px] after:bg-gradient-to-r after:from-transparent after:via-green-200 after:to-transparent"
+      )}
+      initial={false}
+      animate={{
+        height: isScrolled ? 64 : 80,
+      }}
+      transition={{
+        duration: 0.2,
+        ease: [0.4, 0, 0.2, 1]
+      }}
+    >
       <div className="container mx-auto h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
@@ -245,14 +255,23 @@ export function Navbar() {
             className="flex items-center gap-3 group"
             onClick={cycleLogo}
           >
-            <div className="relative h-12 w-12 overflow-hidden shadow-sm rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100 group-hover:shadow-md transition-all duration-300">
-              <Image
-                src={`/images/${logoIndex}.png`}
-                alt="Twistly"
-                width={48}
-                height={48}
-                className="object-contain p-1 group-hover:scale-110 transition-transform duration-300"
-              />
+            <div className="relative h-14 w-14 overflow-hidden shadow-sm rounded-xl bg-gradient-to-br from-green-50 to-white border border-green-100 group-hover:shadow-md transition-all duration-300">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{
+                  ease: "linear",
+                  duration: 20,
+                  repeat: Infinity
+                }}
+              >
+                <Image
+                  src={`/images/${logoIndex}.png`}
+                  alt="Twistly"
+                  width={56}
+                  height={56}
+                  className="object-contain p-1 group-hover:scale-110 transition-transform duration-300"
+                />
+              </motion.div>
             </div>
             <span className="font-semibold text-gray-900 text-2xl hidden sm:inline-block tracking-tight group-hover:text-gray-800">
               Twistly<span className="text-green-600 font-bold">.</span>
@@ -263,9 +282,18 @@ export function Navbar() {
           <div className="hidden md:flex items-center justify-center flex-1 mx-6">
             <nav className="flex items-center space-x-5" aria-label="Main Navigation">
               {/* Product Category Dropdowns with hover trigger */}
-              {productCategories.map((category) => (
-                <div key={category.path} className="group relative">
-                  <button 
+              {productCategories.map((category, index) => (
+                <motion.div 
+                  key={category.path} 
+                  className="group relative"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    delay: index * 0.1,
+                    duration: 0.3
+                  }}
+                >
+                  <motion.button 
                     className={cn(
                       "px-4 py-2.5 text-[15px] font-medium tracking-tight rounded-md flex items-center gap-1.5 transition-all duration-200",
                       activeCategory === category.name ? "bg-gray-50" : "",
@@ -284,12 +312,29 @@ export function Navbar() {
                     aria-expanded="false"
                     aria-haspopup="true"
                   >
-                    {category.name} <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
+                    {category.name} 
+                    <motion.div
+                      animate={{ rotate: 180 }}
+                      transition={{
+                        duration: 0.3,
+                        ease: "easeInOut"
+                      }}
+                      className="group-hover:rotate-180 transition-transform duration-300"
+                    >
+                      <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
+                    </motion.div>
                     {activeCategory === category.name && (
                       <span className="absolute bottom-0 left-0 w-full h-0.5 bg-current"></span>
                     )}
-                  </button>
-                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[420px] z-20 transition-all duration-200 ease-out transform translate-y-1 group-hover:translate-y-0">
+                  </motion.button>
+                  <motion.div 
+                    className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[420px] z-20 transition-all duration-150 ease-out transform translate-y-1 group-hover:translate-y-0"
+                    initial={false}
+                    transition={{ 
+                      duration: 0.2,
+                      ease: "easeOut"
+                    }}
+                  >
                     <div className={cn(
                       "rounded-lg border shadow-lg bg-white p-6",
                       category.color === "green" && "border-green-100",
@@ -364,40 +409,80 @@ export function Navbar() {
                         </Button>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               ))}
               
               {/* Info Dropdown */}
-              <div className="group relative">
-                <button 
+              <motion.div 
+                className="group relative"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  delay: productCategories.length * 0.1,
+                  duration: 0.3
+                }}
+              >
+                <motion.button 
                   className="px-4 py-2.5 text-[15px] font-medium tracking-tight rounded-md flex items-center gap-1.5 text-gray-800 hover:text-gray-900 group-hover:bg-green-50/50 transition-all duration-200"
                   style={{ letterSpacing: '-0.01em' }}
                   aria-expanded="false"
                   aria-haspopup="true"
+                  whileHover={{ y: -1 }}
+                  whileTap={{ y: 1 }}
                 >
-                  Info <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
-                </button>
-                <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[220px] z-20 transition-all duration-200 ease-in-out transform translate-y-1 group-hover:translate-y-0">
+                  Info 
+                  <motion.div
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: [0, 0] }}
+                    whileHover={{ rotate: [0, 180] }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown className="h-3.5 w-3.5 opacity-70 ml-0.5" />
+                  </motion.div>
+                </motion.button>
+                <motion.div 
+                  className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible w-[220px] z-20 transition-all duration-150 ease-out transform translate-y-1 group-hover:translate-y-0"
+                  initial={false}
+                  transition={{ 
+                    duration: 0.2,
+                    ease: "easeOut"
+                  }}
+                >
                   <div className="rounded-lg border border-green-100 shadow-lg bg-white p-3">
                     <div className="flex flex-col space-y-1">
-                      {navLinks.slice(1).map((link) => (
-                        <Link 
-                          key={link.path} 
-                          href={link.path}
-                          className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-green-50/70 rounded-md flex items-center gap-2 transition-all duration-150"
+                      {navLinks.slice(1).map((link, index) => (
+                        <motion.div
+                          key={link.path}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: index * 0.05, duration: 0.15 }}
                         >
-                          <link.icon className="h-4 w-4 text-gray-500" />
-                          {link.name}
-                        </Link>
+                          <Link 
+                            href={link.path}
+                            className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:text-green-700 hover:bg-green-50/70 rounded-md flex items-center gap-2 transition-all duration-150"
+                          >
+                            <motion.div
+                              whileHover={{ rotate: 15 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <link.icon className="h-4 w-4 text-gray-500" />
+                            </motion.div>
+                            {link.name}
+                          </Link>
+                        </motion.div>
                       ))}
                     </div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
               
               {/* Search Button - Now next to Info */}
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <motion.div 
+                whileHover={{ scale: 1.1 }} 
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+              >
                 <Button 
                   variant="ghost" 
                   size="icon" 
@@ -413,103 +498,131 @@ export function Navbar() {
           
           {/* Desktop Right Side Actions - Rearranged */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* Cart and Account (Left Side) */}
-            <div className="flex items-center space-x-3">
-              {/* Cart with notification badge */}
-              <div className="relative">
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                  <CartDrawer />
-                </motion.div>
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-medium text-white">
-                    {totalItems}
-                  </span>
-                )}
-              </div>
-              
-              {/* User Menu */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
-                      aria-label="User account"
-                    >
-                      <User className="h-[18px] w-[18px]" />
-                    </Button>
-                  </motion.div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 rounded-lg p-1 border border-gray-200">
-                  <DropdownMenuItem asChild className="rounded-md">
-                    <Link href="/account" className="font-medium text-sm">My Account</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="rounded-md">
-                    <Link href="/orders" className="font-medium text-sm">Orders</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="rounded-md">
-                    <button
-                      onClick={handleWalletConnect}
-                      className="font-medium text-sm w-full text-left flex items-center"
-                    >
-                      <Bitcoin className="h-4 w-4 mr-2" />
-                      Connect Wallet
-                    </button>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild className="rounded-md">
-                    <Link href="/signin" className="font-medium text-sm">Sign In</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+            {/* Cart with notification badge - simplified */}
+            <div className="relative">
+              <CartDrawer>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                  aria-label="Cart"
+                >
+                  <ShoppingCart className="h-[18px] w-[18px]" />
+                </Button>
+              </CartDrawer>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-medium text-white z-10">
+                  {totalItems}
+                </span>
+              )}
             </div>
             
-            {/* Shop Button (Right Side) */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
+            {/* User Menu - simplified */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                  aria-label="User account"
+                >
+                  <User className="h-[18px] w-[18px]" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 rounded-lg p-1 border border-gray-200">
+                <DropdownMenuItem asChild className="rounded-md">
+                  <Link href="/account" className="font-medium text-sm">My Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="rounded-md">
+                  <Link href="/orders" className="font-medium text-sm">Orders</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="rounded-md">
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="font-medium text-sm flex items-center justify-center gap-2 rounded-full w-full"
+                    onClick={handleWalletConnect}
+                  >
+                    <motion.div
+                      animate={{ 
+                        rotate: 360,
+                      }}
+                      transition={{ 
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                    >
+                      <Bitcoin className="h-4 w-4" />
+                    </motion.div>
+                    Connect Wallet
+                  </Button>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild className="rounded-md">
+                  <Link href="/signin" className="font-medium text-sm">Sign In</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            {/* Shop Button (Right Side) - simplified animation */}
+            <Button 
+              asChild 
+              variant="default" 
+              className="bg-green-600 hover:bg-green-700 text-white rounded-full h-11 px-6 text-[15px] font-medium"
             >
-              <Button asChild variant="default" className="bg-green-600 hover:bg-green-700 text-white rounded-full h-10 px-5 text-sm font-medium shadow-sm hover:shadow-md">
-                <Link href="/shop" className="flex items-center gap-2">
-                  <div className="relative w-5 h-5">
-                    <Image 
-                      src="/images/2.png"
-                      alt="Twistly Icon" 
-                      width={20}
-                      height={20}
-                      className="object-contain"
-                    />
-                  </div>
-                  <Separator orientation="vertical" className="h-4 bg-white/30" />
-                  Shop
-                </Link>
-              </Button>
-            </motion.div>
+              <Link href="/shop" className="flex items-center gap-2">
+                <motion.div 
+                  className="relative w-6 h-6"
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    ease: "linear",
+                    duration: 10,
+                    repeat: Infinity
+                  }}
+                >
+                  <Image 
+                    src="/images/2.png"
+                    alt="Twistly Icon" 
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </motion.div>
+                <Separator orientation="vertical" className="h-5 bg-white/30" />
+                Shop
+              </Link>
+            </Button>
           </div>
           
           {/* Mobile Menu and Cart */}
           <div className="flex md:hidden items-center space-x-2">
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
-                onClick={() => setIsSearchOpen(true)}
-                aria-label="Search"
-              >
-                <Search className="h-[18px] w-[18px]" />
-              </Button>
-            </motion.div>
+            {/* Mobile Search Button */}
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+              onClick={() => setIsSearchOpen(true)}
+              aria-label="Search"
+            >
+              <Search className="h-[18px] w-[18px]" />
+            </Button>
             
             {/* Mobile Cart with badge */}
             <div className="relative">
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                <CartDrawer />
-              </motion.div>
+              <CartDrawer>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-gray-700 hover:text-gray-900 hover:bg-gray-100 relative rounded-full h-10 w-10"
+                  aria-label="Cart"
+                >
+                  <ShoppingCart className="h-[18px] w-[18px]" />
+                </Button>
+              </CartDrawer>
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-medium text-white">
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-medium text-white z-10">
                   {totalItems}
                 </span>
               )}
@@ -518,16 +631,14 @@ export function Navbar() {
             {/* Mobile Menu */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    aria-label="Menu" 
-                    className="relative text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full h-10 w-10"
-                  >
-                    <Menu className="h-[18px] w-[18px]" />
-                  </Button>
-                </motion.div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  aria-label="Menu" 
+                  className="relative text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full h-10 w-10"
+                >
+                  <Menu className="h-[18px] w-[18px]" />
+                </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-full sm:w-80 p-0">
                 <div className="flex flex-col h-full">
@@ -621,30 +732,40 @@ export function Navbar() {
                     </div>
                   </div>
                   
-                  {/* Mobile Account Links */}
+                  {/* Mobile Account Links - simplified */}
                   <div className="border-t p-4">
                     <div className="flex flex-col space-y-2">
-                      <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-                        <Button asChild variant="outline" size="lg" className="font-medium text-sm rounded-full w-full">
-                          <Link href="/account">My Account</Link>
-                        </Button>
-                      </motion.div>
-                      <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-                        <Button 
-                          size="lg" 
-                          variant="outline"
-                          className="font-medium text-sm flex items-center gap-2 rounded-full w-full"
-                          onClick={handleWalletConnect}
+                      <Button 
+                        asChild 
+                        variant="outline" 
+                        size="lg" 
+                        className="font-medium text-sm rounded-full w-full"
+                      >
+                        <Link href="/account" className="flex items-center justify-center">
+                          My Account
+                        </Link>
+                      </Button>
+                      <Button 
+                        size="lg" 
+                        variant="outline"
+                        className="font-medium text-sm flex items-center justify-center gap-2 rounded-full w-full"
+                        onClick={handleWalletConnect}
+                      >
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ 
+                            duration: 10,
+                            repeat: Infinity,
+                            ease: "linear"
+                          }}
                         >
                           <Bitcoin className="h-4 w-4" />
-                          Connect Wallet
-                        </Button>
-                      </motion.div>
-                      <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
-                        <Button asChild size="lg" className="font-medium text-sm bg-green-600 hover:bg-green-700 rounded-full w-full">
-                          <Link href="/signin">Sign In</Link>
-                        </Button>
-                      </motion.div>
+                        </motion.div>
+                        Connect Wallet
+                      </Button>
+                      <Button asChild size="lg" className="font-medium text-sm bg-green-600 hover:bg-green-700 rounded-full w-full">
+                        <Link href="/signin">Sign In</Link>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -670,22 +791,21 @@ export function Navbar() {
               <div className="text-xs uppercase font-semibold tracking-wide text-gray-500 px-2">Popular Searches</div>
               <div className="flex flex-wrap gap-2">
                 {["CBD Oil", "Softgels", "Sleep Aid", "Pain Relief", "Mushroom Extract", "Pet CBD", "Gummies"].map((term) => (
-                  <motion.div key={term} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }}>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => setIsSearchOpen(false)}
-                      className="text-xs h-9 font-medium px-3 rounded-full border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                    >
-                      {term}
-                    </Button>
-                  </motion.div>
+                  <Button 
+                    key={term}
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => setIsSearchOpen(false)}
+                    className="text-xs h-9 font-medium px-3 rounded-full border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:scale-105 transition-transform"
+                  >
+                    {term}
+                  </Button>
                 ))}
               </div>
             </div>
           </div>
         </SheetContent>
       </Sheet>
-    </header>
+    </motion.div>
   )
 } 

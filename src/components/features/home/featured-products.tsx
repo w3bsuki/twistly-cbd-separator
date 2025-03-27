@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion, AnimatePresence } from "framer-motion";
+import { ProductCardSkeleton } from "@/components/features/products/product-card-skeleton"
 
 export function FeaturedProducts() {
   const [isLoading, setIsLoading] = useState(true);
@@ -599,41 +600,33 @@ export function FeaturedProducts() {
 
 function FeaturedProductsSkeleton() {
   return (
-    <section className="w-full py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="w-full py-20 md:py-28 bg-background relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px] opacity-5 pointer-events-none" />
+      
       <div className="container px-4 md:px-6 mx-auto">
+        {/* Header Skeleton */}
         <div className="flex flex-col items-center text-center mb-16">
           <Skeleton className="h-6 w-36 mb-4 rounded-full" />
           <Skeleton className="h-10 w-72 mb-4" />
           <Skeleton className="h-5 w-[70%] max-w-2xl mb-8" />
-          <Skeleton className="h-12 w-96 rounded-xl" />
+          
+          {/* Category Tabs Skeleton */}
+          <div className="inline-flex items-center justify-center p-1 rounded-lg bg-muted/50 backdrop-blur-sm">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-9 w-24 mx-1 rounded-md" />
+            ))}
+          </div>
         </div>
 
         {/* Grid of skeleton cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {Array.from({ length: 8 }).map((_, index) => (
-            <Card key={index} className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-              <Skeleton className="h-52 w-full" />
-              <CardContent className="p-5">
-                <div className="flex justify-between mb-4">
-                  <Skeleton className="h-5 w-20" />
-                  <Skeleton className="h-4 w-24" />
-                </div>
-                <Skeleton className="h-6 w-full mb-2" />
-                <Skeleton className="h-4 w-full mb-1" />
-                <Skeleton className="h-4 w-3/4 mb-4" />
-                <div className="space-y-2 mb-4">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-5/6" />
-                </div>
-                <div className="flex justify-between items-center pt-4">
-                  <Skeleton className="h-6 w-16" />
-                  <Skeleton className="h-8 w-28 rounded-md" />
-                </div>
-              </CardContent>
-            </Card>
+            <ProductCardSkeleton key={index} />
           ))}
         </div>
 
+        {/* View All Button Skeleton */}
         <div className="flex justify-center mt-16">
           <Skeleton className="h-12 w-48 rounded-full" />
         </div>
