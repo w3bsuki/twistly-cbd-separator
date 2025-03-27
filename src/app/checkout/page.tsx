@@ -33,12 +33,15 @@ const CRYPTO_ADDRESSES = {
 };
 
 export default function CheckoutPage() {
-  const { items, totalItems, totalPrice, clearCart } = useCart();
+  const { items, itemCount, subtotal, clearCart } = useCart();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('credit-card');
   const [cryptoCurrency, setCryptoCurrency] = useState<string>('bitcoin');
   const [cryptoAddressCopied, setCryptoAddressCopied] = useState(false);
+  
+  // For backward compatibility
+  const totalItems = itemCount || 0;
   
   // Form state
   const [formData, setFormData] = useState({
@@ -68,11 +71,10 @@ export default function CheckoutPage() {
   };
   
   // Calculate cart values
-  const subtotal = totalPrice;
   const shipping = subtotal > 50 ? 0 : 4.99;
-  const tax = subtotal * 0.08; // Assuming 8% tax rate
+  const tax = (subtotal || 0) * 0.08; // Assuming 8% tax rate
   const discount = 0; // Placeholder for discount logic
-  const total = subtotal + shipping + tax - discount;
+  const total = (subtotal || 0) + shipping + tax - discount;
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,12 +140,12 @@ export default function CheckoutPage() {
   useEffect(() => {
     // In a real app, you would fetch real-time conversion rates from an API
     setCryptoPrices({
-      bitcoin: +(total / 62000).toFixed(8),
-      ethereum: +(total / 3500).toFixed(6),
-      usdc: +total.toFixed(2),
-      dogecoin: +(total / 0.15).toFixed(2)
+      bitcoin: +((subtotal || 0) / 62000).toFixed(8),
+      ethereum: +((subtotal || 0) / 3500).toFixed(6),
+      usdc: +(subtotal || 0).toFixed(2),
+      dogecoin: +((subtotal || 0) / 0.15).toFixed(2)
     });
-  }, [total]);
+  }, [subtotal]);
   
   return (
     <div className="bg-gray-50 py-10">
@@ -177,23 +179,23 @@ export default function CheckoutPage() {
                 
                 <div className="space-y-4 mb-6">
                   {items.map((item) => (
-                    <div key={item.product.id} className="flex gap-3">
+                    <div key={item.id} className="flex gap-3">
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border">
                         <Image
-                          src={item.product.image}
-                          alt={item.product.name}
+                          src={item.image}
+                          alt={item.name}
                           fill
                           className="object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium">{item.product.name}</h4>
+                        <h4 className="text-sm font-medium">{item.name}</h4>
                         <p className="text-xs text-gray-500">
-                          {item.product.details.size} | Qty: {item.quantity}
+                          {item.details?.size} | Qty: {item.quantity}
                         </p>
                       </div>
                       <div className="text-right text-sm font-medium">
-                        ${((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}
+                        ${((item.discountPrice || item.price) * item.quantity).toFixed(2)}
                       </div>
                     </div>
                   ))}

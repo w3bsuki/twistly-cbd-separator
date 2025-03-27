@@ -22,14 +22,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function CartDrawer() {
   const { 
     items, 
-    totalItems, 
-    totalPrice, 
+    itemCount: totalItems, 
+    subtotal: totalPrice, 
     updateQuantity, 
     removeItem, 
     isOpen, 
     openCart,
-    closeCart,
-    toggleCart 
+    closeCart
   } = useCart();
   
   // Calculate values for cart summary
@@ -38,6 +37,15 @@ export function CartDrawer() {
   const tax = subtotal * 0.08; // Assuming 8% tax rate
   const discount = 0; // Placeholder for discount logic
   const total = subtotal + shipping + tax - discount;
+  
+  // Toggle cart function
+  const toggleCart = (open: boolean) => {
+    if (open) {
+      openCart();
+    } else {
+      closeCart();
+    }
+  };
   
   return (
     <Sheet open={isOpen} onOpenChange={toggleCart}>
@@ -128,22 +136,22 @@ export function CartDrawer() {
                 <div className="space-y-4">
                   {items.map((item, index) => (
                     <motion.div 
-                      key={item.product.id} 
+                      key={item.id} 
                       className="p-4 bg-gray-50 rounded-lg border border-gray-100"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: index * 0.05 }}
                     >
                       <div className="flex gap-4">
-                        <Link href={`/shop/${item.product.id}`} className="shrink-0">
+                        <Link href={`/shop/${item.id}`} className="shrink-0">
                           <motion.div 
                             className="relative h-20 w-20 overflow-hidden rounded-md border border-gray-100 bg-white"
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.2 }}
                           >
                             <Image 
-                              src={item.product.image} 
-                              alt={item.product.name}
+                              src={item.image} 
+                              alt={item.name}
                               fill
                               className="object-cover"
                             />
@@ -151,20 +159,20 @@ export function CartDrawer() {
                         </Link>
                         
                         <div className="flex-1 min-w-0">
-                          <Link href={`/shop/${item.product.id}`}>
+                          <Link href={`/shop/${item.id}`}>
                             <h4 className="font-medium text-gray-900 hover:text-green-700 transition-colors tracking-tight line-clamp-1">
-                              {item.product.name}
+                              {item.name}
                             </h4>
                           </Link>
                           <div className="flex flex-wrap gap-2 mt-1">
-                            {item.product.details?.size && (
+                            {item.details?.size && (
                               <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800">
-                                {item.product.details.size}
+                                {item.details.size}
                               </span>
                             )}
-                            {item.product.details?.concentration && (
+                            {item.details?.concentration && (
                               <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                {item.product.details.concentration}
+                                {item.details.concentration}
                               </span>
                             )}
                           </div>
@@ -172,7 +180,7 @@ export function CartDrawer() {
                           <div className="flex items-center justify-between mt-3">
                             <div className="flex items-center border rounded-md bg-white">
                               <motion.button
-                                onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 className="p-1.5 text-gray-600 hover:bg-gray-50"
                                 aria-label="Decrease quantity"
                                 whileTap={{ scale: 0.9 }}
@@ -182,9 +190,9 @@ export function CartDrawer() {
                               </motion.button>
                               <span className="px-3 text-sm font-medium">{item.quantity}</span>
                               <motion.button
-                                onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 className="p-1.5 text-gray-600 hover:bg-gray-50"
-                                disabled={item.quantity >= (item.product.stock || 10)}
+                                disabled={item.quantity >= (item.stock || 10)}
                                 aria-label="Increase quantity"
                                 whileTap={{ scale: 0.9 }}
                                 transition={{ duration: 0.1 }}
@@ -195,10 +203,10 @@ export function CartDrawer() {
                             
                             <div className="flex items-center gap-2">
                               <span className="font-semibold text-gray-900">
-                                ${((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}
+                                ${((item.discountPrice || item.price) * item.quantity).toFixed(2)}
                               </span>
                               <motion.button
-                                onClick={() => removeItem(item.product.id)}
+                                onClick={() => removeItem(item.id)}
                                 className="text-gray-400 hover:text-red-500 transition-colors p-1"
                                 aria-label="Remove item"
                                 whileHover={{ scale: 1.1 }}
@@ -260,19 +268,21 @@ export function CartDrawer() {
                 )}
               </div>
               
-              <div className="mt-4 grid gap-3">
-                <Link href="/checkout" className="w-full">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.2 }}
-                    className="w-full"
-                  >
-                    <Button className="w-full bg-green-700 hover:bg-green-800" onClick={closeCart}>
-                      Checkout
-                    </Button>
-                  </motion.div>
-                </Link>
+              <div className="space-y-3 pt-4">
+                <SheetClose asChild>
+                  <Link href="/checkout" className="w-full">
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full"
+                    >
+                      <Button className="w-full bg-green-700 hover:bg-green-800" onClick={closeCart}>
+                        Checkout
+                      </Button>
+                    </motion.div>
+                  </Link>
+                </SheetClose>
                 
                 <SheetClose asChild>
                   <Link href="/shop" className="w-full">

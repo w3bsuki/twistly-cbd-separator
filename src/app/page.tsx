@@ -1,6 +1,6 @@
 import { CBDHeroSection } from "@/components/sections/hero";
 import { ShoppingBag, Leaf, ArrowRight } from "lucide-react";
-import { FeaturedProducts } from "@/components/features/home/featured-products";
+import { FeaturedProducts } from "@/components/features/home/featured-products-optimized";
 import { BlogSection } from "@/components/features/home/blog-section";
 import { CategoryHighlights } from "@/components/features/home/category-highlights";
 import { CBDBenefits } from "@/components/features/home/cbd-benefits";
