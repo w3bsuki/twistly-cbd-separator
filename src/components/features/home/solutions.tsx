@@ -1,8 +1,8 @@
 "use client"
 
 import React from 'react'
-import { Badge } from "@/components/common/ui/badge"
-import { BentoGrid, BentoGridItem } from "@/components/common/ui/bento-grid"
+import { Badge } from '@/components/ui/badge'
+import { BentoGrid, BentoGridItem } from '@/components/ui/bento-grid'
 import {
   IconBoxAlignRightFilled,
   IconClipboardCopy,

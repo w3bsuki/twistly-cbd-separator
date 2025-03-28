@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { InfiniteSlider } from '@/components/common/ui/infinite-slider'
+import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
@@ -24,7 +24,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/common/ui/table"
+} from '@/components/ui/table'
 
 // Hybrid/Mushroom products data
 const hybridProducts = [

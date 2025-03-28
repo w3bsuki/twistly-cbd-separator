@@ -11,16 +11,16 @@ import {
   ChatBubble,
   ChatBubbleAvatar,
   ChatBubbleMessage,
-} from "@/components/common/ui/chat-bubble"
-import { ChatInput } from "@/components/common/ui/chat-input"
+} from '@/components/ui/chat-bubble'
+import { ChatInput } from '@/components/ui/chat-input'
 import { useToast } from "@/hooks/use-toast"
 import {
   ExpandableChat,
   ExpandableChatHeader,
   ExpandableChatBody,
   ExpandableChatFooter,
-} from "@/components/common/ui/expandable-chat"
-import { ChatMessageList } from "@/components/common/ui/chat-message-list"
+} from '@/components/ui/expandable-chat'
+import { ChatMessageList } from '@/components/ui/chat-message-list'
 
 export function ChatDemo() {
   const [messages, setMessages] = useState([

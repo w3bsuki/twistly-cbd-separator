@@ -4,11 +4,16 @@ import * as React from "react";
 import { Leaf, Sparkles, Dumbbell } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-import { Badge } from "@/components/common/ui/badge";
-import { Separator } from "@/components/common/ui/separator";
-import { AspectRatio } from "@/components/common/ui/aspect-ratio";
-import { Card, CardHeader, CardContent } from "@/components/common/ui/card";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { Grid } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface Feature {

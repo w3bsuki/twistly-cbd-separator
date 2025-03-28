@@ -11,7 +11,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { cn } from "@/lib/utils"
-import { InfiniteSlider } from "@/components/common/ui/infinite-slider"
+import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import {
   Dialog,
   DialogContent,
@@ -19,7 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/common/ui/dialog"
+} from '@/components/ui/dialog'
 
 // Hybrid products data
 const hybridProducts = [

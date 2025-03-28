@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Heart, Dumbbell, Sparkles, Leaf, ArrowRight, Check } from 'lucide-react';
-import { Button } from '@/components/common/ui/button';
-import { Badge } from '@/components/common/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 export function CBDBenefits() {

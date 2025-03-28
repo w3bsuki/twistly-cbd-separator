@@ -1,9 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Heart, Sparkles, Dumbbell } from "lucide-react";
 
-import { Badge } from "@/components/common/ui/badge";
-import { Button } from "@/components/common/ui/button";
-import { AspectRatio } from "@/components/common/ui/aspect-ratio";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface TabContent {
   badge: string;

@@ -5,14 +5,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Badge } from '@/components/common/ui/badge'
-import { Button } from '@/components/common/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { 
   Carousel, 
   CarouselContent, 
   CarouselItem
-} from '@/components/common/ui/carousel'
+} from '@/components/ui/carousel'
 
 interface FeaturedCollectionProps {
   title: string

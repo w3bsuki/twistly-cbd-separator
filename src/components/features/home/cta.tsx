@@ -3,23 +3,24 @@
 import React from 'react'
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ShoppingCart, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useRef } from "react"
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
-import { Button, buttonVariants } from "@/components/common/ui/button"
+import { buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import {
   Highlighter,
   HighlighterItem,
   HighlighterItemProps,
-} from "@/components/common/ui/highlighter"
+} from '@/components/ui/highlighter'
 import { DIcons } from "dicons";
 import { useAnimate } from "framer-motion";
 
 import {
   HighlightGroup,
   Particles,
-} from "@/components/common/ui/highlighter";
+} from '@/components/ui/highlighter';
 
 export function CTA() {
   const [scope, animate] = useAnimate();

@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { InfiniteSlider } from "@/components/common/ui/infinite-slider"
+import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Separator } from "@/components/ui/separator"
 import { ArrowRight, Star, Dumbbell, Activity, Clock, Medal, Check, Sparkles, ShoppingCart, Heart, Info, Users, CheckCircle, XCircle, X, Beaker, Bot } from "lucide-react"
@@ -19,7 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/common/ui/dialog"
+} from '@/components/ui/dialog'
 
 // Updated with local image paths and more product details
 const sportProducts = [
