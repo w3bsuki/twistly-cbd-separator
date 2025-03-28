@@ -51,7 +51,7 @@ export function BenefitsSection({ pageTheme }: BenefitsSectionProps) {
       {/* Simple background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-40 right-10 w-60 h-60 bg-green-100 rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-60 h-60 bg-blue-50 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-60 h-60 bg-green-50 rounded-full opacity-20 blur-3xl"></div>
       </div>
       
       <Container className="relative z-10">
@@ -79,37 +79,25 @@ export function BenefitsSection({ pageTheme }: BenefitsSectionProps) {
                 <div 
                   className={`bg-gradient-to-br rounded-lg border border-opacity-40 h-full shadow-sm p-2 flex`}
                   style={{
-                    backgroundImage: benefit.title === "Natural Support" ? 'linear-gradient(to bottom right, rgba(240, 253, 244, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    benefit.title === "Pain Management" ? 'linear-gradient(to bottom right, rgba(222, 247, 236, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    benefit.title === "Immune Support" ? 'linear-gradient(to bottom right, rgba(187, 247, 208, 0.4), rgba(255, 255, 255, 0.95))' : 
-                    benefit.color === 'bg-pink-50' ? 'linear-gradient(to bottom right, rgba(252, 231, 243, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    benefit.color === 'bg-indigo-50' ? 'linear-gradient(to bottom right, rgba(224, 231, 255, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    benefit.color === 'bg-amber-50' ? 'linear-gradient(to bottom right, rgba(254, 243, 199, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    benefit.color === 'bg-blue-50' ? 'linear-gradient(to bottom right, rgba(224, 242, 254, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    benefit.color === 'bg-purple-50' ? 'linear-gradient(to bottom right, rgba(243, 232, 255, 0.5), rgba(255, 255, 255, 0.95))' : 
-                    'linear-gradient(to bottom right, rgba(249, 250, 251, 0.5), rgba(255, 255, 255, 0.95))',
-                    borderColor: benefit.title === "Natural Support" ? 'rgba(134, 239, 172, 0.4)' : 
-                    benefit.title === "Pain Management" ? 'rgba(110, 231, 183, 0.4)' : 
-                    benefit.title === "Immune Support" ? 'rgba(74, 222, 128, 0.4)' : 
-                    benefit.color === 'bg-pink-50' ? 'rgba(249, 168, 212, 0.4)' : 
-                    benefit.color === 'bg-indigo-50' ? 'rgba(165, 180, 252, 0.4)' : 
-                    benefit.color === 'bg-amber-50' ? 'rgba(251, 191, 36, 0.4)' : 
-                    benefit.color === 'bg-blue-50' ? 'rgba(147, 197, 253, 0.4)' : 
-                    benefit.color === 'bg-purple-50' ? 'rgba(192, 132, 252, 0.4)' : 
-                    'rgba(229, 231, 235, 0.4)'
+                    backgroundImage: `linear-gradient(to bottom right, ${
+                      benefit.color === 'bg-green-50' ? 'rgba(240, 253, 244, 0.5)' : 
+                      benefit.color === 'bg-green-100' ? 'rgba(222, 247, 236, 0.5)' : 
+                      benefit.color === 'bg-green-200' ? 'rgba(187, 247, 208, 0.4)' : 
+                      'rgba(240, 253, 244, 0.5)'
+                    }, rgba(255, 255, 255, 0.95))`,
+                    borderColor: benefit.color === 'bg-green-50' ? 'rgba(134, 239, 172, 0.4)' : 
+                      benefit.color === 'bg-green-100' ? 'rgba(110, 231, 183, 0.4)' : 
+                      benefit.color === 'bg-green-200' ? 'rgba(74, 222, 128, 0.4)' : 
+                      'rgba(134, 239, 172, 0.4)'
                   }}
                 >
                   <Card className={`h-full border-l-[3px] ${benefit.borderColor} rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 w-full flex flex-col`} 
                     style={{
                       background: `linear-gradient(to bottom right, white, ${
-                        benefit.title === "Natural Support" ? '#f0fdf4' : 
-                        benefit.title === "Pain Management" ? '#f0fdf9' : 
-                        benefit.title === "Immune Support" ? '#f0fdfa' : 
-                        benefit.color === 'bg-pink-50' ? '#fdf2f8' : 
-                        benefit.color === 'bg-indigo-50' ? '#eef2ff' : 
-                        benefit.color === 'bg-amber-50' ? '#fffbeb' : 
-                        benefit.color === 'bg-blue-50' ? '#eff6ff' : 
-                        benefit.color === 'bg-purple-50' ? '#faf5ff' : '#f9fafb'
+                        benefit.color === 'bg-green-50' ? '#f0fdf4' : 
+                        benefit.color === 'bg-green-100' ? '#dcfce7' : 
+                        benefit.color === 'bg-green-200' ? '#bbf7d0' : 
+                        '#f0fdf4'
                       })`
                     }}
                   >
@@ -143,7 +131,7 @@ export function BenefitsSection({ pageTheme }: BenefitsSectionProps) {
                         <Button 
                           variant="ghost" 
                           size="sm" 
-                          className={`w-full justify-between px-1 py-1 ${benefit.iconColor} hover:bg-opacity-10 hover:${benefit.hoverColor}`}
+                          className={`w-full justify-between px-1 py-1 ${benefit.iconColor} hover:bg-opacity-10 ${benefit.hoverColor}`}
                           asChild
                         >
                           <a href="#featured-products" className="flex items-center text-xs">

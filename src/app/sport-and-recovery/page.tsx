@@ -8,7 +8,8 @@ import {
   ResearchSection, 
   TestimonialsSection, 
   CtaSection,
-  FaqSection
+  FaqSection,
+  CbdIngredientsSection
 } from './components'
 
 // Theme configuration for sport page
@@ -34,6 +35,7 @@ export default function SportAndRecoveryPage() {
       <BenefitsSection pageTheme={pageTheme} />
       <FeaturedProducts pageTheme={pageTheme} />
       <ResearchSection pageTheme={pageTheme} />
+      <CbdIngredientsSection pageTheme={pageTheme} />
       <TestimonialsSection pageTheme={pageTheme} />
       <CtaSection pageTheme={pageTheme} />
       <FaqSection pageTheme={pageTheme} />

@@ -8,7 +8,8 @@ import {
   TestimonialsSection, 
   QualityPromiseSection, 
   CtaSection,
-  FaqSection
+  FaqSection,
+  CbdIngredientsSection
 } from './components'
 
 // Theme configuration for beauty page (using pink shades)
@@ -33,6 +34,7 @@ export default function BeautyAndCosmeticsPage() {
       <HeroSection pageTheme={pageTheme} />
       <BenefitsSection pageTheme={pageTheme} />
       <FeaturedProducts pageTheme={pageTheme} />
+      <CbdIngredientsSection pageTheme={pageTheme} />
       <TestimonialsSection pageTheme={pageTheme} />
       <QualityPromiseSection pageTheme={pageTheme} />
       <CtaSection pageTheme={pageTheme} />
