@@ -11,7 +11,7 @@ export { useDebounce } from './use-debounce';
 export { useIntersectionObserver } from './use-intersection-observer';
 export { useLocalStorage } from './use-local-storage';
 export { useAutoScroll } from './use-auto-scroll';
-export { useMobile } from './use-mobile';
+export { useIsMobile } from './use-mobile';
 export { useMousePositionRef } from './use-mouse-position-ref';
 export { useToast } from './use-toast';
 export { useProductData } from './use-product-data';
