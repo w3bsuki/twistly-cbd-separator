@@ -13,6 +13,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Separator } from '@/components/ui/separator'
 import { Container } from '@/components/ui/container'
 import { useAnimationConfig } from '@/hooks'
+import { MiniDrTwistly } from '@/components/features/chat/mini-dr-twistly'
 
 // Category data with updated details - Moved to memo to prevent re-creation on render
 const categories = [
@@ -325,33 +326,59 @@ function getInitial(text: string): string {
 
 // Memoized section header component for better performance
 const SectionHeader = memo(function SectionHeader() {
-  const animConfig = useAnimationConfig();
-  
   return (
-    <motion.div
-      {...animConfig.getMotionProps({
-        initial: { opacity: 0, y: 20 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true },
-        transition: { duration: 0.5 }
-      })}
-      className="text-center mb-16"
-    >
-      <Badge 
-        className="px-3.5 py-1.5 rounded-full text-sm bg-gradient-to-r from-green-500 to-green-600 text-white shadow-sm mb-4 flex items-center gap-1.5 mx-auto w-fit"
-      >
-        <Leaf className="h-3.5 w-3.5" />
-        <span className="font-medium">Explore Our Collections</span>
-      </Badge>
-      
-      <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-700 to-green-800">
-        Find Your Perfect CBD Match
-      </h2>
-      
-      <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-        Discover our specialized collections tailored to your specific wellness needs and lifestyle
-      </p>
-    </motion.div>
+    <div className="mb-5 sm:mb-6">
+      {/* Nested container for the section header - matching card styling */}
+      <div className="bg-gradient-to-b from-green-50/80 to-white p-3 sm:p-4 rounded-xl border border-green-100/80 shadow-sm relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-green-200/30"></div>
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-emerald-100/30"></div>
+        </div>
+        
+        <div className="text-center relative z-10">
+          {/* Spinning Twistly Logo with improved styling */}
+          <div className="flex justify-center mb-1 sm:mb-1.5">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full relative bg-transparent transition-all duration-500 shadow-[0_10px_20px_rgba(var(--emerald-rgb)/0.15),_inset_0_0_0_1px_rgba(var(--emerald-rgb)/0.2)] p-0.5">
+              <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-transparent after:absolute after:inset-0 after:rounded-full after:shadow-inner">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ 
+                    duration: 20, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                  className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center relative z-10"
+                >
+                  <Image 
+                    src="/images/logos/1.png" 
+                    alt="Twistly CBD" 
+                    width={40} 
+                    height={40} 
+                    className="w-full h-full object-contain drop-shadow-md" 
+                  />
+                </motion.div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative z-10 px-3 py-1.5 inline-block rounded-lg bg-white/80 backdrop-blur-sm shadow-sm border border-gray-100/50">
+            <div className="inline-flex bg-gradient-to-br from-green-50/80 to-white rounded-full border border-green-200/40 shadow-sm p-1 mb-1.5">
+              <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 text-xs font-medium">
+                <Sparkles className="h-3 w-3" />
+                <span>Specialized Categories</span>
+              </div>
+            </div>
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 drop-shadow-sm">
+              Explore Our CBD Categories
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto mt-0.5 sm:mt-1">
+              Find the perfect CBD products for your specific wellness needs
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 });
 
@@ -552,72 +579,114 @@ const CategoryCard = memo(function CategoryCard({
     <Link href={category.href} className="block h-full group">
       <motion.div 
         className={cn(
-          "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-sm overflow-hidden",
-          "aspect-[3/4] sm:aspect-auto"
+          "relative flex flex-col items-center h-full rounded-2xl bg-white overflow-hidden",
+          "border-2",
+          category.title === "Health & Wellness" ? "border-green-200/80 group-hover:border-green-500/80" : "",
+          category.title === "Sport & Recovery" ? "border-blue-200/80 group-hover:border-blue-500/80" : "",
+          category.title === "Beauty & Cosmetics" ? "border-purple-200/80 group-hover:border-purple-500/80" : "",
+          category.title === "Pet CBD" ? "border-amber-200/80 group-hover:border-amber-500/80" : "",
+          category.title === "Hybrid & Mushrooms" ? "border-amber-300/80 group-hover:border-amber-700/80" : "",
+          "shadow-[0_10px_25px_-10px_rgba(0,0,0,0.05)]",
+          category.title === "Health & Wellness" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(22,163,74,0.2)]" : "",
+          category.title === "Sport & Recovery" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.2)]" : "",
+          category.title === "Beauty & Cosmetics" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(147,51,234,0.2)]" : "",
+          category.title === "Pet CBD" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(217,119,6,0.2)]" : "",
+          category.title === "Hybrid & Mushrooms" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(180,83,9,0.2)]" : "",
+          "backdrop-blur-sm"
         )}
-        variants={animConfig.getVariants(cardVariants)}
-        whileHover={isReducedMotion ? {} : "hover"}
-        suppressHydrationWarning
       >
-        {/* Card top gradient banner */}
-        <div className={cn(
-          "absolute top-0 left-0 right-0 h-24 sm:h-28 md:h-32 w-full bg-gradient-to-br rounded-t-2xl",
-          `from-${category.theme.accentLight.replace('bg-', '')} to-white/20`
-        )}></div>
-        
-        {/* Icon in circle */}
-        <div className="relative z-10 mt-5 sm:mt-6 mb-3 sm:mb-4">
-          <motion.div 
-            className={cn(
-              "w-[80px] h-[80px] md:w-[90px] md:h-[90px] rounded-full relative overflow-hidden",
-              "shadow-md border-4 border-white bg-white p-1"
-            )}
-            whileHover={{ scale: isReducedMotion ? 1 : 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            suppressHydrationWarning
-          >
-            <div className={cn(
-              "w-full h-full rounded-full flex items-center justify-center",
-              category.theme.accentLight
-            )}>
-              <div className={cn(
-                "w-12 h-12 rounded-full flex items-center justify-center",
-                category.theme.accent
-              )}>
-                {React.cloneElement(category.icon, { 
-                  className: "h-6 w-6 text-white" 
-                })}
-              </div>
-            </div>
-          </motion.div>
+        {/* Subtle gradient border instead of solid border */}
+        <div className="absolute inset-0 p-px rounded-xl overflow-hidden">
+          <div className={cn(
+            "absolute inset-0 rounded-xl transition-opacity duration-300 opacity-60 group-hover:opacity-100",
+            category.title === "Health & Wellness" ? "bg-gradient-to-tr from-green-200 via-green-100/60 to-green-50/40" : "",
+            category.title === "Sport & Recovery" ? "bg-gradient-to-tr from-blue-200 via-blue-100/60 to-blue-50/40" : "",
+            category.title === "Beauty & Cosmetics" ? "bg-gradient-to-tr from-purple-200 via-purple-100/60 to-purple-50/40" : "",
+            category.title === "Pet CBD" ? "bg-gradient-to-tr from-amber-200 via-amber-100/60 to-amber-50/40" : "",
+            category.title === "Hybrid & Mushrooms" ? "bg-gradient-to-tr from-amber-300 via-amber-200/60 to-amber-100/40" : ""
+          )}></div>
+        </div>
+
+        {/* Product count badge - top right */}
+        <div className="absolute top-3 right-3 z-20">
+          <div className={cn(
+            "px-2 py-0.5 rounded-full text-[10px] font-medium",
+            "bg-white shadow-sm border",
+            category.title === "Health & Wellness" ? "border-green-300 text-green-800" : "",
+            category.title === "Sport & Recovery" ? "border-blue-300 text-blue-800" : "",
+            category.title === "Beauty & Cosmetics" ? "border-purple-300 text-purple-800" : "",
+            category.title === "Pet CBD" ? "border-amber-300 text-amber-800" : "",
+            category.title === "Hybrid & Mushrooms" ? "border-amber-400 text-amber-900" : ""
+          )}>
+            {category.productCount} Products
+          </div>
         </div>
         
-        {/* Content */}
-        <div className="px-4 text-center flex flex-col flex-1 justify-between">
-          <div>
-            <h3 className={cn(
-              "text-lg sm:text-xl md:text-2xl font-bold leading-tight mb-2 sm:mb-3",
-              category.theme.text
-            )}>
-              {category.title === "Pet CBD" ? (
-                "Pet CBD"
-              ) : (
-                category.title
-              )}
-            </h3>
-            
-            <p className="text-sm md:text-base text-gray-600 line-clamp-2">{category.description}</p>
+        {/* Card top section with glass effect - FINAL */}
+        <div className={cn(
+          "w-full pt-8 pb-4 px-5 relative z-10 overflow-hidden",
+          "bg-gradient-to-b",
+          category.title === "Health & Wellness" ? "from-green-50/90 to-white" : "",
+          category.title === "Sport & Recovery" ? "from-blue-50/90 to-white" : "",
+          category.title === "Beauty & Cosmetics" ? "from-purple-50/90 to-white" : "",
+          category.title === "Pet CBD" ? "from-amber-50/90 to-white" : "",
+          category.title === "Hybrid & Mushrooms" ? "from-amber-100/90 to-white" : "",
+          "rounded-t-xl"
+        )}>
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+            <div className={cn(
+              "absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-50 blur-xl",
+              category.title === "Health & Wellness" ? "bg-green-300/50" : "",
+              category.title === "Sport & Recovery" ? "bg-blue-300/50" : "",
+              category.title === "Beauty & Cosmetics" ? "bg-purple-300/50" : "",
+              category.title === "Pet CBD" ? "bg-amber-300/50" : "",
+              category.title === "Hybrid & Mushrooms" ? "bg-amber-400/50" : ""
+            )}></div>
+            <div className={cn(
+              "absolute -bottom-10 -left-10 w-32 h-32 rounded-full opacity-30 blur-2xl",
+              category.title === "Health & Wellness" ? "bg-green-200/40" : "",
+              category.title === "Sport & Recovery" ? "bg-blue-200/40" : "",
+              category.title === "Beauty & Cosmetics" ? "bg-purple-200/40" : "",
+              category.title === "Pet CBD" ? "bg-amber-200/40" : "",
+              category.title === "Hybrid & Mushrooms" ? "bg-amber-300/40" : ""
+            )}></div>
           </div>
           
-          <div className="w-full pb-4 sm:pb-5 mt-4 sm:mt-5">
-            <div className={cn(
-              "flex items-center justify-between py-2.5 sm:py-3 px-4 sm:px-6 rounded-full w-full",
-              "border border-gray-200 bg-white shadow-sm",
-              category.theme.text,
-              "font-medium text-sm md:text-base"
-            )}>
-              <span>View Collection</span>
-              <ArrowRight className="h-4 w-4" />
+          {/* Logo circle with improved effect */}
+          <div className="relative z-10 flex justify-center">
+            <div 
+              className={cn(
+                "w-20 h-20 rounded-full relative",
+                "bg-transparent",
+                "group-hover:scale-105 transition-all duration-500",
+                `shadow-[0_10px_20px_rgba(var(--${category.theme.textLight.replace('text-', '').split('-')[0]}-rgb)/0.2),_inset_0_0_0_1px_rgba(var(--${category.theme.textLight.replace('text-', '').split('-')[0]}-rgb)/0.3)]`,
+                "p-0.5 group-hover:shadow-lg"
+              )}
+            >
+              <div className={cn(
+                "w-full h-full rounded-full flex items-center justify-center overflow-hidden",
+                "bg-transparent",
+                "after:absolute after:inset-0 after:rounded-full after:shadow-inner"
+              )}>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ 
+                    duration: 20, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                  className="w-12 h-12 flex items-center justify-center relative z-10"
+                >
+                  <Image 
+                    src="/images/logos/1.png" 
+                    alt="Twistly CBD" 
+                    width={48} 
+                    height={48} 
+                    className="w-full h-full object-contain drop-shadow-md" 
+                  />
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -654,409 +723,259 @@ export function CategoryHighlights() {
   };
 
   return (
-    <section className="py-20 md:py-24 relative overflow-hidden bg-gradient-to-br from-white via-gray-50/50 to-green-50/30">
-      {/* Enhanced background with subtle patterns */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,#22c55e08_50%,transparent_100%)]" />
-      <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_0.5px,transparent_0.5px)] [background-size:24px_24px] opacity-5" />
+    <section className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-green-50 to-white">
+      {/* Background decoration - simplified for mobile */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-16 -right-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-green-500/40"></div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-emerald-500/30"></div>
+      </div>
       
-      {/* Decorative elements - Reduced for better performance */}
-      <div className="absolute top-40 left-10 md:left-20 w-64 h-64 bg-green-100/10 rounded-full blur-3xl" />
-      
-      <Container className="relative z-10">
-        {/* Section Header - Now memoized */}
+      {/* Main container - matching responsive approach */}
+      <Container className="relative z-10 bg-white backdrop-blur-sm rounded-xl shadow-md border border-green-200/90 p-3 sm:p-4 lg:p-5 w-full mx-auto">
+        {/* Section Header */}
         <SectionHeader />
 
-        {/* First row - Three cards */}
-        <div className="mb-8">
+        {/* Cards Container */}
+        <div className="bg-gray-50/60 rounded-lg border-2 border-gray-100 p-2 sm:p-3 overflow-hidden mt-3 shadow-lg relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-gray-50/30 to-gray-100/30 z-[-1]"></div>
           <motion.div
             variants={animConfig.getVariants(containerVariants)}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto max-w-6xl px-2"
+            className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3"
             suppressHydrationWarning
           >
-            {categories.slice(0, 3).map((category, index) => (
-              <div key={category.title} className="overflow-visible">
+            {categories.map((category, index) => (
+              <div key={category.title} className="overflow-hidden">
                 <motion.div
                   variants={animConfig.getVariants(itemVariants)}
-                  className="perspective-600"
+                  className="h-full"
                   suppressHydrationWarning
                 >
-                  <Link href={category.href} className="block h-full group">
-                    <motion.div 
-                      className={cn(
-                        "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-lg overflow-hidden",
-                        "min-h-[360px] sm:min-h-[380px] sm:max-w-[400px] mx-auto w-full",
-                        "border-[1px] border-transparent"
-                      )}
-                      whileHover={prefersReducedMotion ? {} : {
-                        scale: 1.05,
-                        border: `3px solid ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.9)')}`,
-                        boxShadow: `0 10px 30px ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.25)')}`,
-                        y: -8,
-                        zIndex: 10
+                  {/* Nested container with neutral border and shadow - PURE WHITE */}
+                  <div className="h-full p-1.5 bg-white rounded-xl border border-gray-100/80 shadow-sm">
+                    <motion.div
+                      className="h-full cursor-pointer" 
+                      whileHover={{ 
+                        boxShadow: `0 15px 30px -10px rgba(var(--${category.theme.textLight.replace('text-', '').split('-')[0]}-rgb)/0.2)`,
                       }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 400, 
-                        damping: 25 
-                      }}
+                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     >
-                      {/* Card top gradient banner */}
-                      <div className={cn(
-                        "absolute top-0 left-0 right-0 h-28 w-full bg-gradient-to-br rounded-t-2xl",
-                        `from-${category.theme.accentLight.replace('bg-', '')} to-white/20`
-                      )}></div>
-                      
-                      {/* Icon in circle */}
-                      <div className="relative z-10 mt-6 mb-3">
+                      <Link href={category.href} className="block h-full group">
                         <div 
                           className={cn(
-                            "w-[90px] h-[90px] rounded-full relative overflow-hidden",
-                            "shadow-md border-4 border-white bg-white p-1"
+                            "relative flex flex-col items-center h-full rounded-lg bg-white overflow-hidden",
+                            "transition-all duration-300 ease-out min-h-[220px] sm:min-h-[240px] md:min-h-[260px]",
+                            "shadow-[0_10px_25px_-10px_rgba(0,0,0,0.05)]",
+                            category.title === "Health & Wellness" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(22,163,74,0.2)]" : "",
+                            category.title === "Sport & Recovery" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(37,99,235,0.2)]" : "",
+                            category.title === "Beauty & Cosmetics" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(147,51,234,0.2)]" : "",
+                            category.title === "Pet CBD" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(217,119,6,0.2)]" : "",
+                            category.title === "Hybrid & Mushrooms" ? "group-hover:shadow-[0_15px_30px_-10px_rgba(180,83,9,0.2)]" : ""
                           )}
                         >
-                          <div className={cn(
-                            "w-full h-full rounded-full flex items-center justify-center",
-                            category.theme.accentLight
-                          )}>
+                          {/* Subtle gradient border instead of solid border */}
+                          <div className="absolute inset-0 p-px rounded-xl overflow-hidden">
                             <div className={cn(
-                              "w-12 h-12 rounded-full flex items-center justify-center",
-                              category.theme.accent
+                              "absolute inset-0 rounded-xl transition-opacity duration-300 opacity-60 group-hover:opacity-100",
+                              category.title === "Health & Wellness" ? "bg-gradient-to-tr from-green-200 via-green-100/60 to-green-50/40" : "",
+                              category.title === "Sport & Recovery" ? "bg-gradient-to-tr from-blue-200 via-blue-100/60 to-blue-50/40" : "",
+                              category.title === "Beauty & Cosmetics" ? "bg-gradient-to-tr from-purple-200 via-purple-100/60 to-purple-50/40" : "",
+                              category.title === "Pet CBD" ? "bg-gradient-to-tr from-amber-200 via-amber-100/60 to-amber-50/40" : "",
+                              category.title === "Hybrid & Mushrooms" ? "bg-gradient-to-tr from-amber-300 via-amber-200/60 to-amber-100/40" : ""
+                            )}></div>
+                          </div>
+
+                          {/* Product count badge - top right */}
+                          <div className="absolute top-3 right-3 z-20">
+                            <div className={cn(
+                              "px-2 py-0.5 rounded-full text-[10px] font-medium",
+                              "bg-white shadow-sm border",
+                              category.title === "Health & Wellness" ? "border-green-300 text-green-800" : "",
+                              category.title === "Sport & Recovery" ? "border-blue-300 text-blue-800" : "",
+                              category.title === "Beauty & Cosmetics" ? "border-purple-300 text-purple-800" : "",
+                              category.title === "Pet CBD" ? "border-amber-300 text-amber-800" : "",
+                              category.title === "Hybrid & Mushrooms" ? "border-amber-400 text-amber-900" : ""
                             )}>
-                              {React.cloneElement(category.icon, { 
-                                className: "h-6 w-6 text-white" 
-                              })}
+                              {category.productCount} Products
+                            </div>
+                          </div>
+                          
+                          {/* Card top section with glass effect - FINAL */}
+                          <div className={cn(
+                            "w-full pt-5 pb-3 px-4 relative z-10 overflow-hidden",
+                            "bg-gradient-to-b",
+                            category.title === "Health & Wellness" ? "from-green-50/90 to-white" : "",
+                            category.title === "Sport & Recovery" ? "from-blue-50/90 to-white" : "",
+                            category.title === "Beauty & Cosmetics" ? "from-purple-50/90 to-white" : "",
+                            category.title === "Pet CBD" ? "from-amber-50/90 to-white" : "",
+                            category.title === "Hybrid & Mushrooms" ? "from-amber-100/90 to-white" : "",
+                            "rounded-t-lg"
+                          )}>
+                            {/* Decorative elements */}
+                            <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+                              <div className={cn(
+                                "absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-50 blur-xl",
+                                category.title === "Health & Wellness" ? "bg-green-300/50" : "",
+                                category.title === "Sport & Recovery" ? "bg-blue-300/50" : "",
+                                category.title === "Beauty & Cosmetics" ? "bg-purple-300/50" : "",
+                                category.title === "Pet CBD" ? "bg-amber-300/50" : "",
+                                category.title === "Hybrid & Mushrooms" ? "bg-amber-400/50" : ""
+                              )}></div>
+                              <div className={cn(
+                                "absolute -bottom-10 -left-10 w-32 h-32 rounded-full opacity-30 blur-2xl",
+                                category.title === "Health & Wellness" ? "bg-green-200/40" : "",
+                                category.title === "Sport & Recovery" ? "bg-blue-200/40" : "",
+                                category.title === "Beauty & Cosmetics" ? "bg-purple-200/40" : "",
+                                category.title === "Pet CBD" ? "bg-amber-200/40" : "",
+                                category.title === "Hybrid & Mushrooms" ? "bg-amber-300/40" : ""
+                              )}></div>
+                            </div>
+                            
+                            {/* Logo circle with improved effect */}
+                            <div className="relative z-10 flex justify-center">
+                              <div 
+                                className={cn(
+                                  "w-14 h-14 rounded-full relative sm:w-16 sm:h-16 md:w-20 md:h-20",
+                                  "bg-transparent",
+                                  "group-hover:scale-105 transition-all duration-500",
+                                  `shadow-[0_10px_20px_rgba(var(--${category.theme.textLight.replace('text-', '').split('-')[0]}-rgb)/0.2),_inset_0_0_0_1px_rgba(var(--${category.theme.textLight.replace('text-', '').split('-')[0]}-rgb)/0.3)]`,
+                                  "p-0.5 group-hover:shadow-lg"
+                                )}
+                              >
+                                <div className={cn(
+                                  "w-full h-full rounded-full flex items-center justify-center overflow-hidden",
+                                  "bg-transparent",
+                                  "after:absolute after:inset-0 after:rounded-full after:shadow-inner"
+                                )}>
+                                  <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ 
+                                      duration: 20, 
+                                      repeat: Infinity, 
+                                      ease: "linear" 
+                                    }}
+                                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center relative z-10"
+                                  >
+                                    <Image 
+                                      src="/images/logos/1.png" 
+                                      alt="Twistly CBD" 
+                                      width={48} 
+                                      height={48} 
+                                      className="w-full h-full object-contain drop-shadow-md" 
+                                    />
+                                  </motion.div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Content with glass morphism - FINAL */}
+                          <div className={cn(
+                            "px-4 py-3 text-center flex flex-col flex-1 justify-between w-full",
+                            "relative overflow-hidden",
+                            "bg-white rounded-b-lg"
+                          )}>
+                            {/* Subtle patterns */}
+                            <div className="absolute inset-0 opacity-5">
+                              <div className={cn(
+                                "absolute top-0 right-0 w-32 h-32 rounded-full opacity-10",
+                                category.title === "Health & Wellness" ? "bg-green-200" : "",
+                                category.title === "Sport & Recovery" ? "bg-blue-200" : "",
+                                category.title === "Beauty & Cosmetics" ? "bg-purple-200" : "",
+                                category.title === "Pet CBD" ? "bg-amber-200" : "",
+                                category.title === "Hybrid & Mushrooms" ? "bg-amber-300" : ""
+                              )}></div>
+                            </div>
+                            
+                            <div className="relative z-10">
+                              <div className={cn(
+                                "text-xs uppercase tracking-wider mb-1.5 font-medium",
+                                category.theme.textLight
+                              )}>
+                                Category
+                              </div>
+                              <h3 className={cn(
+                                "text-sm sm:text-base md:text-lg font-bold leading-tight mb-2",
+                                category.theme.text
+                              )}>
+                                {category.title}
+                              </h3>
+                              
+                              <p className="text-xs sm:text-sm text-gray-700 mb-3 line-clamp-2">{category.description}</p>
+                            </div>
+                            
+                            <div className="w-full mt-auto relative z-10">
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-full h-9 sm:h-10 rounded-lg",
+                                  "bg-white shadow-sm group-hover:shadow-md",
+                                  "relative overflow-hidden",
+                                  "transition-all duration-300",
+                                  "border-0 group-hover:bg-white"
+                                )}
+                              >
+                                {/* Clean button border */}
+                                <span className="absolute inset-0 rounded-xl border overflow-hidden">
+                                  <span className={cn(
+                                    "absolute inset-0 rounded-xl border transition-colors duration-300",
+                                    category.title === "Health & Wellness" ? "border-green-100 group-hover:border-green-300" : "",
+                                    category.title === "Sport & Recovery" ? "border-blue-100 group-hover:border-blue-300" : "",
+                                    category.title === "Beauty & Cosmetics" ? "border-purple-100 group-hover:border-purple-300" : "",
+                                    category.title === "Pet CBD" ? "border-amber-100 group-hover:border-amber-300" : "",
+                                    category.title === "Hybrid & Mushrooms" ? "border-amber-200 group-hover:border-amber-400" : ""
+                                  )}></span>
+                                </span>
+                                <span className={cn(
+                                  "relative z-10 flex items-center justify-center gap-2 font-medium",
+                                  category.title === "Health & Wellness" ? "text-green-700 group-hover:text-green-800" : "",
+                                  category.title === "Sport & Recovery" ? "text-blue-700 group-hover:text-blue-800" : "",
+                                  category.title === "Beauty & Cosmetics" ? "text-purple-700 group-hover:text-purple-800" : "",
+                                  category.title === "Pet CBD" ? "text-amber-700 group-hover:text-amber-800" : "",
+                                  category.title === "Hybrid & Mushrooms" ? "text-amber-800 group-hover:text-amber-900" : ""
+                                )}>
+                                  Explore
+                                  <span className={cn(
+                                    "transition-all duration-300 group-hover:translate-x-1",
+                                    category.title === "Health & Wellness" ? "text-green-700" : "",
+                                    category.title === "Sport & Recovery" ? "text-blue-700" : "",
+                                    category.title === "Beauty & Cosmetics" ? "text-purple-700" : "",
+                                    category.title === "Pet CBD" ? "text-amber-700" : "",
+                                    category.title === "Hybrid & Mushrooms" ? "text-amber-800" : ""
+                                  )}>
+                                    →
+                                  </span>
+                                </span>
+                              </Button>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="px-5 text-center flex flex-col flex-1 justify-between w-full">
-                        <div>
-                          <h3 className={cn(
-                            "text-xl font-bold leading-tight mb-2",
-                            category.theme.text
-                          )}>
-                            {category.title === "Pet CBD" ? (
-                              "Pet CBD"
-                            ) : (
-                              category.title
-                            )}
-                          </h3>
-                          
-                          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{category.description}</p>
-                          
-                          <div className="mb-4">
-                            <ul className="space-y-1.5">
-                              {category.benefits.slice(0, 3).map((benefit, idx) => (
-                                <li key={idx} className="flex items-center justify-center gap-2">
-                                  <div className={cn("w-1.5 h-1.5 rounded-full", category.theme.accent)} />
-                                  <span className="text-xs sm:text-sm text-gray-700">{benefit}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                        
-                        <div className="w-full pb-5 mt-auto">
-                          <Button
-                            className={cn(
-                              "w-full py-2.5 text-white h-10 rounded-lg",
-                              category.theme.accent
-                            )}
-                          >
-                            <span className="flex items-center justify-center gap-2">
-                              Explore Collection
-                              <ArrowRight className="h-4 w-4" />
-                            </span>
-                          </Button>
-                        </div>
-                      </div>
+                      </Link>
                     </motion.div>
-                  </Link>
+                  </div>
                 </motion.div>
               </div>
             ))}
           </motion.div>
         </div>
-
-        {/* Second row - Two category cards + Custom Formula */}
-        <motion.div
-          variants={animConfig.getVariants(containerVariants)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto max-w-6xl px-2"
-          suppressHydrationWarning
-        >
-          {categories.slice(3, 5).map((category, index) => (
-            <div key={category.title} className="overflow-visible">
-              <motion.div
-                variants={animConfig.getVariants(itemVariants)}
-                className="perspective-600"
-                suppressHydrationWarning
-              >
-                <Link href={category.href} className="block h-full group">
-                  <motion.div 
-                    className={cn(
-                      "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-lg overflow-hidden",
-                      "min-h-[360px] sm:min-h-[380px] sm:max-w-[400px] mx-auto w-full",
-                      "border-[1px] border-transparent"
-                    )}
-                    whileHover={prefersReducedMotion ? {} : {
-                      scale: 1.05,
-                      border: `3px solid ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.9)')}`,
-                      boxShadow: `0 10px 30px ${category.theme.accent.replace('bg-', 'rgba(').replace('600', '600, 0.25)')}`,
-                      y: -8,
-                      zIndex: 10
-                    }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 400, 
-                      damping: 25 
-                    }}
-                  >
-                    {/* Card top gradient banner */}
-                    <div className={cn(
-                      "absolute top-0 left-0 right-0 h-28 w-full bg-gradient-to-br rounded-t-2xl",
-                      `from-${category.theme.accentLight.replace('bg-', '')} to-white/20`
-                    )}></div>
-                    
-                    {/* Icon in circle */}
-                    <div className="relative z-10 mt-6 mb-3">
-                      <div 
-                        className={cn(
-                          "w-[90px] h-[90px] rounded-full relative overflow-hidden",
-                          "shadow-md border-4 border-white bg-white p-1"
-                        )}
-                      >
-                        <div className={cn(
-                          "w-full h-full rounded-full flex items-center justify-center",
-                          category.theme.accentLight
-                        )}>
-                          <div className={cn(
-                            "w-12 h-12 rounded-full flex items-center justify-center",
-                            category.theme.accent
-                          )}>
-                            {React.cloneElement(category.icon, { 
-                              className: "h-6 w-6 text-white" 
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="px-5 text-center flex flex-col flex-1 justify-between w-full">
-                      <div>
-                        <h3 className={cn(
-                          "text-xl font-bold leading-tight mb-2",
-                          category.theme.text
-                        )}>
-                          {category.title === "Pet CBD" ? (
-                            "Pet CBD"
-                          ) : (
-                            category.title
-                          )}
-                        </h3>
-                        
-                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{category.description}</p>
-                        
-                        <div className="mb-4">
-                          <ul className="space-y-1.5">
-                            {category.benefits.slice(0, 3).map((benefit, idx) => (
-                              <li key={idx} className="flex items-center justify-center gap-2">
-                                <div className={cn("w-1.5 h-1.5 rounded-full", category.theme.accent)} />
-                                <span className="text-xs sm:text-sm text-gray-700">{benefit}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      
-                      <div className="w-full pb-5 mt-auto">
-                        <Button
-                          className={cn(
-                            "w-full py-2.5 text-white h-10 rounded-lg",
-                            category.theme.accent
-                          )}
-                        >
-                          <span className="flex items-center justify-center gap-2">
-                            Explore Collection
-                            <ArrowRight className="h-4 w-4" />
-                          </span>
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.div>
-                </Link>
-              </motion.div>
-            </div>
-          ))}
-
-          {/* Custom Formula Card */}
-          <div className="overflow-visible">
-            <motion.div
-              variants={animConfig.getVariants(itemVariants)}
-              className="perspective-600"
-              suppressHydrationWarning
-            >
-              <Link href={customCard.href} className="block h-full group">
-                <motion.div 
-                  className={cn(
-                    "relative flex flex-col items-center h-full rounded-2xl bg-white shadow-lg overflow-hidden",
-                    "min-h-[360px] sm:min-h-[380px] sm:max-w-[400px] mx-auto w-full",
-                    "border-2 border-dashed border-teal-200/40"
-                  )}
-                  whileHover={prefersReducedMotion ? {} : {
-                    scale: 1.05,
-                    borderColor: "rgba(20, 184, 166, 0.9)",
-                    borderStyle: "solid",
-                    borderWidth: "3px",
-                    boxShadow: "0 10px 30px rgba(20, 184, 166, 0.25)",
-                    y: -8,
-                    zIndex: 10
-                  }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 400, 
-                    damping: 25 
-                  }}
-                >
-                  {/* Card top gradient banner */}
-                  <div className={cn(
-                    "absolute top-0 left-0 right-0 h-28 w-full bg-gradient-to-br rounded-t-2xl",
-                    "from-teal-100 to-white/20"
-                  )}></div>
-                  
-                  {/* Icon in circle */}
-                  <div className="relative z-10 mt-6 mb-3">
-                    <div 
-                      className={cn(
-                        "w-[90px] h-[90px] rounded-full relative overflow-hidden",
-                        "shadow-md border-4 border-white bg-white p-1"
-                      )}
-                    >
-                      <div className="w-full h-full rounded-full flex items-center justify-center bg-teal-100">
-                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-teal-600">
-                          <Sparkles className="h-6 w-6 text-white" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="px-5 text-center flex flex-col flex-1 justify-between w-full">
-                    <div>
-                      <h3 className="text-xl font-bold leading-tight mb-2 text-teal-800">
-                        {customCard.title}
-                      </h3>
-                      
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{customCard.description}</p>
-                      
-                      <div className="mb-4">
-                        <ul className="space-y-1.5 text-left">
-                          <li className="flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 text-teal-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-xs sm:text-sm text-gray-700">Tailored to your specific needs</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 text-teal-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-xs sm:text-sm text-gray-700">Expert consultation included</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 text-teal-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-xs sm:text-sm text-gray-700">Unique blend just for you</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    
-                    <div className="w-full pb-5 mt-auto">
-                      <Button
-                        className="w-full py-2.5 text-white bg-teal-600 hover:bg-teal-700 h-10 rounded-lg"
-                      >
-                        <span className="flex items-center justify-center gap-2">
-                          Create Your Formula
-                          <ArrowRight className="h-4 w-4" />
-                        </span>
-                      </Button>
-                    </div>
-                  </div>
-                </motion.div>
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
         
-        {/* View all categories link */}
-        <motion.div
-          {...animConfig.getMotionProps({
-            initial: { opacity: 0, y: 20 },
-            whileInView: { opacity: 1, y: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.5, delay: 0.4 }
-          })}
-          className="flex flex-col items-center mt-16 space-y-3"
-        >
-          <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <motion.div
-              whileHover={{ scale: prefersReducedMotion ? 1 : 1.02 }}
-              whileTap={{ scale: prefersReducedMotion ? 1 : 0.98 }}
-              suppressHydrationWarning
-            >
-              <Button
-                variant="primary"
-                rounded="full"
-                asChild
-                className="px-8 py-3 text-base"
-              >
-                <Link href="/shop" className="flex items-center gap-2 h-12">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity, 
-                      ease: "linear",
-                      repeatType: "loop"
-                    }}
-                    className="w-6 h-6 mr-1"
-                  >
-                    <Image 
-                      src="/images/2.png" 
-                      alt="Twistly" 
-                      width={24} 
-                      height={24} 
-                      className="object-contain"
-                    />
-                  </motion.div>
-                  Shop All Products
-                </Link>
-              </Button>
-            </motion.div>
-            
-            <motion.div
-              whileHover={{ scale: prefersReducedMotion ? 1 : 1.02 }}
-              whileTap={{ scale: prefersReducedMotion ? 1 : 0.98 }}
-              suppressHydrationWarning
-            >
-              <Button
-                variant="outlineGreen"
-                rounded="full"
-                asChild
-                className="px-8 py-3 text-base"
-              >
-                <Link href="/chat" className="flex items-center gap-2 h-12">
-                  <MessageSquare className="w-6 h-6 mr-1" />
-                  Chat with Dr. Twistly
-                </Link>
-              </Button>
-            </motion.div>
+        {/* Dr. Twistly Banner - Fix the styling to match */}
+        <div className="mt-4 max-w-3xl mx-auto bg-gray-50/60 rounded-lg border border-gray-100 overflow-hidden shadow-md relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-gray-50/30 to-gray-100/30 z-[-1]"></div>
+          <div className="p-1 bg-white/70 rounded-xl border border-gray-100/80 shadow-sm backdrop-blur-md">
+            <div className="bg-white rounded-lg shadow-sm relative overflow-hidden">
+              {/* Subtle gradient border instead of solid green */}
+              <div className="absolute inset-0 p-px rounded-lg overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-100 via-emerald-200/60 to-green-100/40 rounded-lg"></div>
+              </div>
+              <div className="relative z-[2]">
+                <MiniDrTwistly />
+              </div>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </Container>
     </section>
   )

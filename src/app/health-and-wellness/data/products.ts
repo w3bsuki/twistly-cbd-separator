@@ -50,7 +50,7 @@ export const healthProducts = [
     description: "Our highest potency formula for maximum therapeutic benefits",
     benefits: ["High potency", "Recovery", "Relief"],
     badgeColor: "bg-purple-600",
-    featured: false
+    featured: true
   },
   {
     id: 'daily-wellness',

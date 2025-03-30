@@ -34,7 +34,8 @@ import {
   ChevronRight,
   LucideProps,
   ShoppingCart,
-  Check
+  Check,
+  ChevronLeft
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -72,6 +73,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from '@/lib/utils'
+import { Container } from '@/components/ui/container'
+import { MiniDrTwistly } from '@/components/features/chat/mini-dr-twistly'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { useAnimationConfig } from '@/hooks'
 
 // Category-specific use cases
 const categories = [
@@ -662,9 +667,56 @@ function getCategoryStyle(category: string) {
   }
 }
 
+// Example article data
+const articleData = [
+  {
+    title: "The Science of CBD and Anxiety",
+    excerpt: "Discover how CBD interacts with your body's endocannabinoid system to help manage stress and anxiety.",
+    image: "/images/tincture2.png",
+    category: "wellness",
+    url: "/blog/cbd-and-anxiety",
+    date: "June 12, 2023"
+  },
+  {
+    title: "CBD for Athletes: Recovery Benefits",
+    excerpt: "Learn how CBD can help speed recovery, reduce inflammation, and improve performance for active individuals.",
+    image: "/images/tincture2.png",
+    category: "sport",
+    url: "/blog/cbd-for-athletes",
+    date: "May 28, 2023"
+  },
+  {
+    title: "CBD in Skincare: Anti-Aging Properties",
+    excerpt: "Explore the science behind CBD's potential to reduce signs of aging and improve skin health.",
+    image: "/images/tincture2.png",
+    category: "beauty",
+    url: "/blog/cbd-skincare-benefits",
+    date: "April 15, 2023"
+  },
+  {
+    title: "CBD and Sleep: Natural Solutions",
+    excerpt: "Find out how CBD may help improve sleep quality without the side effects of traditional sleep aids.",
+    image: "/images/tincture2.png",
+    category: "wellness",
+    url: "/blog/cbd-sleep-solutions",
+    date: "March 22, 2023"
+  },
+  {
+    title: "CBD for Pets: What You Need to Know",
+    excerpt: "Learn how CBD may benefit your furry friends and the proper dosing for different animals.",
+    image: "/images/tincture2.png",
+    category: "pet",
+    url: "/blog/cbd-for-pets-guide",
+    date: "February 10, 2023"
+  }
+];
+
 export function CBDBenefits() {
   const [activeCategory, setActiveCategory] = useState<string>("wellness")
   const [selectedBenefit, setSelectedBenefit] = useState<{category: string, benefit: string, index: number} | null>(null)
+  const [showDrTwistly, setShowDrTwistly] = useState<boolean>(false)
+  const animConfig = useAnimationConfig ? useAnimationConfig() : { getVariants: (v: any) => v };
+  const [carouselApi, setCarouselApi] = React.useState<any>(null);
   
   // Animation variants
   const containerVariants = {
@@ -725,502 +777,467 @@ export function CBDBenefits() {
     return bestMatch;
   };
 
+  // Filter articles by category
+  const filteredArticles = articleData.filter(article => 
+    activeCategory === "wellness" ? true : article.category === activeCategory
+  );
+
+  // Next/prev slide for the carousel
+  const scrollNext = React.useCallback(() => {
+    if (carouselApi) {
+      carouselApi.scrollNext();
+    }
+  }, [carouselApi]);
+
+  const scrollPrev = React.useCallback(() => {
+    if (carouselApi) {
+      carouselApi.scrollPrev();
+    }
+  }, [carouselApi]);
+
   return (
-    <section className="relative overflow-hidden py-16">
-      {/* Emerald gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-emerald-100/40 to-emerald-50/90" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,#10b98120_50%,transparent_100%)]" />
-      <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#10b981_0.5px,transparent_0.5px)] [background-size:18px_18px] opacity-10" />
-      <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-emerald-400/5 to-emerald-300/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-10 w-72 h-72 bg-gradient-to-bl from-emerald-400/10 to-emerald-300/5 rounded-full blur-3xl"></div>
+    <section className="w-full py-8 md:py-10 lg:py-12 bg-gradient-to-b from-emerald-50 to-white">
+      {/* Background decoration - simplified for mobile */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-16 -right-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-emerald-500/40"></div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-emerald-500/30"></div>
+      </div>
       
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16 max-w-3xl mx-auto"
-        >
-          <Badge className="px-3.5 py-1.5 rounded-full text-sm bg-gradient-to-r from-emerald-500 to-emerald-600 text-white flex items-center gap-1.5 mx-auto w-fit shadow-md">
-            <Leaf className="w-3.5 h-3.5" />
-            <span className="font-medium">CBD Benefits</span>
-          </Badge>
-          
-          <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4 bg-clip-text text-transparent bg-gradient-to-br from-emerald-800 via-emerald-600 to-emerald-800">
-            Experience Natural Wellness
-          </h2>
-          
-          <p className="text-gray-600 text-base max-w-2xl mx-auto leading-relaxed">
-            Discover how our premium CBD products can enhance your daily wellness routine
-            with targeted benefits for every aspect of your health and lifestyle.
-          </p>
-        </motion.div>
-        
-        {/* Category tabs */}
-        <Tabs 
-          defaultValue={activeCategory} 
-          onValueChange={setActiveCategory}
-          className="w-full max-w-4xl mx-auto mb-20"
-        >
-          <div className="flex justify-center">
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-2.5 mb-12 border border-emerald-100">
-              <div className="flex space-x-3">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
-                    className={`px-5 py-3 rounded-lg text-sm font-medium flex items-center justify-center gap-2.5 transition-all duration-300 
-                      ${activeCategory === category.id
-                        ? `bg-${category.color}-500 text-white shadow-md ring-2 ring-${category.color}-400/40`
-                        : `border border-${category.color}-200 text-gray-700 hover:border-${category.color}-300 hover:bg-${category.color}-50/40`
-                      }`}
-                  >
-                    {React.cloneElement(category.icon as React.ReactElement, { 
-                      className: `h-4 w-4 ${activeCategory === category.id ? 'text-white' : `text-${category.color}-500`}`
-                    })}
-                    <span>{category.name}</span>
-                  </button>
-                ))}
+      {/* Main container - responsive approach */}
+      <Container className="relative z-10 bg-white backdrop-blur-sm rounded-xl shadow-md border border-green-200/90 p-4 sm:p-5 lg:p-6 w-full mx-auto max-w-none">
+        {/* Header with nested container design */}
+        <div className="mb-4 sm:mb-5">
+          {/* Nested container for the section header - matching category styling */}
+          <div className="bg-gradient-to-b from-green-50/80 to-white p-3 sm:p-4 rounded-xl border border-green-100/80 shadow-sm relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20 blur-2xl bg-green-200/30"></div>
+              <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full opacity-20 blur-2xl bg-emerald-100/30"></div>
+            </div>
+            
+            {/* Dr. Twistly button - positioned in the top right corner */}
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowDrTwistly(true)}
+                className="bg-white/90 border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 shadow-sm flex items-center gap-1.5 px-3 py-1.5 h-auto text-xs sm:text-sm font-medium rounded-full"
+              >
+                <div className="h-5 w-5 rounded-full overflow-hidden relative">
+                  <Image
+                    src="/images/dr-twistly.png"
+                    alt="Dr. Twistly"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <span className="hidden sm:inline">Ask Dr. Twistly</span>
+                <span className="sm:hidden">Dr. Twistly</span>
+                <MessageSquare className="h-3 w-3 ml-0.5" />
+              </Button>
+            </div>
+            
+            <div className="text-center relative z-10">
+              {/* Spinning logo with improved styling - INCREASED SIZE */}
+              <div className="flex justify-center mb-2">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full relative bg-transparent transition-all duration-500 shadow-[0_10px_20px_rgba(var(--emerald-rgb)/0.15),_inset_0_0_0_1px_rgba(var(--emerald-rgb)/0.2)] p-0.5">
+                  <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-transparent after:absolute after:inset-0 after:rounded-full after:shadow-inner">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ 
+                        duration: 20, 
+                        repeat: Infinity, 
+                        ease: "linear" 
+                      }}
+                      className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center relative z-10"
+                    >
+                      <Image 
+                        src="/images/logos/1.png" 
+                        alt="Twistly CBD logo" 
+                        width={36} 
+                        height={36} 
+                        className="drop-shadow-md" 
+                      />
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative z-10 px-4 py-3 inline-block rounded-lg bg-white/80 backdrop-blur-sm shadow-sm border border-gray-100/50 mb-3">
+                <div className="inline-flex bg-gradient-to-br from-green-50/80 to-white rounded-full border border-green-200/40 shadow-sm p-1 mb-1.5">
+                  <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 text-xs font-medium">
+                    <Sparkles className="h-3 w-3" />
+                    <span>Natural Wellness</span>
+                  </div>
+                </div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 drop-shadow-sm">
+                  Experience Natural Wellness
+                </h2>
+                <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto mt-1">
+                  Discover how our premium CBD products can enhance your daily wellness
+                </p>
+              </div>
+              
+              {/* Category tabs with added Dr Twistly button */}
+              <div className="flex flex-col items-center gap-2">
+                <Tabs 
+                  defaultValue={activeCategory} 
+                  onValueChange={setActiveCategory}
+                  className="w-full max-w-xl mx-auto"
+                >
+                  <div className="flex justify-center">
+                    <TabsList className="bg-white/80 backdrop-blur-sm border border-gray-100 p-1.5 rounded-lg shadow-sm mx-auto">
+                      {categories.map((category) => (
+                        <TabsTrigger 
+                          key={category.id}
+                          value={category.id}
+                          className={`px-3 sm:px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-1.5
+                            ${activeCategory === category.id 
+                              ? `bg-${category.color}-500 text-white shadow-sm` 
+                              : `text-gray-700 hover:bg-gray-50 hover:text-${category.color}-600`
+                            }`}
+                        >
+                          {React.cloneElement(category.icon as React.ReactElement, { 
+                            className: `h-4 w-4 ${activeCategory === category.id ? 'text-white' : `text-${category.color}-500`}`
+                          })}
+                          <span className="hidden sm:inline">{category.name}</span>
+                          <span className="sm:hidden">{category.name.split('&')[0]}</span>
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                  </div>
+                </Tabs>
               </div>
             </div>
           </div>
-          
-          <div className="mt-8">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+        </div>
+        
+        {/* Content container */}
+        <div className="bg-gray-50/60 rounded-lg border-2 border-gray-100 p-2 sm:p-3 overflow-hidden mt-3 shadow-lg relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-gray-50/30 to-gray-100/30 z-[-1]"></div>
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.h3 
+              className="text-center text-sm sm:text-base font-medium text-gray-800 mb-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
             >
-              <motion.h3 
-                className="text-center text-xl font-medium text-gray-800 mb-8"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                Explore <span className={`text-${currentCategory.color}-600 font-semibold`}>{currentCategory.name}</span> CBD Benefits
-              </motion.h3>
-            </motion.div>
-          
-            <motion.div
-              key={`${activeCategory}-grid`}
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
-            >
-              {currentCategory.benefits.slice(0, 8).map((benefit, index) => (
-                <Dialog key={index}>
-                  <DialogTrigger asChild>
-                    <motion.div
-                      variants={itemVariants}
-                      className={cn(
-                        "relative group overflow-hidden rounded-xl border-2 shadow-md cursor-pointer h-full",
-                        "hover:shadow-xl transition-all duration-300 hover:-translate-y-1",
-                        `border-${currentCategory.color}-200 hover:border-${currentCategory.color}-400 bg-gradient-to-b from-white to-${currentCategory.color}-50/20`
-                      )}
-                      onClick={() => setSelectedBenefit({category: currentCategory.id, benefit, index})}
-                    >
-                      {/* Decorative elements */}
-                      <div className={cn(
-                        "absolute top-0 right-0 w-24 h-24 -mr-10 -mt-10 rounded-full opacity-10 transition-opacity duration-300 group-hover:opacity-20",
-                        `bg-${currentCategory.color}-500`
-                      )}/>
-                      
-                      <div className="p-5 md:p-6 flex flex-col h-full relative z-10">
+              Explore <span className={`text-${currentCategory.color}-600 font-semibold`}>{currentCategory.name}</span> CBD Benefits
+            </motion.h3>
+          </motion.div>
+        
+          {/* Replace grid with carousel */}
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="py-1 px-1">
+              {currentCategory.benefits.slice(0, 10).map((benefit, index) => (
+                <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 lg:basis-1/5 xl:basis-1/6">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 * index }}
+                        className={cn(
+                          "relative group overflow-hidden rounded-lg border-2 shadow-md cursor-pointer h-full",
+                          "hover:shadow-xl transition-all duration-300 hover:-translate-y-1",
+                          `border-${currentCategory.color}-200 hover:border-${currentCategory.color}-400 bg-gradient-to-b from-white to-${currentCategory.color}-50/20`
+                        )}
+                        onClick={() => setSelectedBenefit({category: currentCategory.id, benefit, index})}
+                      >
+                        {/* Decorative elements */}
                         <div className={cn(
-                          "w-12 h-12 rounded-xl flex items-center justify-center shrink-0 mb-4 transition-all duration-200 shadow-sm",
-                          `bg-${currentCategory.color}-100 group-hover:bg-${currentCategory.color}-500 group-hover:shadow-lg group-hover:shadow-${currentCategory.color}-100/50`
-                        )}>
-                          <Check className={cn(
-                            "w-6 h-6 transition-colors duration-200",
-                            `text-${currentCategory.color}-600 group-hover:text-white`
-                          )} />
-                        </div>
+                          "absolute top-0 right-0 w-20 h-20 -mr-10 -mt-10 rounded-full opacity-10 transition-opacity duration-300 group-hover:opacity-20",
+                          `bg-${currentCategory.color}-500`
+                        )}/>
                         
-                        <h3 className="text-lg font-medium leading-tight text-gray-800 mb-2 group-hover:text-gray-900 transition-colors">{benefit}</h3>
-                        
-                        <div className="mt-auto flex items-center justify-between">
-                          <div className={cn(
-                            "flex items-center text-sm font-medium transition-all duration-200 gap-1",
-                            `text-${currentCategory.color}-600 group-hover:text-${currentCategory.color}-700`
-                          )}>
-                            <span>Discover</span>
-                            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                          </div>
-                          
-                          <div className={cn(
-                            "h-8 w-8 rounded-full flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100",
-                            `bg-${currentCategory.color}-100 text-${currentCategory.color}-600 group-hover:bg-${currentCategory.color}-500 group-hover:text-white`
-                          )}>
-                            <PlusCircle className="h-5 w-5" />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Animated bar */}
-                      <div className={cn(
-                        "absolute bottom-0 left-0 right-0 h-1.5 transition-transform duration-500 transform origin-left scale-x-0 group-hover:scale-x-100",
-                        `bg-${currentCategory.color}-500`
-                      )} />
-                    </motion.div>
-                  </DialogTrigger>
-                  
-                  <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-900 dark:border-gray-700">
-                    {(() => {
-                      const condition = getRelevantCondition(currentCategory.id, benefit);
-                      if (!condition) return (
-                        <>
-                          <DialogHeader>
-                            <DialogTitle className="text-xl">CBD Benefit</DialogTitle>
-                            <DialogDescription className="text-base mt-2 dark:text-gray-300">
-                              {benefit}
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="py-4">
-                            <p className="text-gray-600 dark:text-gray-400">Loading benefit details...</p>
-                          </div>
-                        </>
-                      );
-                      
-                      return (
-                        <>
-                          <DialogHeader>
-                            <div className="flex items-center gap-3">
-                              <BenefitIcon 
-                                icon={condition.icon} 
-                                color={currentCategory.color} 
-                              />
-                              <DialogTitle className="text-xl">{condition.title}</DialogTitle>
-                            </div>
-                            <DialogDescription className="text-base mt-2 dark:text-gray-300">
-                              {benefit}
-                            </DialogDescription>
-                          </DialogHeader>
-                          
-                          <div className="mt-4 space-y-5">
-                            <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
-                              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">How CBD Helps:</h4>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">{condition.content}</p>
+                        <div className="p-2 sm:p-3 flex flex-col h-full relative z-10">
+                          <div className="flex flex-col items-center text-center">
+                            <div className={cn(
+                              "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mb-2 transition-all duration-200 shadow-sm",
+                              `bg-${currentCategory.color}-100 group-hover:bg-${currentCategory.color}-500 group-hover:shadow-lg group-hover:shadow-${currentCategory.color}-100/50`
+                            )}>
+                              <Check className={cn(
+                                "w-4 h-4 transition-colors duration-200",
+                                `text-${currentCategory.color}-600 group-hover:text-white`
+                              )} />
                             </div>
                             
-                            <div>
-                              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Key Benefits:</h4>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {condition.pillars.map((pillar, i) => (
-                                  <div key={i} className="flex items-center gap-2">
-                                    <div className={cn(
-                                      "rounded-full p-1",
-                                      `bg-${currentCategory.color}-100 dark:bg-${currentCategory.color}-900/30`
-                                    )}>
-                                      <CheckCircle2 className={cn(
-                                        "h-3.5 w-3.5",
-                                        `text-${currentCategory.color}-500 dark:text-${currentCategory.color}-400`
-                                      )} />
-                                    </div>
-                                    <span className="text-sm text-gray-600 dark:text-gray-400">{pillar}</span>
-                                  </div>
-                                ))}
+                            <h3 className="text-xs sm:text-sm font-medium leading-tight text-gray-800 mb-1 group-hover:text-gray-900 transition-colors">{benefit}</h3>
+                          </div>
+                          
+                          <div className="mt-auto flex items-center justify-center">
+                            <div className={cn(
+                              "flex items-center text-xs font-medium transition-all duration-200 gap-1",
+                              `text-${currentCategory.color}-600 group-hover:text-${currentCategory.color}-700`
+                            )}>
+                              Learn more <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </DialogTrigger>
+                    
+                    <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-900 dark:border-gray-700">
+                      {(() => {
+                        const condition = getRelevantCondition(currentCategory.id, benefit);
+                        if (!condition) return (
+                          <>
+                            <DialogHeader>
+                              <DialogTitle className="text-xl">CBD Benefit</DialogTitle>
+                              <DialogDescription className="text-base mt-2 dark:text-gray-300">
+                                {benefit}
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="py-4">
+                              <p className="text-gray-600 dark:text-gray-400">Loading benefit details...</p>
+                            </div>
+                          </>
+                        );
+                        
+                        return (
+                          <>
+                            <DialogHeader>
+                              <div className="flex items-center gap-3">
+                                <BenefitIcon 
+                                  icon={condition.icon} 
+                                  color={currentCategory.color} 
+                                />
+                                <DialogTitle className="text-xl">{condition.title}</DialogTitle>
                               </div>
-                            </div>
+                              <DialogDescription className="text-base mt-2 dark:text-gray-300">
+                                {benefit}
+                              </DialogDescription>
+                            </DialogHeader>
                             
-                            {conditionProducts[condition.id] && (
-                              <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">Recommended Product:</h4>
-                                <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                                  <div className="relative w-16 h-16 bg-white dark:bg-gray-700 rounded-md p-1 shadow-sm">
-                                    <Image
-                                      src={conditionProducts[condition.id].image}
-                                      alt={conditionProducts[condition.id].name}
-                                      fill
-                                      className="object-contain p-1"
-                                    />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100 truncate">
-                                      {conditionProducts[condition.id].name}
-                                    </h5>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
-                                      {conditionProducts[condition.id].benefits[0]}
-                                    </p>
-                                    <div className="flex items-center gap-2 mt-1">
-                                      <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                                        ${conditionProducts[condition.id].price.toFixed(2)}
-                                      </span>
-                                      <div className="flex">
-                                        {[...Array(5)].map((_, i) => (
-                                          <Star 
-                                            key={i} 
-                                            className={cn(
-                                              "h-3 w-3",
-                                              i < Math.floor(conditionProducts[condition.id].rating)
-                                                ? "text-yellow-400 fill-yellow-400"
-                                                : "text-gray-200 fill-gray-200 dark:text-gray-600 dark:fill-gray-600"
-                                            )}
-                                          />
-                                        ))}
+                            <div className="mt-4 space-y-5">
+                              <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+                                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">How CBD Helps:</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">{condition.content}</p>
+                              </div>
+                              
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Key Benefits:</h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  {condition.pillars.map((pillar, i) => (
+                                    <div key={i} className="flex items-center gap-2">
+                                      <div className={cn(
+                                        "rounded-full p-1",
+                                        `bg-${currentCategory.color}-100 dark:bg-${currentCategory.color}-900/30`
+                                      )}>
+                                        <CheckCircle2 className={cn(
+                                          "h-3.5 w-3.5",
+                                          `text-${currentCategory.color}-500 dark:text-${currentCategory.color}-400`
+                                        )} />
+                                      </div>
+                                      <span className="text-sm text-gray-600 dark:text-gray-400">{pillar}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              
+                              {conditionProducts[condition.id] && (
+                                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">Recommended Product:</h4>
+                                  <div className="flex items-center gap-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
+                                    <div className="relative w-16 h-16 bg-white dark:bg-gray-700 rounded-md p-1 shadow-sm">
+                                      <Image
+                                        src={conditionProducts[condition.id].image}
+                                        alt={conditionProducts[condition.id].name}
+                                        fill
+                                        className="object-contain p-1"
+                                      />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100 truncate">
+                                        {conditionProducts[condition.id].name}
+                                      </h5>
+                                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                                        {conditionProducts[condition.id].benefits[0]}
+                                      </p>
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                          ${conditionProducts[condition.id].price.toFixed(2)}
+                                        </span>
+                                        <div className="flex">
+                                          {[...Array(5)].map((_, i) => (
+                                            <Star 
+                                              key={i} 
+                                              className={cn(
+                                                "h-3 w-3",
+                                                i < Math.floor(conditionProducts[condition.id].rating)
+                                                  ? "text-yellow-400 fill-yellow-400"
+                                                  : "text-gray-200 fill-gray-200 dark:text-gray-600 dark:fill-gray-600"
+                                              )}
+                                            />
+                                          ))}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            )}
-                          </div>
-                          
-                          <DialogFooter className="mt-4">
-                            <Button asChild className={cn(
-                              "w-full text-white",
-                              `bg-${currentCategory.color}-600 hover:bg-${currentCategory.color}-700`
-                            )}>
-                              <Link href={`/shop/${condition.id}`}>
-                                <ShoppingCart className="h-4 w-4 mr-2" />
-                                Shop {condition.title} Products
-                              </Link>
-                            </Button>
-                          </DialogFooter>
-                        </>
-                      );
-                    })()}
-                  </DialogContent>
-                </Dialog>
+                              )}
+                            </div>
+                            
+                            <DialogFooter className="mt-4">
+                              <Button asChild className={cn(
+                                "w-full text-white",
+                                `bg-${currentCategory.color}-600 hover:bg-${currentCategory.color}-700`
+                              )}>
+                                <Link href={`/shop/${condition.id}`}>
+                                  <ShoppingCart className="h-4 w-4 mr-2" />
+                                  Shop {condition.title} Products
+                                </Link>
+                              </Button>
+                            </DialogFooter>
+                          </>
+                        );
+                      })()}
+                    </DialogContent>
+                  </Dialog>
+                </CarouselItem>
               ))}
-            </motion.div>
-          </div>
+            </CarouselContent>
+            <div className="flex items-center justify-center mt-2">
+              <div className="flex items-center gap-1">
+                <CarouselPrevious className="static h-8 w-8 rounded-full border border-gray-200 transform-none translate-y-0" />
+                <CarouselNext className="static h-8 w-8 rounded-full border border-gray-200 transform-none translate-y-0" />
+              </div>
+            </div>
+          </Carousel>
+        </div>
+        
+        {/* Article Carousel Section - Make smaller */}
+        <div className="mt-3 bg-gray-50/60 rounded-lg border-2 border-gray-100 p-2 overflow-hidden shadow-lg relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-gray-50/30 to-gray-100/30 z-[-1]"></div>
           
-          {/* Featured product for this category */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-20 mx-auto max-w-4xl"
-          >
-            <div className="text-center mb-10">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                Featured <span className={`text-${currentCategory.color}-600`}>{currentCategory.name}</span> Product
+          <div className="p-1 bg-white/70 rounded-lg border border-gray-100/80 shadow-sm">
+            <div className="flex items-center justify-between mb-2 px-2">
+              <h3 className="text-xs sm:text-sm font-medium text-gray-800 flex items-center">
+                <ScrollText className={`h-3.5 w-3.5 mr-1 text-${currentCategory.color}-500`} />
+                <span>Related Articles</span>
               </h3>
-              <p className="text-gray-600 max-w-xl mx-auto">
-                Our most popular solution designed specifically for {currentCategory.name.toLowerCase()} benefits
-              </p>
+              
+              <div className="flex items-center gap-1">
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="h-6 w-6 rounded-full border border-gray-200" 
+                  onClick={scrollPrev}
+                >
+                  <ChevronLeft className="h-3 w-3" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon" 
+                  className="h-6 w-6 rounded-full border border-gray-200" 
+                  onClick={scrollNext}
+                >
+                  <ChevronRight className="h-3 w-3" />
+                </Button>
+              </div>
             </div>
             
-            <Card className={cn(
-              "overflow-hidden shadow-xl group hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 border-2 relative",
-              `border-${currentCategory.color}-200 bg-white dark:bg-gray-900 dark:border-${currentCategory.color}-900`
-            )}>
-              {/* Decorative elements */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-transparent to-gray-50 dark:to-gray-800/50 rounded-full -mt-20 -mr-20 z-0"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-transparent to-gray-50 dark:to-gray-800/50 rounded-full -mb-20 -ml-20 z-0"></div>
-              <div className={cn(
-                "absolute top-6 right-6 w-24 h-24 rounded-full opacity-20",
-                `bg-${currentCategory.color}-200 dark:bg-${currentCategory.color}-900/30 blur-xl`
-              )}></div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8 relative z-10">
-                <div className="relative flex items-center justify-center">
-                  <div className={cn(
-                    "relative w-56 h-56 rounded-2xl overflow-hidden bg-gradient-to-br shadow-md transition-all duration-500",
-                    `from-${currentCategory.color}-50 to-white dark:from-${currentCategory.color}-950/30 dark:to-gray-900`
-                  )}>
-                    {/* Floating dots decoration */}
-                    <div className="absolute w-full h-full">
+            <Carousel 
+              setApi={setCarouselApi}
+              className="w-full"
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+            >
+              <CarouselContent className="py-1">
+                {filteredArticles.map((article, index) => (
+                  <CarouselItem key={`article-${index}`} className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                    <Link href={article.url} className="block h-full">
                       <div className={cn(
-                        "absolute top-5 left-5 w-3 h-3 rounded-full",
-                        `bg-${currentCategory.color}-200 dark:bg-${currentCategory.color}-700 animate-pulse`
-                      )} style={{ animationDuration: '3s' }}></div>
-                      <div className={cn(
-                        "absolute bottom-12 right-6 w-2 h-2 rounded-full",
-                        `bg-${currentCategory.color}-300 dark:bg-${currentCategory.color}-600 animate-pulse`
-                      )} style={{ animationDuration: '4s' }}></div>
-                      <div className={cn(
-                        "absolute top-1/2 right-8 w-4 h-4 rounded-full",
-                        `bg-${currentCategory.color}-100 dark:bg-${currentCategory.color}-800 animate-pulse`
-                      )} style={{ animationDuration: '5s' }}></div>
-                    </div>
-                    
-                    <Image
-                      src="/images/tincture2.png"
-                      alt={`Premium ${currentCategory.name} CBD Formula`}
-                      fill
-                      className="object-contain p-3 transition-all duration-700 group-hover:scale-110 group-hover:rotate-3"
-                    />
-                  </div>
-                  
-                  {/* New label badge */}
-                  <div className={cn(
-                    "absolute -top-3 -left-3 z-10",
-                    "bg-gradient-to-br from-yellow-400 to-amber-500 dark:from-yellow-500 dark:to-amber-600",
-                    "text-white py-1.5 px-3 rounded-full text-xs font-bold shadow-lg",
-                    "flex items-center gap-1 uppercase tracking-wider"
-                  )}>
-                    <Award className="h-3.5 w-3.5" />
-                    <span>Best seller</span>
-                  </div>
-                  
-                  {/* Discount badge */}
-                  <div className={cn(
-                    "absolute -bottom-3 -right-3 z-10",
-                    `bg-${currentCategory.color}-500 dark:bg-${currentCategory.color}-600`,
-                    "text-white py-1.5 px-3 rounded-full text-xs font-bold shadow-lg",
-                  )}>
-                    Save 16%
-                  </div>
-                </div>
-                
-                <div className="flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i}
-                            className="h-4 w-4 text-yellow-400 fill-yellow-400"
-                            fill="currentColor"
-                          />
-                        ))}
-                      </div>
-                      <span className="text-gray-500 dark:text-gray-400 text-sm">(124 reviews)</span>
-                    </div>
-                    
-                    <div>
-                      <h3 className={cn(
-                        "font-semibold text-2xl text-gray-900 dark:text-gray-100",
-                        `group-hover:text-${currentCategory.color}-600 dark:group-hover:text-${currentCategory.color}-400 transition-colors duration-300`
+                        "rounded-lg overflow-hidden bg-white border shadow-sm h-full flex flex-col transform transition-all duration-300 hover:shadow-md hover:-translate-y-1",
+                        `border-${currentCategory.color}-200/50 hover:border-${currentCategory.color}-300`
                       )}>
-                        Premium {currentCategory.name} CBD Formula
-                      </h3>
-                      
-                      <div className={cn(
-                        "flex items-center gap-1.5 mt-1",
-                        `text-${currentCategory.color}-600 dark:text-${currentCategory.color}-400`
-                      )}>
-                        <Badge variant="outline" className={cn(
-                          `border-${currentCategory.color}-200 bg-${currentCategory.color}-50 text-${currentCategory.color}-700`,
-                          `dark:border-${currentCategory.color}-900 dark:bg-${currentCategory.color}-950 dark:text-${currentCategory.color}-300`
+                        <div className={cn(
+                          "relative bg-gradient-to-br",
+                          `from-${currentCategory.color}-50 to-white`
                         )}>
-                          30ml
-                        </Badge>
-                        <Badge variant="outline" className={cn(
-                          `border-${currentCategory.color}-200 bg-${currentCategory.color}-50 text-${currentCategory.color}-700`,
-                          `dark:border-${currentCategory.color}-900 dark:bg-${currentCategory.color}-950 dark:text-${currentCategory.color}-300`
-                        )}>
-                          1000mg CBD
-                        </Badge>
-                        <Badge variant="outline" className={cn(
-                          `border-${currentCategory.color}-200 bg-${currentCategory.color}-50 text-${currentCategory.color}-700`,
-                          `dark:border-${currentCategory.color}-900 dark:bg-${currentCategory.color}-950 dark:text-${currentCategory.color}-300`
-                        )}>
-                          Full Spectrum
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      Specially formulated for {currentCategory.name.toLowerCase()} benefits, combining premium hemp extract with targeted botanicals for maximum effectiveness.
-                    </p>
-                    
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Key Benefits:</h4>
-                      <ul className="grid grid-cols-1 gap-1.5">
-                        {["Fast-acting formula", "Organic ingredients", "Third-party tested", "Easy to use"].map((benefit, i) => (
-                          <li key={i} className="flex items-center gap-2">
-                            <div className={cn(
-                              "rounded-full p-0.5 flex-shrink-0",
-                              `text-${currentCategory.color}-600 dark:text-${currentCategory.color}-400`
-                            )}>
-                              <CheckCircle2 className="h-4 w-4" />
+                          <AspectRatio ratio={5/3} className="w-full">
+                            <Image
+                              src={article.image}
+                              alt={article.title}
+                              fill
+                              className="object-cover"
+                            />
+                            <div className="absolute top-1 right-1">
+                              <Badge className={cn(
+                                "bg-white text-[9px] px-1.5 py-0.5",
+                                `text-${currentCategory.color}-600 border-${currentCategory.color}-200`
+                              )}>
+                                {article.category === "wellness" ? "Health" : 
+                                 article.category === "sport" ? "Sport" :
+                                 article.category === "beauty" ? "Beauty" :
+                                 article.category === "pet" ? "Pet" : "Hybrid"}
+                              </Badge>
                             </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">{benefit}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 flex flex-col space-y-4">
-                    <div className="flex items-end justify-between">
-                      <div className="flex flex-col">
-                        <span className="text-sm text-gray-500 dark:text-gray-400 line-through">$59.99</span>
-                        <div className="flex items-center gap-2">
-                          <p className={cn(
-                            "font-bold text-2xl",
-                            `text-${currentCategory.color}-700 dark:text-${currentCategory.color}-500`
-                          )}>$49.99</p>
-                          <Badge className="bg-red-500 text-white">Save $10</Badge>
+                          </AspectRatio>
+                        </div>
+                        
+                        <div className="p-2 flex flex-col flex-1">
+                          <h4 className="text-xs font-medium text-gray-900 mb-0.5 line-clamp-1">{article.title}</h4>
+                          <p className="text-[10px] text-gray-600 line-clamp-1 flex-1">{article.excerpt}</p>
+                          <div className="mt-1 flex items-center justify-between">
+                            <span className="text-[8px] text-gray-500">{article.date}</span>
+                            <span className={cn(
+                              "text-[10px] font-medium flex items-center",
+                              `text-${currentCategory.color}-600`
+                            )}>
+                              Read <ArrowRight className="h-2 w-2 ml-0.5" />
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      
-                      <div className="text-right">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Free shipping</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">30-day satisfaction guarantee</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <Button className={cn(
-                        "flex-1 text-white shadow-md transition-all duration-300 group-hover:shadow-lg",
-                        `bg-${currentCategory.color}-600 hover:bg-${currentCategory.color}-700 group-hover:shadow-${currentCategory.color}-300/20`
-                      )}>
-                        <ShoppingCart className="h-4 w-4 mr-2" />
-                        Add to Cart
-                      </Button>
-                      
-                      <Button variant="outline" className={cn(
-                        "border transition-colors",
-                        `border-${currentCategory.color}-200 text-${currentCategory.color}-700 hover:bg-${currentCategory.color}-50`,
-                        `dark:border-${currentCategory.color}-800 dark:text-${currentCategory.color}-400 dark:hover:bg-${currentCategory.color}-950/50`
-                      )}>
-                        View Details
-                      </Button>
-                    </div>
-                  </div>
+                    </Link>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
+        </div>
+        
+        {/* Dr Twistly Dialog */}
+        <Dialog open={showDrTwistly} onOpenChange={setShowDrTwistly}>
+          <DialogContent className="sm:max-w-[600px] p-0 gap-0 bg-white dark:bg-gray-900 dark:border-gray-700">
+            <div className="bg-gradient-to-br from-emerald-50 to-white p-4 rounded-t-lg border-b border-emerald-100">
+              <div className="flex items-center gap-3">
+                <div className="h-12 w-12 relative rounded-full overflow-hidden border-2 border-emerald-200 shadow-sm">
+                  <Image 
+                    src="/images/dr-twistly.png" 
+                    alt="Dr. Twistly" 
+                    fill 
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-emerald-800 text-lg">Dr. Twistly</h3>
+                  <p className="text-xs text-gray-600">Your CBD Wellness Consultant</p>
                 </div>
               </div>
-            </Card>
-          </motion.div>
-          
-          {/* CTA Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="flex flex-col items-center justify-center mt-12"
-          >
-            <div className={cn(
-              "relative group overflow-hidden rounded-full shadow-lg transition-all duration-500",
-              "border bg-white hover:shadow-xl",
-              `border-${currentCategory.color}-200 hover:border-${currentCategory.color}-300`
-            )}>
-              <div className={cn(
-                "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                `bg-gradient-to-r from-${currentCategory.color}-50 via-transparent to-${currentCategory.color}-50`
-              )}/>
-              <Link 
-                href={`/${currentCategory.id}`}
-                className={cn(
-                  "relative z-10 inline-flex items-center text-base font-medium transition-all duration-200 px-8 py-4",
-                  `text-${currentCategory.color}-700 hover:text-${currentCategory.color}-800`
-                )}
-              >
-                <span>View all {currentCategory.name} products</span>
-                <ArrowRight className={cn(
-                  "ml-2 h-5 w-5 transition-transform duration-300", 
-                  "group-hover:translate-x-1"
-                )} />
-              </Link>
             </div>
             
-            <p className="text-sm text-gray-500 mt-5 max-w-sm text-center">
-              Explore our full collection of premium {currentCategory.name.toLowerCase()} CBD products, backed by third-party testing and 100% satisfaction guarantee.
-            </p>
-          </motion.div>
-        </Tabs>
-      </div>
+            <div className="p-4 max-h-[70vh] overflow-y-auto">
+              <MiniDrTwistly initialContext={`The user is viewing information about CBD benefits related to the ${currentCategory.name} category. They might have questions about specific benefits like ${currentCategory.benefits.slice(0, 3).join(', ')}, etc.`} />
+            </div>
+          </DialogContent>
+        </Dialog>
+      </Container>
     </section>
   )
 }

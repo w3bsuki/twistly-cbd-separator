@@ -80,7 +80,7 @@ const beautyProducts = [
     reviews: 112,
     description: "Hydrating lip balm with CBD and vitamin E",
     benefits: ["Hydrating", "Protective", "Healing"],
-    featured: false
+    featured: true
   },
   {
     id: "bath-bombs",

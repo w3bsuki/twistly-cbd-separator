@@ -8,7 +8,7 @@
 "use client";
 
 import React, { useState, useCallback, useMemo, memo } from "react";
-import { ChevronRight, AlertCircle, ShoppingCart, Heart, Star, Eye, Info, Droplet, Check, ArrowRight, Sparkles, Package, BadgePercent, Award, Tag } from "lucide-react";
+import { ChevronRight, AlertCircle, ShoppingCart, Heart, Star, Eye, Info, Droplet, Check, ArrowRight, Sparkles, Package, BadgePercent, Award, Tag, Grid2X2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -25,9 +25,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/cart-context";
 import { useProductData } from "@/hooks/use-product-data";
 import { useAnimationConfig, fadeInUpVariants, staggerContainerVariants } from "@/hooks";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { InfiniteSlider } from "@/components/ui/infinite-slider";
+import { Container } from "@/components/ui/container";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 // Type for product categories
-type ProductCategory = 'all' | 'health' | 'beauty' | 'sport' | 'hybrid';
+type ProductCategory = 'all' | 'health' | 'beauty' | 'sport' | 'hybrid' | 'pet';
 
 // Get color for category - memoized utility function
 const getCategoryColor = (category: string): string => {
@@ -36,6 +40,7 @@ const getCategoryColor = (category: string): string => {
     case 'beauty': return 'purple';
     case 'sport': return 'blue';
     case 'hybrid': return 'amber';
+    case 'pet': return 'indigo';
     default: return 'green';
   }
 };
@@ -58,76 +63,108 @@ const ProductsHeader = memo(function ProductsHeader({
         viewport: { once: true },
         variants: fadeInUpVariants,
       })}
-      className="flex flex-col items-center text-center mb-16"
+      className="mb-5 sm:mb-6"
     >
-      <Badge className="px-3.5 py-1.5 rounded-full text-sm bg-gradient-to-r from-green-500 to-green-600 text-white flex items-center gap-1.5 mb-4 shadow-sm">
-        <Sparkles className="w-3.5 h-3.5" />
-        <span className="font-medium">Premium Selection</span>
-      </Badge>
-      
-      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-green-800 via-green-700 to-green-800">
-        Featured Products
-      </h2>
-      
-      <p className="text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-        Discover our curated selection of premium CBD products, ethically sourced and crafted for your wellness journey
-      </p>
-      
-      {/* Category Tabs */}
-      <Tabs 
-        defaultValue="all" 
-        value={activeCategory}
-        onValueChange={(value) => handleCategoryChange(value as ProductCategory)}
-        className="w-full max-w-2xl mx-auto"
-      >
-        <div className="flex justify-center">
-          <TabsList className="bg-white/80 backdrop-blur-sm border border-gray-100 p-1.5 rounded-xl shadow-sm">
-            <TabsTrigger 
-              value="all"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                ${activeCategory === 'all' 
-                  ? 'bg-green-500 text-white shadow-sm' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              All Products
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="health"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                ${activeCategory === 'health' 
-                  ? 'bg-green-500 text-white shadow-sm' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              Health & Wellness
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="beauty"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                ${activeCategory === 'beauty' 
-                  ? 'bg-purple-500 text-white shadow-sm' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              Beauty
-            </TabsTrigger>
-            
-            <TabsTrigger 
-              value="sport"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
-                ${activeCategory === 'sport' 
-                  ? 'bg-blue-500 text-white shadow-sm' 
-                  : 'text-gray-700 hover:bg-gray-50'
-                }`}
-            >
-              Sports
-            </TabsTrigger>
-          </TabsList>
+      {/* Nested container for the section header - matching category styling */}
+      <div className="bg-gradient-to-b from-green-50/80 to-white p-3 sm:p-4 rounded-xl border border-green-100/80 shadow-sm relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-green-200/30"></div>
+          <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-emerald-100/30"></div>
         </div>
-      </Tabs>
+        
+        <div className="text-center relative z-10">
+          {/* Spinning logo with improved styling */}
+          <div className="flex justify-center mb-1 sm:mb-1.5">
+            <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full relative bg-transparent transition-all duration-500 shadow-[0_10px_20px_rgba(var(--emerald-rgb)/0.15),_inset_0_0_0_1px_rgba(var(--emerald-rgb)/0.2)] p-0.5">
+              <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-transparent after:absolute after:inset-0 after:rounded-full after:shadow-inner">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ 
+                    duration: 20, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                  className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center relative z-10"
+                >
+                  <Sparkles className="h-6 w-6 text-emerald-500 drop-shadow-md" />
+                </motion.div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="relative z-10 px-3 py-1.5 inline-block rounded-lg bg-white/80 backdrop-blur-sm shadow-sm border border-gray-100/50 mb-4">
+            <div className="inline-flex bg-gradient-to-br from-green-50/80 to-white rounded-full border border-green-200/40 shadow-sm p-1 mb-1.5">
+              <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 text-xs font-medium">
+                <Sparkles className="h-3 w-3" />
+                <span>Premium Selection</span>
+              </div>
+            </div>
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 drop-shadow-sm">
+              Featured Products
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto mt-0.5 sm:mt-1">
+              Premium CBD products for your wellness journey
+            </p>
+          </div>
+          
+          {/* Category Tabs */}
+          <Tabs 
+            defaultValue="all" 
+            value={activeCategory}
+            onValueChange={(value) => handleCategoryChange(value as ProductCategory)}
+            className="w-full max-w-xl mx-auto"
+          >
+            <div className="flex justify-center">
+              <TabsList className="bg-white/80 backdrop-blur-sm border border-gray-100 p-1 rounded-lg shadow-sm mx-auto">
+                <TabsTrigger 
+                  value="all"
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200
+                    ${activeCategory === 'all' 
+                      ? 'bg-green-500 text-white shadow-sm' 
+                      : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                >
+                  All Products
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="health"
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200
+                    ${activeCategory === 'health' 
+                      ? 'bg-green-500 text-white shadow-sm' 
+                      : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                >
+                  Health & Wellness
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="beauty"
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200
+                    ${activeCategory === 'beauty' 
+                      ? 'bg-purple-500 text-white shadow-sm' 
+                      : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                >
+                  Beauty
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="sport"
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200
+                    ${activeCategory === 'sport' 
+                      ? 'bg-blue-500 text-white shadow-sm' 
+                      : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                >
+                  Sports
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </Tabs>
+        </div>
+      </div>
     </motion.div>
   );
 });
@@ -218,7 +255,7 @@ const ProductCard = memo(function ProductCard({
         
         {/* Product image */}
         <div className={`relative overflow-hidden bg-gradient-to-b from-${categoryColor}-50 to-white dark:from-${categoryColor}-900/20 dark:to-gray-900 pt-3`}>
-          <div className="relative h-48 sm:h-52 mx-auto transition-transform duration-500 group-hover:scale-110 group-hover:translate-y-1 p-3">
+          <div className="relative h-28 md:h-32 mx-auto transition-transform duration-500 group-hover:scale-105 p-3">
             <Image
               src={product.image}
               alt={product.name}
@@ -318,12 +355,53 @@ export function FeaturedProducts() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<ProductCategory>('all');
+  const [api, setApi] = useState<any>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [topPicksApi, setTopPicksApi] = useState<any>(null);
+  const [newestProductsApi, setNewestProductsApi] = useState<any>(null);
   
   // Hooks
   const { toast } = useToast();
   const { addItem } = useCart();
   const animConfig = useAnimationConfig();
   
+  // Enhanced auto-scrolling effect for carousel with pause on hover
+  React.useEffect(() => {
+    if (!api) return;
+
+    // Set up an interval to advance the carousel every 2 seconds
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        api.scrollNext();
+      }
+    }, 2000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [api, isPaused]);
+
+  // Auto-scrolling for Top Picks carousel
+  React.useEffect(() => {
+    if (!topPicksApi) return;
+
+    const interval = setInterval(() => {
+      topPicksApi.scrollNext();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [topPicksApi]);
+
+  // Auto-scrolling for Newest Products carousel
+  React.useEffect(() => {
+    if (!newestProductsApi) return;
+
+    const interval = setInterval(() => {
+      newestProductsApi.scrollNext();
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [newestProductsApi]);
+
   // Use our custom hook for product data
   const { 
     products, 
@@ -363,7 +441,7 @@ export function FeaturedProducts() {
       toast({
         title: "Added to Cart",
         description: `${product.name} has been added to your cart.`,
-        variant: "success",
+        variant: "default",
       });
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -409,69 +487,360 @@ export function FeaturedProducts() {
   }
 
   return (
-    <section className="w-full py-20 md:py-28 relative overflow-hidden" aria-labelledby="featured-products-heading">
-      {/* Beautiful gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-green-50/30" aria-hidden="true" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,#22c55e10_50%,transparent_100%)]" aria-hidden="true" />
-      <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_0.5px,transparent_0.5px)] [background-size:24px_24px] opacity-5" aria-hidden="true" />
-      <div className="absolute top-40 left-20 w-72 h-72 bg-gradient-to-br from-green-100/10 to-blue-100/5 rounded-full blur-3xl" aria-hidden="true"></div>
-      
-      <div className="container px-4 md:px-6 mx-auto relative">
-        {/* Using memoized header component */}
-        <ProductsHeader 
-          activeCategory={activeCategory}
-          handleCategoryChange={handleCategoryChange}
-          animConfig={animConfig}
-        />
-
-        {/* Products Grid with Animation */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={animConfig.shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={animConfig.shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            transition={animConfig.getTransition(0.3)}
-            variants={animConfig.getVariants(staggerContainerVariants)}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto"
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                handleQuickView={handleQuickView}
-                handleAddToCart={handleAddToCart}
-                animConfig={animConfig}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* View all link */}
-        <motion.div
-          {...animConfig.getMotionProps({
-            initial: { opacity: 0, y: 20 },
-            whileInView: { opacity: 1, y: 0 },
-            viewport: { once: true },
-            transition: { duration: 0.5, delay: 0.6 }
-          })}
-          className="flex justify-center mt-16"
-        >
-          <Link 
-            href="/shop" 
-            className="group relative overflow-hidden inline-flex items-center justify-center px-6 py-3.5 rounded-full shadow-md border border-green-200 hover:border-green-300 bg-white hover:bg-green-50/50 transition-all duration-300"
-            aria-label="View our complete product collection"
-          >
-            <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-50 via-white to-green-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
-            <span className="relative z-10 text-green-700 font-medium flex items-center group-hover:text-green-800">
-              View Complete Collection
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </span>
-          </Link>
-        </motion.div>
+    <section className="w-full py-8 md:py-10 lg:py-12 bg-gradient-to-b from-green-50 to-white">
+      {/* Background decoration - simplified for mobile */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-16 -right-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-green-500/40"></div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-emerald-500/30"></div>
       </div>
+      
+      {/* Main container - responsive approach */}
+      <Container className="relative z-10 bg-white/95 backdrop-blur-sm rounded-xl shadow-lg border border-green-200/90 p-3 sm:p-4 lg:p-5 w-full max-w-6xl mx-auto">
+        {/* Header with nested container design */}
+        <div className="mb-5 sm:mb-6">
+          {/* Nested container for the section header - matching category styling */}
+          <div className="bg-gradient-to-b from-green-50/80 to-white p-3 sm:p-4 rounded-xl border border-green-100/80 shadow-sm relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-green-200/30"></div>
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-emerald-100/30"></div>
+            </div>
+            
+            <div className="text-center relative z-10">
+              {/* Spinning logo with improved styling */}
+              <div className="flex justify-center mb-1 sm:mb-1.5">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full relative bg-transparent transition-all duration-500 shadow-[0_10px_20px_rgba(var(--emerald-rgb)/0.15),_inset_0_0_0_1px_rgba(var(--emerald-rgb)/0.2)] p-0.5">
+                  <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-transparent after:absolute after:inset-0 after:rounded-full after:shadow-inner">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ 
+                        duration: 20, 
+                        repeat: Infinity, 
+                        ease: "linear" 
+                      }}
+                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center relative z-10"
+                    >
+                      <Image 
+                        src="/images/logos/1.png" 
+                        alt="Twistly CBD" 
+                        width={40} 
+                        height={40} 
+                        className="w-full h-full object-contain drop-shadow-md" 
+                      />
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative z-10 px-3 py-1.5 inline-block rounded-lg bg-white/80 backdrop-blur-sm shadow-sm border border-gray-100/50 mb-4">
+                <div className="inline-flex bg-gradient-to-br from-green-50/80 to-white rounded-full border border-green-200/40 shadow-sm p-1 mb-1.5">
+                  <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 text-xs font-medium">
+                    <Sparkles className="h-3 w-3" />
+                    <span>Premium Selection</span>
+                  </div>
+                </div>
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 drop-shadow-sm">
+                  Featured Products
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto mt-0.5 sm:mt-1">
+                  Premium CBD products for your wellness journey
+                </p>
+              </div>
+              
+              {/* Category Tabs */}
+              <Tabs 
+                defaultValue="all" 
+                value={activeCategory}
+                onValueChange={(value) => handleCategoryChange(value as ProductCategory)}
+                className="w-full max-w-xl mx-auto"
+              >
+                <div className="flex justify-center">
+                  <TabsList className="bg-white/80 backdrop-blur-sm border border-gray-100 p-1 rounded-lg shadow-sm mx-auto">
+                    <TabsTrigger 
+                      value="all"
+                      className={cn(
+                        "px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-all duration-200",
+                        activeCategory === 'all' 
+                          ? 'bg-emerald-500 text-white shadow-sm' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      )}
+                    >
+                      All
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="health"
+                      className={cn(
+                        "px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-all duration-200",
+                        activeCategory === 'health' 
+                          ? 'bg-green-500 text-white shadow-sm' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      )}
+                    >
+                      Health
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="beauty"
+                      className={cn(
+                        "px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-all duration-200",
+                        activeCategory === 'beauty' 
+                          ? 'bg-purple-500 text-white shadow-sm' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      )}
+                    >
+                      Beauty
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="sport"
+                      className={cn(
+                        "px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-all duration-200",
+                        activeCategory === 'sport' 
+                          ? 'bg-blue-500 text-white shadow-sm' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      )}
+                    >
+                      Sports
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="hybrid"
+                      className={cn(
+                        "px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-all duration-200",
+                        activeCategory === 'hybrid' 
+                          ? 'bg-amber-500 text-white shadow-sm' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      )}
+                    >
+                      Hybrid
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="pet"
+                      className={cn(
+                        "px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-all duration-200",
+                        activeCategory === 'pet' 
+                          ? 'bg-indigo-500 text-white shadow-sm' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      )}
+                    >
+                      Pet CBD
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </Tabs>
+            </div>
+          </div>
+        </div>
+        
+        {/* Main content container - optimized for all devices */}
+        <div className="bg-gradient-to-br from-emerald-50/70 to-white dark:from-emerald-900/10 dark:to-neutral-900 rounded-lg border border-emerald-200/60 dark:border-emerald-800/20 p-1.5 sm:p-2 overflow-hidden mt-2 shadow-md">
+          {/* Responsive grid layout for main product sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-3 mb-2 sm:mb-3">
+            {/* Top picks container - Full width on mobile, Left column on desktop */}
+            <div className="bg-gradient-to-br from-emerald-50/80 to-white dark:from-emerald-900/10 dark:to-neutral-900 rounded-lg border border-emerald-200/60 dark:border-emerald-800/20 p-2 overflow-hidden shadow-md">
+              <div className="flex items-center justify-between mb-1.5 px-2">
+                <h3 className="text-xs sm:text-sm font-medium text-neutral-900 dark:text-white flex items-center">
+                  <div className="w-4 h-4 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500 flex items-center justify-center mr-1.5 shadow-sm">
+                    <Star className="h-2 w-2 text-white" />
+                  </div>
+                  Top Picks
+                </h3>
+                <Link href="/shop/featured" className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center gap-1 px-2 py-0.5 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-full">
+                  View
+                  <ArrowRight className="h-2.5 w-2.5" />
+                </Link>
+              </div>
+              
+              {/* Convert grid to carousel */}
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                setApi={setTopPicksApi}
+                className="w-full"
+              >
+                <CarouselContent className="py-1 px-1">
+                  {filteredProducts.slice(0, 3).map((product) => (
+                    <CarouselItem key={product.id} className="basis-1/2 sm:basis-1/3">
+                      <div 
+                        className={cn(
+                          "relative flex flex-col h-full rounded-lg bg-white/90 overflow-hidden cursor-pointer",
+                          "border-2 hover:border-gray-200/90",
+                          `border-${getCategoryColor(product.category)}-200/50`,
+                          "transition-all duration-300 ease-in-out min-h-[250px]",
+                          "shadow-[0_4px_10px_rgba(0,0,0,0.05)]",
+                          "hover:shadow-lg hover:translate-y-[-2px]"
+                        )}
+                        onClick={() => handleQuickView(product)}
+                      >
+                        {/* Product badges */}
+                        {(product.bestSeller || product.new) && (
+                          <div className="absolute top-1 right-1 z-10">
+                            {product.bestSeller && (
+                              <div className="bg-amber-500 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                                <Star className="h-2 w-2 text-white" />
+                              </div>
+                            )}
+                            {product.new && !product.bestSeller && (
+                              <div className="bg-blue-500 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                                <span className="text-[7px] font-bold">N</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        
+                        {/* Product image */}
+                        <div className={cn(
+                          "w-full pt-0.5",
+                          `bg-gradient-to-b from-${getCategoryColor(product.category)}-50/50 to-white/40`
+                        )}>
+                          <AspectRatio ratio={1.3} className="w-full px-2">
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              className="object-contain"
+                              priority={product.bestSeller}
+                            />
+                          </AspectRatio>
+                        </div>
+                        
+                        {/* Product content */}
+                        <div className="p-1.5 flex flex-col flex-1">
+                          <h3 className="text-xs sm:text-sm font-medium text-gray-900 mb-0.5 line-clamp-1">{product.name}</h3>
+                          <div className="flex items-center mb-0.5">
+                            <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 mr-0.5" />
+                            <span className="text-[9px] text-gray-500">{product.rating}</span>
+                          </div>
+                          
+                          <div className="mt-auto flex items-center justify-between">
+                            <div className={cn("font-semibold text-xs", `text-${getCategoryColor(product.category)}-700`)}>
+                              ${product.price.toFixed(2)}
+                            </div>
+                            <button
+                              className={cn(
+                                "p-1 rounded-full",
+                                `bg-${getCategoryColor(product.category)}-100`,
+                                `hover:bg-${getCategoryColor(product.category)}-200`,
+                                "transition-colors"
+                              )}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddToCart(product, e);
+                              }}
+                            >
+                              <ShoppingCart className={cn("h-2.5 w-2.5", `text-${getCategoryColor(product.category)}-600`)} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </div>
+            
+            {/* Newest Products container - Full width on mobile, Right column on desktop */}
+            <div className="bg-gradient-to-br from-blue-50/80 to-white dark:from-blue-900/10 dark:to-neutral-900 rounded-lg border border-blue-200/60 dark:border-blue-800/20 p-2 overflow-hidden shadow-md">
+              <div className="flex items-center justify-between mb-1.5 px-2">
+                <h3 className="text-xs sm:text-sm font-medium text-neutral-900 dark:text-white flex items-center">
+                  <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 flex items-center justify-center mr-1.5 shadow-sm">
+                    <Tag className="h-2 w-2 text-white" />
+                  </div>
+                  Newest Products
+                </h3>
+                <Link href="/shop/new-arrivals" className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 flex items-center gap-1 px-2 py-0.5 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-full">
+                  View
+                  <ArrowRight className="h-2.5 w-2.5" />
+                </Link>
+              </div>
+              
+              {/* Convert grid to carousel */}
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                setApi={setNewestProductsApi}
+                className="w-full"
+              >
+                <CarouselContent className="py-1 px-1">
+                  {newestProducts.slice(0, 6).map((product, index) => (
+                    <CarouselItem key={`new-${index}`} className="basis-1/2 sm:basis-1/3">
+                      <div 
+                        className="relative flex flex-col h-full rounded-lg bg-white/90 overflow-hidden cursor-pointer border-2 hover:border-gray-200/90 border-blue-200/50 transition-all duration-300 ease-in-out min-h-[250px] shadow-[0_4px_10px_rgba(0,0,0,0.05)] hover:shadow-lg hover:translate-y-[-2px]"
+                        onClick={() => window.location.href = `/product/${product.id}`}
+                      >
+                        {/* Product badge */}
+                        <div className="absolute top-1 right-1 z-10">
+                          <div className="bg-blue-500 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                            <span className="text-[7px] font-bold">N</span>
+                          </div>
+                        </div>
+                        
+                        {/* Product image */}
+                        <div className="w-full pt-0.5 bg-gradient-to-b from-blue-50/50 to-white/40">
+                          <AspectRatio ratio={1.3} className="w-full px-2">
+                            <Image
+                              key={`new-product-image-${index}`}
+                              src="/images/tincture2.png"
+                              alt={product.name}
+                              fill
+                              className="object-contain"
+                              priority={true}
+                            />
+                          </AspectRatio>
+                        </div>
+                        
+                        {/* Product content */}
+                        <div className="p-1.5 flex flex-col flex-1">
+                          <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-0.5 line-clamp-1">{product.name}</h4>
+                          <div className="text-[9px] text-gray-500 mb-0.5 line-clamp-1">{product.strength}</div>
+                          
+                          <div className="mt-auto flex items-center justify-between">
+                            <div className="font-semibold text-xs text-blue-700">{product.price}</div>
+                            <div className="flex items-center">
+                              <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400 mr-0.5" />
+                              <span className="text-[9px] text-gray-500">{product.rating}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </div>
+          </div>
+          
+          {/* More Products Carousel - Optimized for all screen sizes */}
+          <div className="bg-gradient-to-br from-amber-50/80 to-white dark:from-amber-900/10 dark:to-neutral-900 rounded-lg border border-amber-200/60 dark:border-amber-800/20 p-1.5 sm:p-2 overflow-hidden mb-2 shadow-md">
+            <InfiniteSlider direction="right" speed="slow" className="py-1">
+              {filteredProducts.slice(3, 11).map((product) => (
+                <div 
+                  key={`more-${product.id}`}
+                  className="bg-white rounded-lg border-2 border-amber-100/50 shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex flex-col h-full overflow-hidden cursor-pointer mx-1.5 min-h-[100px] w-[100px] sm:w-[130px] hover:shadow-md hover:border-amber-200/80 transition-all duration-300"
+                  onClick={() => handleQuickView(product)}
+                >
+                  <div className="relative pt-0.5 px-0.5">
+                    <AspectRatio ratio={1.3} className="w-full">
+                      <Image
+                        src="/images/tincture2.png"
+                        alt={product.name}
+                        fill
+                        className="object-contain"
+                        priority={true}
+                      />
+                    </AspectRatio>
+                  </div>
+                  <div className="p-0.5 text-center">
+                    <h4 className="text-[10px] sm:text-xs font-medium text-gray-900 line-clamp-1">{product.name}</h4>
+                    <div className="font-semibold text-[10px] sm:text-xs text-emerald-600">${product.price.toFixed(2)}</div>
+                  </div>
+                </div>
+              ))}
+            </InfiniteSlider>
+          </div>
+        </div>
+      </Container>
       
       {/* Quick view dialog */}
       {selectedProduct && (
@@ -657,4 +1026,108 @@ function FeaturedProductsSkeleton() {
       </div>
     </section>
   );
-} 
+}
+
+// Sample collections data
+const featuredCollections = [
+  {
+    id: "oils-tinctures",
+    name: "Oils & Tinctures",
+    image: "/images/tincture.png",
+    productCount: 12,
+    description: "Premium CBD oils for daily wellness"
+  },
+  {
+    id: "edibles",
+    name: "Edibles & Gummies",
+    image: "/images/gummies.png", 
+    productCount: 8,
+    description: "Delicious CBD treats and gummies"
+  },
+  {
+    id: "topicals",
+    name: "Topicals & Balms",
+    image: "/images/balm.png",
+    productCount: 6,
+    description: "Targeted relief for muscles and skin"
+  },
+  {
+    id: "pet-products",
+    name: "Pet CBD",
+    image: "/images/pet-oil.png",
+    productCount: 5,
+    description: "CBD products formulated for pets"
+  },
+  {
+    id: "bundles",
+    name: "Value Bundles",
+    image: "/images/bundle.png",
+    productCount: 4,
+    description: "Save with our curated product sets"
+  },
+  {
+    id: "wellness",
+    name: "Wellness",
+    image: "/images/wellness.png",
+    productCount: 10,
+    description: "Support your daily wellness routine"
+  }
+];
+
+// Newest products data
+const newestProducts = [
+  {
+    id: "cbd-relief-roll-on",
+    name: "CBD Relief Roll-On",
+    strength: "500mg",
+    image: "/images/products/tincture-2.png",
+    price: "$34.99",
+    rating: 4.9,
+    reviews: 23,
+  },
+  {
+    id: "cbd-recovery-balm",
+    name: "CBD Recovery Balm",
+    strength: "1000mg",
+    image: "/images/products/tincture-2.png",
+    price: "$54.99",
+    rating: 4.7,
+    reviews: 17,
+  },
+  {
+    id: "cbd-focus-tincture",
+    name: "CBD Focus Tincture",
+    strength: "1500mg",
+    image: "/images/products/tincture-2.png",
+    price: "$69.99",
+    rating: 4.8,
+    reviews: 12,
+  },
+  {
+    id: "cbd-bath-bombs",
+    name: "CBD Bath Bombs",
+    strength: "100mg/bomb",
+    image: "/images/products/tincture-2.png",
+    price: "$24.99",
+    rating: 4.6,
+    reviews: 32,
+  },
+  {
+    id: "cbd-protein-powder",
+    name: "CBD Protein Powder",
+    strength: "25mg/serving",
+    image: "/images/products/tincture-2.png",
+    price: "$49.99",
+    rating: 4.5,
+    reviews: 9,
+  },
+  {
+    id: "cbd-face-serum",
+    name: "CBD Face Serum",
+    strength: "250mg",
+    image: "/images/products/tincture-2.png",
+    price: "$45.99",
+    rating: 4.9,
+    reviews: 14,
+  },
+]; 

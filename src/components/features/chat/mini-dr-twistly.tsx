@@ -16,29 +16,29 @@ export function MiniDrTwistly({ className }: MiniDrTwistlyProps) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 shadow-md border border-gray-100">
-      <div className="flex flex-col md:flex-row items-center gap-6">
-        <div className="flex-shrink-0 w-16 h-16 bg-white rounded-full shadow-sm p-3 flex items-center justify-center">
+    <div className="max-w-xl mx-auto bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+      <div className="flex items-center gap-3">
+        <div className="flex-shrink-0 w-10 h-10 bg-white rounded-full shadow-sm p-2 flex items-center justify-center">
           <img 
             src="/images/4.png" 
             alt="Dr. Twistly" 
-            className="w-12 h-12 object-contain"
+            className="w-8 h-8 object-contain"
           />
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-1">Need help finding the right product?</h3>
-          <p className="text-sm text-gray-600 mb-4">Ask Dr. Twistly a quick question and get instant recommendations</p>
-          <form className="flex gap-2" onSubmit={handleSubmit}>
+          <h3 className="text-sm font-semibold mb-0.5">Need help finding the right CBD product?</h3>
+          <p className="text-[10px] text-gray-600 mb-2">Ask Dr. Twistly and get personalized recommendations instantly</p>
+          <form className="flex gap-1.5" onSubmit={handleSubmit}>
             <input 
               type="text" 
-              placeholder="E.g., What can help with sleep issues?" 
-              className="flex-1 px-4 py-2 text-sm rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500/30"
+              placeholder="What can help with sleep issues?" 
+              className="flex-1 px-2.5 py-1 text-xs rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-green-500"
             />
             <button 
               type="submit" 
-              className="bg-green-600 hover:bg-green-700 text-white rounded-full px-4 py-2 text-sm font-medium flex items-center"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-full px-3 py-1 text-xs font-medium flex items-center gap-1 transition-colors shadow-sm"
             >
-              Ask <ArrowRight className="ml-2 h-3.5 w-3.5" />
+              Ask <ArrowRight className="h-3 w-3" />
             </button>
           </form>
         </div>

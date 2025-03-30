@@ -199,19 +199,27 @@ export function TabbedNavbar() {
               </DropdownMenu>
               
               {/* Shop Button */}
-              <Button asChild variant="default" className="bg-green-600 hover:bg-green-700 text-white rounded-full h-10 px-5 text-sm font-medium shadow-sm">
-                <Link href="/shop" className="flex items-center gap-2">
-                  <div className="relative w-5 h-5">
+              <Button asChild variant="default" className="relative overflow-hidden bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full h-10 px-5 text-[14px] font-medium transition-all duration-300 shadow-md hover:shadow-green-700/30 border border-green-400/20">
+                <Link href="/shop" className="flex items-center gap-3">
+                  <motion.div
+                    className="relative flex items-center justify-center w-9 h-9"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      ease: "linear",
+                      duration: 20,
+                      repeat: Infinity
+                    }}
+                  >
                     <Image 
-                      src="/images/2.png"
+                      src="/images/logos/1.png"
                       alt="Twistly Icon" 
-                      width={20}
-                      height={20}
-                      className="object-contain"
+                      width={26}
+                      height={26}
+                      className="object-contain brightness-0 invert"
                     />
-                  </div>
+                  </motion.div>
                   <Separator orientation="vertical" className="h-4 bg-white/30" />
-                  Shop
+                  <span className="tracking-wide uppercase">Shop</span>
                 </Link>
               </Button>
               
@@ -377,14 +385,14 @@ export function TabbedNavbar() {
       </div>
       
       {/* Category Tabs - only visible on desktop */}
-      <div className="hidden md:block sticky top-20 z-40 bg-background border-b">
+      <div className="hidden md:block sticky top-20 z-40 bg-background border-b border-gray-100 shadow-sm">
         <div className="container mx-auto">
           <Tabs 
             value={activeTabValue} 
             onValueChange={handleTabChange}
             className="w-full"
           >
-            <TabsList className="h-12 w-full bg-transparent justify-start">
+            <TabsList className="h-14 w-full bg-transparent justify-start">
               {productCategories.map((category) => {
                 const isActive = pathname === category.path || pathname.startsWith(`${category.path}/`)
                 
@@ -393,11 +401,19 @@ export function TabbedNavbar() {
                     key={category.path}
                     value={category.path}
                     className={cn(
-                      "relative h-full rounded-none border-b-2 border-transparent data-[state=active]:border-b-2 px-6 data-[state=active]:shadow-none",
-                      isActive ? `data-[state=active]:${category.textClass} data-[state=active]:border-${category.color}-600` : "",
+                      "relative h-full rounded-none border-b-2 border-transparent data-[state=active]:border-b-2 px-8 data-[state=active]:shadow-none",
+                      "text-[15px] font-medium hover:bg-gray-50 transition-all",
+                      isActive ? `data-[state=active]:${category.textClass} data-[state=active]:border-${category.color}-600 data-[state=active]:font-semibold` : "",
                     )}
                   >
                     {category.fullName}
+                    {isActive && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-current"
+                        layoutId="activeTab"
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
                   </TabsTrigger>
                 )
               })}

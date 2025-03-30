@@ -76,7 +76,7 @@ const sportProducts = [
     description: "Convenient daily CBD capsules with added nutrients for active individuals",
     benefits: ["Convenient", "Precise dosing", "Daily support"],
     badgeColor: "bg-blue-600",
-    featured: false
+    featured: true
   },
   {
     id: "protein-powder",

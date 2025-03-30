@@ -76,7 +76,7 @@ const hybridProducts = [
     description: "Powerful immune-boosting formula with Chaga mushroom",
     benefits: ["Immune defense", "Antioxidant", "Vitality"],
     badgeColor: "bg-amber-900",
-    featured: false
+    featured: true
   },
   {
     id: "cordyceps-energy",

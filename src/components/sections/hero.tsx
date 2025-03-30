@@ -250,9 +250,28 @@ function HeroContent({
         >
           <Badge
             variant="outline"
-            className="px-3 py-1 text-sm rounded-md bg-white border-green-200 text-green-800 shadow-sm"
+            className="px-3 py-1 flex items-center gap-2 text-sm rounded-md bg-white border-green-200 shadow-sm"
           >
-            <span>{badge.text}</span>
+            <div className="relative h-6 w-6 flex-shrink-0">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ 
+                  duration: 20, 
+                  repeat: Infinity, 
+                  ease: "linear" 
+                }}
+                className="h-full w-full"
+              >
+                <Image 
+                  src="/images/logos/1.png" 
+                  alt="Twistly CBD Logo" 
+                  width={24} 
+                  height={24}
+                  className="object-contain"
+                />
+              </motion.div>
+            </div>
+            <span className="text-gray-900 font-medium">{badge.text}</span>
             {badge.action && (
               <>
                 <span className="mx-2 text-gray-300">•</span>

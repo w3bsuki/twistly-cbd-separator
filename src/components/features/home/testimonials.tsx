@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Star, Quote, ChevronLeft, ChevronRight, BadgeCheck } from 'lucide-react'
+import { Star, Quote, ChevronLeft, ChevronRight, BadgeCheck, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
@@ -99,35 +99,66 @@ export function Testimonials() {
   };
   
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50/50 relative overflow-hidden">
-      {/* Background pattern */}
-      <div className="absolute inset-0 w-full h-full bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:20px_20px] opacity-5 pointer-events-none" />
+    <section className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-amber-50 to-white">
+      {/* Background decoration - simplified for mobile */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-16 -right-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-amber-500/40"></div>
+        <div className="absolute -bottom-16 -left-16 w-80 h-80 rounded-full opacity-30 blur-3xl bg-amber-500/30"></div>
+      </div>
       
-      <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <Badge className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-amber-500 to-amber-600 text-white flex items-center gap-1.5 mx-auto w-fit shadow-sm">
-            <Star className="w-3 h-3 fill-white" />
-            Customer Love
-          </Badge>
-          
-          <h2 className="text-3xl md:text-4xl font-bold mt-3 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800">
-            What Our Customers Say
-          </h2>
-          
-          <p className="text-gray-600 max-w-2xl mx-auto text-base">
-            Don't just take our word for it. Hear from real customers who have experienced the benefits of our premium CBD products.
-          </p>
-        </motion.div>
+      {/* Main container - matching responsive approach used in other sections */}
+      <Container className="relative z-10 bg-white backdrop-blur-sm rounded-xl shadow-md border border-amber-200/90 p-3 sm:p-4 lg:p-5 w-full mx-auto">
+        {/* Header with nested container design */}
+        <div className="mb-5 sm:mb-6">
+          {/* Nested container for the section header - matching category styling */}
+          <div className="bg-gradient-to-b from-amber-50/80 to-white p-3 sm:p-4 rounded-xl border border-amber-100/80 shadow-sm relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-amber-200/30"></div>
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 rounded-full opacity-20 blur-2xl bg-amber-100/30"></div>
+            </div>
+            
+            <div className="text-center relative z-10">
+              {/* Spinning logo with improved styling */}
+              <div className="flex justify-center mb-1 sm:mb-1.5">
+                <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full relative bg-transparent transition-all duration-500 shadow-[0_10px_20px_rgba(var(--amber-rgb)/0.15),_inset_0_0_0_1px_rgba(var(--amber-rgb)/0.2)] p-0.5">
+                  <div className="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-transparent after:absolute after:inset-0 after:rounded-full after:shadow-inner">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ 
+                        duration: 20, 
+                        repeat: Infinity, 
+                        ease: "linear" 
+                      }}
+                      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center relative z-10"
+                    >
+                      <Star className="h-6 w-6 text-amber-500 fill-amber-500 drop-shadow-md" />
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="relative z-10 px-3 py-1.5 inline-block rounded-lg bg-white/80 backdrop-blur-sm shadow-sm border border-gray-100/50 mb-4">
+                <div className="inline-flex bg-gradient-to-br from-amber-50/80 to-white rounded-full border border-amber-200/40 shadow-sm p-1 mb-1.5">
+                  <div className="bg-gradient-to-r from-amber-600 to-amber-500 text-white px-2.5 py-0.5 rounded-full shadow-sm flex items-center gap-1.5 text-xs font-medium">
+                    <Star className="h-3 w-3 fill-white" />
+                    <span>Customer Love</span>
+                  </div>
+                </div>
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 drop-shadow-sm">
+                  What Our Customers Say
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto mt-0.5 sm:mt-1">
+                  Don't just take our word for it. Hear from real customers who have experienced the benefits of our premium CBD products
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
         
         {/* Featured testimonials carousel */}
-        <div className="relative mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="relative mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {displayIndices.map((index, i) => (
               <motion.div
                 key={index}
@@ -142,7 +173,7 @@ export function Testimonials() {
           </div>
           
           {/* Navigation controls */}
-          <div className="flex items-center justify-center mt-8 gap-2">
+          <div className="flex items-center justify-center mt-6 gap-2">
             <Button 
               variant="outline" 
               size="icon" 
@@ -177,38 +208,38 @@ export function Testimonials() {
             </Button>
           </div>
         </div>
-      </Container>
-      
-      {/* Marquee testimonials - automatically scrolling */}
-      <div className="relative overflow-hidden py-6 bg-gradient-to-r from-amber-50 to-amber-100/30 border-y border-amber-100">
-        <div className="marquee-container">
-          <div className="marquee-content flex gap-4 animate-marquee">
-            {[...testimonials, ...testimonials].map((testimonial, index) => (
-              <Card 
-                key={`${testimonial.id}-${index}`} 
-                className="min-w-[280px] border-amber-200 shadow-sm bg-white"
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                    <span className="text-sm font-medium text-amber-700">{testimonial.product}</span>
-                  </div>
-                  <p className="text-xs text-gray-600 line-clamp-2 italic">"{testimonial.text}"</p>
-                  <div className="flex items-center mt-2 justify-between">
-                    <span className="text-xs text-gray-500">{testimonial.name}</span>
-                    {testimonial.verified && (
-                      <Badge variant="outline" className="h-4 px-1 text-[10px] bg-amber-50 border-amber-200 text-amber-700 flex items-center">
-                        <BadgeCheck className="h-2.5 w-2.5 mr-0.5" />
-                        Verified
-                      </Badge>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+        
+        {/* Marquee testimonials - automatically scrolling */}
+        <div className="relative overflow-hidden py-4 bg-gradient-to-b from-amber-50/80 to-white rounded-xl border border-amber-100/80 shadow-sm">
+          <div className="marquee-container">
+            <div className="marquee-content flex gap-4 animate-marquee">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
+                <Card 
+                  key={`${testimonial.id}-${index}`} 
+                  className="min-w-[280px] border-amber-200 shadow-sm bg-white"
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      <span className="text-sm font-medium text-amber-700">{testimonial.product}</span>
+                    </div>
+                    <p className="text-xs text-gray-600 line-clamp-2 italic">"{testimonial.text}"</p>
+                    <div className="flex items-center mt-2 justify-between">
+                      <span className="text-xs text-gray-500">{testimonial.name}</span>
+                      {testimonial.verified && (
+                        <Badge variant="outline" className="h-4 px-1 text-[10px] bg-amber-50 border-amber-200 text-amber-700 flex items-center">
+                          <BadgeCheck className="h-2.5 w-2.5 mr-0.5" />
+                          Verified
+                        </Badge>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }
@@ -216,80 +247,51 @@ export function Testimonials() {
 function TestimonialCard({ testimonial, featured = false }: { testimonial: typeof testimonials[0], featured?: boolean }) {
   return (
     <Card className={cn(
-      "border-amber-200 shadow-sm hover:shadow-md transition-shadow bg-white h-full",
-      featured && "border-amber-300 shadow-md"
+      "h-full overflow-hidden transition-all duration-300",
+      featured 
+        ? "border-amber-300 shadow-md hover:shadow-lg" 
+        : "border-amber-200 shadow-sm hover:shadow-md",
+      "hover:border-amber-300 bg-gradient-to-b from-white to-amber-50/80"
     )}>
-      <CardContent className={cn("p-5", featured && "p-6")}>
-        {/* Header with avatar and user info */}
-        <div className="flex items-center gap-3 mb-3">
-          <Avatar className={cn(
-            "border border-amber-100",
-            featured ? "h-12 w-12" : "h-10 w-10"
-          )}>
+      <CardContent className="p-6">
+        <div className="flex items-start gap-3 mb-3">
+          <Avatar className="w-10 h-10 border-2 border-amber-100">
             <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-            <AvatarFallback className="bg-amber-100 text-amber-800">
-              {testimonial.name.charAt(0)}
-            </AvatarFallback>
+            <AvatarFallback>{testimonial.name.substring(0, 2)}</AvatarFallback>
           </Avatar>
-          
           <div>
-            <div className="flex items-center gap-2">
-              <h4 className={cn(
-                "font-medium text-gray-900",
-                featured && "font-semibold"
-              )}>
-                {testimonial.name}
-              </h4>
+            <div className="flex items-center">
+              <span className="font-medium text-gray-900">{testimonial.name}</span>
               {testimonial.verified && (
-                <Badge variant="outline" className="h-5 px-1 text-[10px] bg-amber-50 border-amber-200 text-amber-700 flex items-center gap-0.5">
-                  <BadgeCheck className="h-3 w-3" />
-                  Verified
-                </Badge>
+                <BadgeCheck className="h-3.5 w-3.5 text-amber-500 ml-1" />
               )}
             </div>
-            <div className="flex items-center text-xs text-gray-500 gap-2">
-              <span>{testimonial.location}</span>
-              <span className="text-gray-300">•</span>
-              <span>{testimonial.date}</span>
-            </div>
+            <div className="text-xs text-gray-500">{testimonial.location}</div>
           </div>
         </div>
         
-        {/* Star rating */}
         <div className="flex mb-3">
-          {Array(5).fill(0).map((_, i) => (
+          {[...Array(5)].map((_, i) => (
             <Star 
-              key={i}
+              key={i} 
               className={cn(
-                featured ? "h-5 w-5" : "h-4 w-4", 
-                i < testimonial.rating 
-                  ? "fill-amber-400 text-amber-400" 
-                  : "fill-gray-200 text-gray-200"
-              )}
+                "w-4 h-4", 
+                i < testimonial.rating ? "text-amber-400 fill-amber-400" : "text-gray-300"
+              )} 
             />
           ))}
         </div>
         
-        {/* Review text */}
-        <div className="relative mb-3">
-          <Quote className={cn(
-            "absolute top-0 left-0 text-amber-200 -translate-x-2 -translate-y-1 opacity-50",
-            featured ? "h-6 w-6" : "h-5 w-5"
-          )} />
-          <p className={cn(
-            "text-gray-600 pl-3 leading-relaxed",
-            featured ? "text-base" : "text-sm"
-          )}>
+        <div className="relative">
+          <Quote className="absolute -top-1 -left-1 w-6 h-6 text-amber-200 opacity-40" />
+          <p className="text-gray-700 text-sm leading-relaxed relative z-10 pl-3">
             {testimonial.text}
           </p>
         </div>
         
-        {/* Product */}
-        <div className={cn(
-          "font-medium mt-3 flex items-center",
-          featured ? "text-sm text-amber-800" : "text-xs text-amber-700"
-        )}>
-          <span className="bg-amber-50 px-2 py-1 rounded">{testimonial.product}</span>
+        <div className="mt-4 pt-3 border-t border-amber-100/50 flex items-center justify-between">
+          <span className="text-xs font-medium text-amber-700">{testimonial.product}</span>
+          <span className="text-xs text-gray-500">{testimonial.date}</span>
         </div>
       </CardContent>
     </Card>

@@ -76,7 +76,7 @@ const petProducts = [
     description: "Specially formulated for cats with a mild flavor they love",
     benefits: ["Cat-specific", "Stress reduction", "Supports older cats"],
     badgeColor: "bg-amber-500",
-    featured: false
+    featured: true
   },
   {
     id: "senior-pet",
@@ -118,7 +118,7 @@ export function FeaturedProducts({ pageTheme }: FeaturedProductsProps) {
           </div>
           
           <div className="bg-gradient-to-br from-amber-50/70 to-white rounded-xl border border-amber-200/40 shadow-sm p-3 mb-4 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               {petProducts.filter(product => product.featured).map((product) => (
                 <Link href={`/shop/${product.id}`} key={product.id} className="group">
                   <Card className={`h-full border ${pageTheme.colors.border} ${pageTheme.colors.borderHover} overflow-hidden bg-white transition-all duration-200 hover:shadow-md`}>

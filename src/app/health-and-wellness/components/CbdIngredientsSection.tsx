@@ -11,23 +11,14 @@ import { Container } from '@/components/ui/container'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { cn } from '@/lib/utils'
 
-// Update interface to match health page theme format
 interface CbdIngredientsSectionProps {
   pageTheme: {
-    primary: string;
-    gradients: {
-      hero: string;
-      section: string;
-      cta: string;
-    };
     colors: {
       primary: string;
-      secondary: string;
       accent: string;
-      accentHover: string;
-      light: string;
       border: string;
       borderHover: string;
+      background: string;
     }
   }
 }
@@ -37,7 +28,7 @@ const cbdIngredients = [
   {
     name: "CBD (Cannabidiol)",
     scientificName: "C21H30O2",
-    image: "/images/tincture2.png",
+    image: "/images/tincture2.png", 
     benefits: ["Anti-inflammatory", "Pain relief", "Anxiety reduction"],
     description: "The primary non-psychoactive cannabinoid in hemp that offers a wide range of therapeutic benefits without causing a high.",
     effects: "Interacts with the endocannabinoid system to help regulate pain, mood, inflammation, and various bodily functions for natural balance."
@@ -98,23 +89,23 @@ export function CbdIngredientsSection({ pageTheme }: CbdIngredientsSectionProps)
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-40 right-10 w-60 h-60 bg-green-100 rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute bottom-20 left-10 w-60 h-60 bg-green-50 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-60 h-60 bg-emerald-50 rounded-full opacity-20 blur-3xl"></div>
       </div>
       
       <Container className="relative z-10">
         <div className="bg-white/80 backdrop-blur-sm border border-green-200 rounded-xl shadow-md p-4 overflow-hidden">
           <div className="text-center mb-4">
             <div className="inline-flex bg-gradient-to-br from-green-50/80 to-white rounded-full border border-green-200/40 shadow-sm p-1">
-              <div className="bg-gradient-to-r from-green-600 to-green-500 text-white px-4 py-1.5 rounded-full shadow-md flex items-center gap-1.5 font-medium">
+              <div className="bg-gradient-to-r from-green-600 to-emerald-500 text-white px-4 py-1.5 rounded-full shadow-md flex items-center gap-1.5 font-medium">
                 <Leaf className="h-3.5 w-3.5" />
-                <span>Cannabinoid Science</span>
+                <span>Wellness Science</span>
               </div>
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-2">
-              The Compounds Behind The Benefits
+              Therapeutic Cannabinoids
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-3 text-sm md:text-base">
-              Explore our premium cannabinoid ingredients and their unique therapeutic properties for enhancing health and wellness.
+              Discover how our premium CBD ingredients are formulated to support your health and wellness goals naturally.
             </p>
           </div>
           
@@ -165,7 +156,7 @@ export function CbdIngredientsSection({ pageTheme }: CbdIngredientsSectionProps)
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
                       <div className="space-y-3">
                         <div>
-                          <h4 className="text-sm font-medium text-gray-900 mb-1">Key Benefits</h4>
+                          <h4 className="text-sm font-medium text-gray-900 mb-1">Wellness Benefits</h4>
                           <ul className="list-disc list-inside space-y-0.5">
                             {ingredient.benefits.map((benefit, i) => (
                               <li key={i} className="text-sm text-gray-700">{benefit}</li>
@@ -173,17 +164,17 @@ export function CbdIngredientsSection({ pageTheme }: CbdIngredientsSectionProps)
                           </ul>
                         </div>
                         <div>
-                          <h4 className="text-sm font-medium text-gray-900 mb-1">Description</h4>
+                          <h4 className="text-sm font-medium text-gray-900 mb-1">Health Application</h4>
                           <p className="text-sm text-gray-600">{ingredient.description}</p>
                         </div>
                       </div>
                       <div>
-                        <h4 className="text-sm font-medium text-gray-900 mb-1">How It Works</h4>
+                        <h4 className="text-sm font-medium text-gray-900 mb-1">Therapeutic Effects</h4>
                         <p className="text-sm text-gray-600 mb-2">{ingredient.effects}</p>
                         <div className="bg-gradient-to-r from-green-50 to-white rounded-lg border border-green-100 p-3 flex items-start gap-2">
                           <Info className="h-4 w-4 text-green-700 mt-0.5 flex-shrink-0" />
                           <p className="text-xs text-gray-600">
-                            Our extraction process preserves the natural profile of {ingredient.name}, ensuring maximum therapeutic benefits while maintaining purity and potency.
+                            Our wellness formulations feature optimal concentrations of {ingredient.name} to maximize therapeutic benefits while maintaining purity and potency.
                           </p>
                         </div>
                         <Button 
@@ -191,7 +182,7 @@ export function CbdIngredientsSection({ pageTheme }: CbdIngredientsSectionProps)
                           className="mt-3 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white"
                         >
                           <Plus className="h-3.5 w-3.5 mr-1.5" />
-                          Products with {ingredient.name.split(' ')[0]}
+                          {ingredient.name.split(' ')[0]} Wellness Products
                         </Button>
                       </div>
                     </div>
@@ -204,11 +195,11 @@ export function CbdIngredientsSection({ pageTheme }: CbdIngredientsSectionProps)
           <div className="text-center mt-4">
             <Badge variant="outline" className="bg-green-50/80 text-green-700 border-green-200 px-2.5 py-1">
               <Info className="h-3.5 w-3.5 mr-1.5" />
-              <span className="text-xs">All our cannabinoid ingredients are third-party tested for purity, potency, and safety to ensure the highest quality.</span>
+              <span className="text-xs">All our wellness formulations are third-party tested for purity, potency, and efficacy.</span>
             </Badge>
           </div>
         </div>
       </Container>
     </section>
-  );
+  )
 } 

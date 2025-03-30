@@ -1,52 +1,45 @@
 'use client'
 
 import React from 'react'
-import { HeroSection } from './components/HeroSection'
-import { BenefitsSection } from './components/BenefitsSection'
-import { FeaturedProducts } from './components/FeaturedProducts'
-import { ConditionsTabs } from './components/ConditionsTabs'
-import { CbdIngredientsSection } from './components/CbdIngredientsSection'
-import { FaqSection } from './components/FaqSection'
-import { TestimonialsSection } from './components/TestimonialsSection'
-import { CtaSection } from './components/CtaSection'
-import { pageTheme } from './utils/theme'
-import { Separator } from '@/components/ui/separator'
-// For future use: import { AiChatHero } from '@/components/AiChatHero'
+// Adjust imports to use a central index file
+import {
+  HeroSection,
+  BenefitsSection,
+  FeaturedProducts,
+  ConditionsTabs,
+  CbdIngredientsSection,
+  FaqSection,
+  TestimonialsSection,
+  CtaSection
+} from './components' // Assuming ./components/index.ts or similar exists
+
+// Theme configuration for health & wellness page (using green shades)
+const pageTheme = {
+  colors: {
+    primary: 'green-600',
+    secondary: 'emerald-500',
+    accent: 'teal-400',
+    border: 'border-green-200',
+    borderHover: 'hover:border-green-300',
+    background: 'from-green-50 to-white',
+  },
+  gradients: {
+    section: 'bg-gradient-to-b from-green-50 to-white',
+    button: 'bg-gradient-to-r from-green-600 to-emerald-500',
+  }
+}
 
 export default function HealthAndWellnessPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <main className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       <HeroSection pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
       <BenefitsSection pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
       <FeaturedProducts pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
       <ConditionsTabs pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
       <CbdIngredientsSection pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
-      <FaqSection pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
       <TestimonialsSection pageTheme={pageTheme} />
-      <Separator className="mx-auto max-w-7xl" />
       <CtaSection pageTheme={pageTheme} />
-      
-      {/* 
-        The AiChatHero component has been extracted and saved for future use. 
-        To implement it in the future, you can add it like this:
-        
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <AiChatHero 
-            themeColor="green"
-            accentColor="green"
-            lightColor="green"
-            borderColor="green"
-            title="Your Wellness Guide"
-            subtitle="Ask Dr. Twistly about CBD products for your health needs"
-          />
-        </div>
-      */}
-    </div>
+      <FaqSection pageTheme={pageTheme} />
+    </main>
   )
 } 
